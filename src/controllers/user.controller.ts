@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 
 import { CreateUserDto, GetUsersQueryDto } from "../dtos";
-import { Gender, User } from "../entities";
+import { Gender, Role, User } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
-import { GenderService, UserService } from "../services";
+import { GenderService, RoleService, UserService } from "../services";
 
 export class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
@@ -36,6 +36,12 @@ export class UserController {
         throw new NotFoundException(
           `The gender with id ${genderId} has not been found`
         );
+      }
+
+      const rolesFound: Role[] = await RoleService.getRolesByIds(roleIds);
+
+      if (rolesFound.length !== roleIds.length) {
+        throw new NotFoundException("The id of some role is invalid");
       }
 
       const createdUserDto: CreateUserDto = {
