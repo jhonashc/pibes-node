@@ -2,7 +2,7 @@ import { FindOptionsWhere, Like, Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
 import { CreateUserDto, GetUsersQueryDto } from "../dtos";
-import { Gender, Person, User } from "../entities";
+import { Gender, Person, User, UserRole } from "../entities";
 
 class UserService {
   private readonly userRepository: Repository<User>;
@@ -21,6 +21,7 @@ class UserService {
       email,
       password,
       avatarUrl,
+      roleIds,
     } = createUserDto;
 
     const queryRunner = AppDataSource.createQueryRunner();
@@ -45,6 +46,13 @@ class UserService {
         email,
         password,
         avatarUrl,
+        roles: roleIds.map((roleId: string) =>
+          queryRunner.manager.create(UserRole, {
+            role: {
+              id: roleId,
+            },
+          })
+        ),
       });
 
       const createdUser: User = await queryRunner.manager.save(newUser);
