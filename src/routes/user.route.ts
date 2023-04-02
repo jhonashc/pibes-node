@@ -1,13 +1,15 @@
 import { Router } from "express";
 
 import { UserController } from "../controllers";
-import { GetUsersQueryDto, UuidParamDto } from "../dtos";
+import { CreateUserDto, GetUsersQueryDto, UuidParamDto } from "../dtos";
 import { ValidationType } from "../interfaces";
 import { validateRequest } from "../middlewares";
 
 const router = Router();
 
 const userController = new UserController();
+
+router.post("/", validateRequest(CreateUserDto), userController.createUser);
 
 router.get(
   "/",
