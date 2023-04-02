@@ -1,14 +1,63 @@
 import { FindOptionsWhere, Like, Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
-import { GetUsersQueryDto } from "../dtos";
-import { User } from "../entities";
+import { CreateUserDto, GetUsersQueryDto } from "../dtos";
+import { Gender, Person, User } from "../entities";
 
 class UserService {
   private readonly userRepository: Repository<User>;
 
   constructor() {
     this.userRepository = AppDataSource.getRepository(User);
+  }
+
+  async createUser(createUserDto: CreateUserDto) {
+    const {
+      firstName,
+      lastName,
+      telephone,
+      genderId,
+      username,
+      email,
+      password,
+      avatarUrl,
+    } = createUserDto;
+
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const newPerson: Person = queryRunner.manager.create(Person, {
+        firstName,
+        lastName,
+        telephone,
+        gender: queryRunner.manager.create(Gender, {
+          id: genderId,
+        }),
+      });
+
+      await queryRunner.manager.save(newPerson);
+
+      const newUser: User = queryRunner.manager.create(User, {
+        person: newPerson,
+        username,
+        email,
+        password,
+        avatarUrl,
+      });
+
+      const createdUser: User = await queryRunner.manager.save(newUser);
+
+      await queryRunner.commitTransaction();
+      await queryRunner.release();
+
+      return createdUser;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   getUsers(getUsersQueryDto: GetUsersQueryDto): Promise<User[]> {
@@ -31,6 +80,14 @@ class UserService {
     return this.userRepository.findOne({
       where: {
         id,
+      },
+    });
+  }
+
+  getUserByEmail(email: string): Promise<User | null> {
+    return this.userRepository.findOne({
+      where: {
+        email: Like(email),
       },
     });
   }
