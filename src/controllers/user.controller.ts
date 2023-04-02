@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { GetUsersQueryDto } from "../dtos";
 import { User } from "../entities";
+import { NotFoundException } from "../exceptions";
 import { UserService } from "../services";
 
 export class UserController {
@@ -31,10 +32,9 @@ export class UserController {
       const userFound: User | null = await UserService.getUserById(id);
 
       if (!userFound) {
-        return res.json({
-          status: false,
-          message: `The user with id ${id} has not been found`,
-        });
+        throw new NotFoundException(
+          `The user with id ${id} has not been found`
+        );
       }
 
       res.json({
