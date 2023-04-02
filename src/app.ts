@@ -4,6 +4,7 @@ import morgan from "morgan";
 import express, { Application } from "express";
 
 import { AppDataSource } from "./config";
+import { exceptionHandler } from "./middlewares";
 import { userRouter } from "./routes";
 
 class Server {
@@ -21,11 +22,16 @@ class Server {
 
     this.middlewares();
     this.routes();
+    this.customMiddlewares();
   }
 
   middlewares() {
     this.app.use(morgan("dev"));
     this.app.use(express.json());
+  }
+
+  customMiddlewares() {
+    this.app.use(exceptionHandler);
   }
 
   routes() {
