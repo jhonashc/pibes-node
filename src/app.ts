@@ -4,11 +4,15 @@ import morgan from "morgan";
 import express, { Application } from "express";
 
 import { AppDataSource } from "./config";
+import { userRouter } from "./routes";
 
 class Server {
   private app: Application;
   private port: string;
   private environment: string;
+  private apiRoutes = {
+    users: "/api/users",
+  };
 
   constructor() {
     this.app = express();
@@ -24,7 +28,9 @@ class Server {
     this.app.use(express.json());
   }
 
-  routes() {}
+  routes() {
+    this.app.use(this.apiRoutes.users, userRouter);
+  }
 
   listen() {
     AppDataSource.initialize()
