@@ -10,21 +10,21 @@ import {
 export class CreateUserDto {
   /* Person */
   @IsString()
-  @IsOptional()
-  firstName?: string;
+  @IsNotEmpty()
+  firstName: string;
 
   @IsString()
-  @IsOptional()
-  lastName?: string;
+  @IsNotEmpty()
+  lastName: string;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   @MaxLength(10)
-  telephone?: string;
+  telephone: string;
 
   @IsUUID()
-  @IsOptional()
-  genderId?: string;
+  @IsNotEmpty()
+  genderId: string;
 
   /* User */
   @IsString()
