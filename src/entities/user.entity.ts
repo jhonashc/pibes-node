@@ -29,9 +29,7 @@ export class User extends Base {
   avatarUrl?: string;
 
   /* Relations */
-  @OneToOne(() => Person, (person) => person.user, {
-    eager: true,
-  })
+  @OneToOne(() => Person, (person) => person.user)
   @JoinColumn({ name: "person_id" })
-  person: Person;
+  person?: Person;
 }
