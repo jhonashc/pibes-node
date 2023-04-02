@@ -8,6 +8,8 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD || "postgres",
   database: process.env.DB_NAME || "pibesdb",
   synchronize: process.env.NODE_ENV === "dev" ? true : false,
+  logging: true,
+  entities: ["dist/**/*.entity{.ts,.js}", "src/**/*.entity{.ts,.js}"],
   subscribers: [],
   migrations: [],
 });
