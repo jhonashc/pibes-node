@@ -1,20 +1,21 @@
-import { DeleteResult, FindOptionsWhere, Like, Repository } from "typeorm";
+import { FindOptionsWhere, Like, Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
-import { CreateUserDto, GetUsersQueryDto } from "../dtos";
+import { CreateUserDto, GetUsersQueryDto, UpdateUserDto } from "../dtos";
 import { Gender, Person, User, UserRole } from "../entities";
-import { NotFoundException } from "../exceptions";
+import { NextFunction } from "express";
 
 class UserService {
-  private readonly personRepository: Repository<Person>;
   private readonly userRepository: Repository<User>;
 
   constructor() {
-    this.personRepository = AppDataSource.getRepository(Person);
     this.userRepository = AppDataSource.getRepository(User);
   }
 
-  async createUser(createUserDto: CreateUserDto): Promise<User | undefined> {
+  async createUser(
+    createUserDto: CreateUserDto,
+    next: NextFunction
+  ): Promise<User | undefined> {
     const {
       firstName,
       lastName,
@@ -66,6 +67,7 @@ class UserService {
       return createdUser;
     } catch (error) {
       await queryRunner.rollbackTransaction();
+      next(error);
     } finally {
       await queryRunner.release();
     }
@@ -103,7 +105,87 @@ class UserService {
     });
   }
 
-  async deleteUserById(user: User): Promise<User | undefined> {
+  async updateUserById(
+    user: User,
+    updateUserDto: UpdateUserDto,
+    next: NextFunction
+  ): Promise<User | undefined> {
+    const {
+      firstName,
+      lastName,
+      telephone,
+      genderId,
+      username,
+      email,
+      password,
+      avatarUrl,
+      roleIds,
+    } = updateUserDto;
+
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const newUser: User = queryRunner.manager.create(User, {
+        id: user.id,
+        username,
+        email,
+        password,
+        avatarUrl,
+        person: user.person,
+      });
+
+      if (roleIds) {
+        await queryRunner.manager.delete(UserRole, {
+          user: {
+            id: newUser.id,
+          },
+        });
+
+        newUser.roles = roleIds.map((roleId) =>
+          queryRunner.manager.create(UserRole, {
+            role: {
+              id: roleId,
+            },
+          })
+        );
+      }
+
+      const newPerson: Person = queryRunner.manager.create(Person, {
+        id: newUser.person.id,
+        firstName,
+        lastName,
+        telephone,
+        gender: queryRunner.manager.create(Gender, {
+          id: genderId,
+        }),
+      });
+
+      // Saving the new changes to the person entity
+      await queryRunner.manager.save(newPerson);
+
+      newUser.person = newPerson;
+
+      // Saving the new changes to the user entity
+      const updatedUser: User = await queryRunner.manager.save(newUser);
+
+      await queryRunner.commitTransaction();
+      await queryRunner.release();
+
+      return updatedUser;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      next(error);
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async deleteUserById(
+    user: User,
+    next: NextFunction
+  ): Promise<User | undefined> {
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -124,6 +206,7 @@ class UserService {
       return user;
     } catch (error) {
       await queryRunner.rollbackTransaction();
+      next(error);
     } finally {
       await queryRunner.release();
     }
