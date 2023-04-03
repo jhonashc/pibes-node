@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import { CreateUserDto, GetUsersQueryDto } from "../dtos";
+import { CreateUserDto, GetUsersQueryDto, UpdateUserDto } from "../dtos";
 import { Gender, Role, User } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
 import { GenderService, RoleService, UserService } from "../services";
@@ -57,7 +57,8 @@ export class UserController {
       };
 
       const createdUser: User | undefined = await UserService.createUser(
-        createdUserDto
+        createdUserDto,
+        next
       );
 
       if (!createdUser) {
@@ -113,6 +114,80 @@ export class UserController {
     }
   }
 
+  async updateUserById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const {
+        firstName,
+        lastName,
+        telephone,
+        genderId,
+        username,
+        email,
+        password,
+        avatarUrl,
+        roleIds,
+      } = req.body as UpdateUserDto;
+
+      const userFound: User | null = await UserService.getUserById(id);
+
+      if (!userFound) {
+        throw new NotFoundException(
+          `The user with id ${id} has not been found`
+        );
+      }
+
+      if (genderId) {
+        const genderFound: Gender | null = await GenderService.getGenderById(
+          genderId
+        );
+
+        if (!genderFound) {
+          throw new NotFoundException(
+            `The gender with id ${genderId} has not been found`
+          );
+        }
+      }
+
+      if (roleIds) {
+        const rolesFound: Role[] = await RoleService.getRolesByIds(roleIds);
+
+        if (rolesFound.length !== roleIds.length) {
+          throw new NotFoundException(`The id of some role is invalid`);
+        }
+      }
+
+      const updateUserDto: UpdateUserDto = {
+        firstName,
+        lastName,
+        telephone,
+        genderId,
+        username,
+        email,
+        password,
+        avatarUrl,
+        roleIds,
+      };
+
+      const updatedUser: User | undefined = await UserService.updateUserById(
+        userFound,
+        updateUserDto,
+        next
+      );
+
+      if (!updatedUser) {
+        throw new ConflictException("There was a problem updating the user");
+      }
+
+      res.json({
+        status: true,
+        data: updatedUser,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async deleteUserById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
@@ -126,10 +201,9 @@ export class UserController {
       }
 
       const deletedUser: User | undefined = await UserService.deleteUserById(
-        userFound
+        userFound,
+        next
       );
-
-      console.log({ deletedUser });
 
       if (!deletedUser) {
         throw new ConflictException("There was a problem deleting the user");
