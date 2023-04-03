@@ -1,17 +1,20 @@
-import { FindOptionsWhere, Like, Repository } from "typeorm";
+import { DeleteResult, FindOptionsWhere, Like, Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
 import { CreateUserDto, GetUsersQueryDto } from "../dtos";
 import { Gender, Person, User, UserRole } from "../entities";
+import { NotFoundException } from "../exceptions";
 
 class UserService {
+  private readonly personRepository: Repository<Person>;
   private readonly userRepository: Repository<User>;
 
   constructor() {
+    this.personRepository = AppDataSource.getRepository(Person);
     this.userRepository = AppDataSource.getRepository(User);
   }
 
-  async createUser(createUserDto: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto): Promise<User | undefined> {
     const {
       firstName,
       lastName,
@@ -98,6 +101,32 @@ class UserService {
         email: Like(email),
       },
     });
+  }
+
+  async deleteUserById(user: User): Promise<User | undefined> {
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const person: Person | null = await queryRunner.manager.findOne(Person, {
+        where: {
+          id: user.person.id,
+        },
+      });
+
+      await queryRunner.manager.remove(user);
+      await queryRunner.manager.remove(person);
+
+      await queryRunner.commitTransaction();
+      await queryRunner.release();
+
+      return user;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 }
 
