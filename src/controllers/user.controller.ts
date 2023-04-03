@@ -112,4 +112,35 @@ export class UserController {
       next(error);
     }
   }
+
+  async deleteUserById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+
+      const userFound: User | null = await UserService.getUserById(id);
+
+      if (!userFound) {
+        throw new NotFoundException(
+          `The user with id ${id} has not been found`
+        );
+      }
+
+      const deletedUser: User | undefined = await UserService.deleteUserById(
+        userFound
+      );
+
+      console.log({ deletedUser });
+
+      if (!deletedUser) {
+        throw new ConflictException("There was a problem deleting the user");
+      }
+
+      res.json({
+        status: true,
+        data: deletedUser,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
