@@ -31,13 +31,12 @@ export class User extends Base {
 
   /* Relations */
   @OneToOne(() => Person, (person) => person.user, {
+    eager: true,
     nullable: false,
   })
   @JoinColumn({ name: "person_id" })
   person: Person;
 
-  @OneToMany(() => UserRole, (userRole) => userRole.user, {
-    cascade: true,
-  })
+  @OneToMany(() => UserRole, (userRole) => userRole.user)
   roles: UserRole[];
 }
