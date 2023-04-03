@@ -23,4 +23,10 @@ router.get(
   userController.getUserById
 );
 
+router.delete(
+  "/:id",
+  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  userController.deleteUserById
+);
+
 export default router;
