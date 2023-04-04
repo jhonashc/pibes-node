@@ -2,7 +2,6 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
 
 import { Base } from "./base.entity";
 import { Person } from "./person.entity";
-import { UserRole } from "./user-role.entity";
 
 @Entity("user")
 export class User extends Base {
@@ -37,6 +36,10 @@ export class User extends Base {
   @JoinColumn({ name: "person_id" })
   person: Person;
 
-  @OneToMany(() => UserRole, (userRole) => userRole.user)
-  roles: UserRole[];
+  @Column({
+    type: "text",
+    array: true,
+    default: ["user"],
+  })
+  roles: string[];
 }
