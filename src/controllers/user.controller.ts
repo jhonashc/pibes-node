@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 
 import { CreateUserDto, GetUsersQueryDto, UpdateUserDto } from "../dtos";
-import { Gender, Role, User } from "../entities";
+import { Gender, User } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
-import { GenderService, RoleService, UserService } from "../services";
+import { GenderService, UserService } from "../services";
 
 export class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
@@ -17,7 +17,7 @@ export class UserController {
         email,
         password,
         avatarUrl,
-        roleIds,
+        roles,
       } = req.body as CreateUserDto;
 
       const userFound: User | null = await UserService.getUserByEmail(email);
@@ -38,11 +38,11 @@ export class UserController {
         );
       }
 
-      const rolesFound: Role[] = await RoleService.getRolesByIds(roleIds);
+      // const rolesFound: Role[] = await RoleService.getRolesByIds(roleIds);
 
-      if (rolesFound.length !== roleIds.length) {
-        throw new NotFoundException("The id of some role is invalid");
-      }
+      // if (rolesFound.length !== roleIds.length) {
+      //   throw new NotFoundException("The id of some role is invalid");
+      // }
 
       const createdUserDto: CreateUserDto = {
         firstName,
@@ -53,12 +53,11 @@ export class UserController {
         email,
         password,
         avatarUrl,
-        roleIds,
+        roles,
       };
 
       const createdUser: User | undefined = await UserService.createUser(
-        createdUserDto,
-        next
+        createdUserDto
       );
 
       if (!createdUser) {
@@ -126,7 +125,7 @@ export class UserController {
         email,
         password,
         avatarUrl,
-        roleIds,
+        roles,
       } = req.body as UpdateUserDto;
 
       const userFound: User | null = await UserService.getUserById(id);
@@ -149,13 +148,13 @@ export class UserController {
         }
       }
 
-      if (roleIds) {
-        const rolesFound: Role[] = await RoleService.getRolesByIds(roleIds);
+      // if (roleIds) {
+      //   const rolesFound: Role[] = await RoleService.getRolesByIds(roleIds);
 
-        if (rolesFound.length !== roleIds.length) {
-          throw new NotFoundException(`The id of some role is invalid`);
-        }
-      }
+      //   if (rolesFound.length !== roleIds.length) {
+      //     throw new NotFoundException(`The id of some role is invalid`);
+      //   }
+      // }
 
       const updateUserDto: UpdateUserDto = {
         firstName,
@@ -166,13 +165,12 @@ export class UserController {
         email,
         password,
         avatarUrl,
-        roleIds,
+        roles,
       };
 
       const updatedUser: User | undefined = await UserService.updateUserById(
         userFound,
-        updateUserDto,
-        next
+        updateUserDto
       );
 
       if (!updatedUser) {
@@ -201,8 +199,7 @@ export class UserController {
       }
 
       const deletedUser: User | undefined = await UserService.deleteUserById(
-        userFound,
-        next
+        userFound
       );
 
       if (!deletedUser) {
