@@ -2,8 +2,7 @@ import { FindOptionsWhere, Like, Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
 import { CreateUserDto, GetUsersQueryDto, UpdateUserDto } from "../dtos";
-import { Gender, Person, User, UserRole } from "../entities";
-import { NextFunction } from "express";
+import { Gender, Person, User } from "../entities";
 
 class UserService {
   private readonly userRepository: Repository<User>;
@@ -12,10 +11,7 @@ class UserService {
     this.userRepository = AppDataSource.getRepository(User);
   }
 
-  async createUser(
-    createUserDto: CreateUserDto,
-    next: NextFunction
-  ): Promise<User | undefined> {
+  async createUser(createUserDto: CreateUserDto): Promise<User | undefined> {
     const {
       firstName,
       lastName,
@@ -25,7 +21,7 @@ class UserService {
       email,
       password,
       avatarUrl,
-      roleIds,
+      roles,
     } = createUserDto;
 
     const queryRunner = AppDataSource.createQueryRunner();
@@ -50,13 +46,7 @@ class UserService {
         email,
         password,
         avatarUrl,
-        roles: roleIds.map((roleId: string) =>
-          queryRunner.manager.create(UserRole, {
-            role: {
-              id: roleId,
-            },
-          })
-        ),
+        roles,
       });
 
       const createdUser: User = await queryRunner.manager.save(newUser);
@@ -67,7 +57,6 @@ class UserService {
       return createdUser;
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      next(error);
     } finally {
       await queryRunner.release();
     }
@@ -107,8 +96,7 @@ class UserService {
 
   async updateUserById(
     user: User,
-    updateUserDto: UpdateUserDto,
-    next: NextFunction
+    updateUserDto: UpdateUserDto
   ): Promise<User | undefined> {
     const {
       firstName,
@@ -119,7 +107,7 @@ class UserService {
       email,
       password,
       avatarUrl,
-      roleIds,
+      roles,
     } = updateUserDto;
 
     const queryRunner = AppDataSource.createQueryRunner();
@@ -134,23 +122,8 @@ class UserService {
         password,
         avatarUrl,
         person: user.person,
+        roles: roles?.length ? roles : ["user"],
       });
-
-      if (roleIds) {
-        await queryRunner.manager.delete(UserRole, {
-          user: {
-            id: newUser.id,
-          },
-        });
-
-        newUser.roles = roleIds.map((roleId) =>
-          queryRunner.manager.create(UserRole, {
-            role: {
-              id: roleId,
-            },
-          })
-        );
-      }
 
       const newPerson: Person = queryRunner.manager.create(Person, {
         id: newUser.person.id,
@@ -176,16 +149,12 @@ class UserService {
       return updatedUser;
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      next(error);
     } finally {
       await queryRunner.release();
     }
   }
 
-  async deleteUserById(
-    user: User,
-    next: NextFunction
-  ): Promise<User | undefined> {
+  async deleteUserById(user: User): Promise<User | undefined> {
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -206,7 +175,6 @@ class UserService {
       return user;
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      next(error);
     } finally {
       await queryRunner.release();
     }
