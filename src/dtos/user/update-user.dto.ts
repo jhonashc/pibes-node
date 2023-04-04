@@ -43,10 +43,10 @@ export class UpdateUserDto {
   avatarUrl?: string;
 
   /* Roles */
-  @IsUUID("4", {
+  @IsString({
     each: true,
   })
   @IsArray()
   @IsOptional()
-  roleIds?: string[];
+  roles?: string[];
 }

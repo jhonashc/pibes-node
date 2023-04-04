@@ -44,9 +44,10 @@ export class CreateUserDto {
   avatarUrl?: string;
 
   /* Roles */
-  @IsUUID("4", {
+  @IsString({
     each: true,
   })
   @IsArray()
-  roleIds: string[];
+  @IsOptional()
+  roles?: string[];
 }
