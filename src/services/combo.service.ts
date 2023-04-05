@@ -8,17 +8,34 @@ import {
 
 import { AppDataSource } from "../config";
 import { CreateComboDto, GetCombosQueryDto, UpdateComboDto } from "../dtos";
-import { Combo } from "../entities";
+import { Combo, Product, ProductCombo } from "../entities";
 
 class ComboService {
   private readonly comboRepository: Repository<Combo>;
+  private readonly productComboRepository: Repository<ProductCombo>;
 
   constructor() {
     this.comboRepository = AppDataSource.getRepository(Combo);
+    this.productComboRepository = AppDataSource.getRepository(ProductCombo);
   }
 
   createCombo(createComboDto: CreateComboDto): Promise<Combo> {
-    return this.comboRepository.save(createComboDto);
+    const { name, price, imageUrl, productIds } = createComboDto;
+
+    const newCombo: Combo = this.comboRepository.create({
+      name,
+      price,
+      imageUrl,
+      products: productIds.map((productId) =>
+        this.productComboRepository.create({
+          product: {
+            id: productId,
+          },
+        })
+      ),
+    });
+
+    return this.comboRepository.save(newCombo);
   }
 
   getCombos(getCombosQueryDto: GetCombosQueryDto): Promise<Combo[]> {
