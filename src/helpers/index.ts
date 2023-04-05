@@ -1,2 +1,3 @@
 export { comparePasswords, encryptPassword } from "./bcrypt.helper";
-export { mapProduct, mapProducts } from "./mappers.helper";
+export { mapCombo, mapCombos } from "./combo.helper";
+export { mapProduct, mapProducts } from "./product.helper";
