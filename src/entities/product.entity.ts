@@ -2,6 +2,7 @@ import { Column, Entity, OneToMany } from "typeorm";
 
 import { Base } from "./base.entity";
 import { ProductCategory } from "./product-category.entity";
+import { ProductCombo } from "./product-combo.entity";
 
 @Entity("product")
 export class Product extends Base {
@@ -44,4 +45,9 @@ export class Product extends Base {
     }
   )
   categories: ProductCategory[];
+
+  @OneToMany(() => ProductCombo, (productCombo) => productCombo.product, {
+    cascade: true,
+  })
+  combos?: ProductCombo[];
 }
