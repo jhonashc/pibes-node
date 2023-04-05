@@ -122,7 +122,7 @@ class UserService {
         password,
         avatarUrl,
         person: user.person,
-        roles: roles?.length ? roles : ["user"],
+        roles,
       });
 
       const newPerson: Person = queryRunner.manager.create(Person, {
