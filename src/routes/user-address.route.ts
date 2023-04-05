@@ -18,28 +18,28 @@ const router = Router();
 const userAddressController = new UserAddressController();
 
 router.post(
-  "/:userId/address",
+  "/:userId/addresses",
   validateRequest(UserUuidParamDto, ValidationType.PARAMS),
   validateRequest(CreateAddressDto),
   userAddressController.createUserAddress
 );
 
 router.get(
-  "/:userId/address",
+  "/:userId/addresses",
   validateRequest(UserUuidParamDto, ValidationType.PARAMS),
   validateRequest(GetAddressesQueryDto, ValidationType.QUERY),
   userAddressController.getUserAddresses
 );
 
 router.get(
-  "/:userId/address/:addressId",
+  "/:userId/addresses/:addressId",
   validateRequest(UserUuidParamDto, ValidationType.PARAMS),
   validateRequest(AddressUuidParamDto, ValidationType.PARAMS),
   userAddressController.getUserAddressById
 );
 
 router.patch(
-  "/:userId/address/:addressId",
+  "/:userId/addresses/:addressId",
   validateRequest(UserUuidParamDto, ValidationType.PARAMS),
   validateRequest(AddressUuidParamDto, ValidationType.PARAMS),
   validateRequest(UpdateAddressDto),
@@ -47,7 +47,7 @@ router.patch(
 );
 
 router.delete(
-  "/:userId/address/:addressId",
+  "/:userId/addresses/:addressId",
   validateRequest(UserUuidParamDto, ValidationType.PARAMS),
   validateRequest(AddressUuidParamDto, ValidationType.PARAMS),
   userAddressController.deleteUserAddressById
