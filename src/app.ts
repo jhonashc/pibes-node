@@ -5,7 +5,13 @@ import express, { Application } from "express";
 
 import { AppDataSource } from "./config";
 import { exceptionHandler } from "./middlewares";
-import { categoryRouter, userAddressRouter, userRouter } from "./routes";
+
+import {
+  categoryRouter,
+  productRouter,
+  userAddressRouter,
+  userRouter,
+} from "./routes";
 
 class Server {
   private app: Application;
@@ -13,6 +19,7 @@ class Server {
   private environment: string;
   private apiRoutes = {
     categories: "/api/categories",
+    products: "/api/products",
     users: "/api/users",
   };
 
@@ -37,6 +44,7 @@ class Server {
 
   routes() {
     this.app.use(this.apiRoutes.categories, categoryRouter);
+    this.app.use(this.apiRoutes.products, productRouter);
     this.app.use(this.apiRoutes.users, userRouter);
     this.app.use(this.apiRoutes.users, userAddressRouter);
   }
