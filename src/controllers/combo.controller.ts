@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import { CreateComboDto, GetCombosQueryDto } from "../dtos";
+import { CreateComboDto, GetCombosQueryDto, UpdateComboDto } from "../dtos";
 import { Combo } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
 import { mapCombo, mapCombos } from "../helpers";
@@ -79,6 +79,66 @@ export class ComboController {
       }
 
       const mappedCombo: ComboMapped = mapCombo(comboFound);
+
+      res.json({
+        status: true,
+        data: mappedCombo,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateComboById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const { name, imageUrl, price } = req.body as UpdateComboDto;
+
+      const comboFound: Combo | null = await ComboService.getComboById(id);
+
+      if (!comboFound) {
+        throw new NotFoundException(
+          `The combo with id ${id} has not been found`
+        );
+      }
+
+      const updateComboDto: UpdateComboDto = {
+        name,
+        imageUrl,
+        price,
+      };
+
+      const updatedCombo: Combo = await ComboService.updateComboById(
+        comboFound,
+        updateComboDto
+      );
+
+      res.json({
+        status: true,
+        data: updatedCombo,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteComboById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+
+      const comboFound: Combo | null = await ComboService.getComboById(id);
+
+      if (!comboFound) {
+        throw new NotFoundException(
+          `The combo with id ${id} has not been found`
+        );
+      }
+
+      const deletedCombo: Combo = await ComboService.deleteComboById(
+        comboFound
+      );
+
+      const mappedCombo: ComboMapped = mapCombo(deletedCombo);
 
       res.json({
         status: true,
