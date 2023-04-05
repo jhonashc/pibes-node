@@ -1,16 +1,16 @@
 import { NextFunction, Request, Response } from "express";
 
 import { CreateComboDto, GetCombosQueryDto, UpdateComboDto } from "../dtos";
-import { Combo } from "../entities";
+import { Combo, Product } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
 import { mapCombo, mapCombos } from "../helpers";
 import { ComboMapped } from "../interfaces";
-import { ComboService } from "../services";
+import { ComboService, ProductService } from "../services";
 
 export class ComboController {
   async createCombo(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, imageUrl, price } = req.body as CreateComboDto;
+      const { name, imageUrl, price, productIds } = req.body as CreateComboDto;
 
       const lowerCaseName: string = name.trim().toLowerCase();
 
@@ -24,10 +24,19 @@ export class ComboController {
         );
       }
 
+      const productsFound: Product[] = await ProductService.getProductsByIds(
+        productIds
+      );
+
+      if (productsFound.length !== productIds.length) {
+        throw new NotFoundException("The id of some product is invalid");
+      }
+
       const createComboDto: CreateComboDto = {
         name: lowerCaseName,
         imageUrl,
         price,
+        productIds,
       };
 
       const createdCombo: Combo = await ComboService.createCombo(
