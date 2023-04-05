@@ -15,14 +15,14 @@ export class CategoryController {
     try {
       const { name } = req.body as CreateCategoryDto;
 
-      const lowerCaseName: string = name.toLowerCase();
+      const lowerCaseName: string = name.trim().toLowerCase();
 
       const categoryFound: Category | null =
         await CategoryService.getCategoryByName(lowerCaseName);
 
       if (categoryFound) {
         throw new ConflictException(
-          `The category with the name ${name} already exists`
+          `The category with the name ${lowerCaseName} already exists`
         );
       }
 

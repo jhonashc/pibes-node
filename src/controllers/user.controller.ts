@@ -20,11 +20,15 @@ export class UserController {
         roles,
       } = req.body as CreateUserDto;
 
-      const userFound: User | null = await UserService.getUserByEmail(email);
+      const lowerCaseEmail: string = email.trim().toLowerCase();
+
+      const userFound: User | null = await UserService.getUserByEmail(
+        lowerCaseEmail
+      );
 
       if (userFound) {
         throw new ConflictException(
-          `The user with the email ${email} already exists`
+          `The user with the email ${lowerCaseEmail} already exists`
         );
       }
 
@@ -42,8 +46,10 @@ export class UserController {
         (role) => Roles[role]
       );
 
-      if (!areTheRolesValid) {
-        throw new NotFoundException(`You must enter valid roles [${Roles}]`);
+      if (!areTheRolesValid && areTheRolesValid !== undefined) {
+        throw new NotFoundException(
+          `You must enter valid roles [${Object.values(Roles)}]`
+        );
       }
 
       const createdUserDto: CreateUserDto = {
@@ -52,7 +58,7 @@ export class UserController {
         telephone,
         genderId,
         username,
-        email,
+        email: lowerCaseEmail,
         password,
         avatarUrl,
         roles: roles?.length ? roles : [Roles.USER],
@@ -154,8 +160,10 @@ export class UserController {
         (role) => Roles[role]
       );
 
-      if (!areTheRolesValid) {
-        throw new NotFoundException(`You must enter valid roles [${Roles}]`);
+      if (!areTheRolesValid && areTheRolesValid !== undefined) {
+        throw new NotFoundException(
+          `You must enter valid roles [${Object.values(Roles)}]`
+        );
       }
 
       const updateUserDto: UpdateUserDto = {

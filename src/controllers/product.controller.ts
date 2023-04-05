@@ -14,7 +14,7 @@ export class ProductController {
         req.body as CreateProductDto;
 
       let newCategoryIds: string[] = [];
-      const lowerCaseName: string = name.toLowerCase();
+      const lowerCaseName: string = name.trim().toLowerCase();
 
       const productFound: Product | null =
         await ProductService.getProductByName(lowerCaseName);
