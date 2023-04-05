@@ -1,4 +1,4 @@
-import { FindOptionsWhere, Like, Repository } from "typeorm";
+import { FindOptionsWhere, In, Like, Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
 
@@ -51,6 +51,14 @@ class CategoryService {
     return this.categoryRepository.findOne({
       where: {
         name: Like(name),
+      },
+    });
+  }
+
+  getCategoriesByIds(categoryIds: string[]): Promise<Category[]> {
+    return this.categoryRepository.find({
+      where: {
+        id: In(categoryIds),
       },
     });
   }
