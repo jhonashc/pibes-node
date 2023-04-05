@@ -1,8 +1,16 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+} from "typeorm";
 
 import { Address } from "./address.entity";
 import { Base } from "./base.entity";
 import { Person } from "./person.entity";
+import { encryptPassword } from "../helpers";
 
 export enum Roles {
   USER = "USER",
@@ -54,4 +62,10 @@ export class User extends Base {
 
   @OneToMany(() => Address, (address) => address.user)
   addresses?: Address[];
+
+  /* Listeners */
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await encryptPassword(this.password);
+  }
 }
