@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 
 import { AppDataSource } from "../config";
-import { CreateComboDto, GetCombosQueryDto } from "../dtos";
+import { CreateComboDto, GetCombosQueryDto, UpdateComboDto } from "../dtos";
 import { Combo } from "../entities";
 
 class ComboService {
@@ -59,6 +59,26 @@ class ComboService {
         name: Like(name),
       },
     });
+  }
+
+  updateComboById(
+    combo: Combo,
+    updateComboDto: UpdateComboDto
+  ): Promise<Combo> {
+    const { name, imageUrl, price } = updateComboDto;
+
+    const newCombo: Combo = this.comboRepository.create({
+      id: combo.id,
+      name,
+      imageUrl,
+      price,
+    });
+
+    return this.comboRepository.save(newCombo);
+  }
+
+  deleteComboById(combo: Combo): Promise<Combo> {
+    return this.comboRepository.remove(combo);
   }
 }
 
