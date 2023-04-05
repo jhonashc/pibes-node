@@ -12,6 +12,7 @@ export {
 } from "./category";
 
 export { UuidParamDto } from "./params";
+export { CreateProductDto, GetProductsQueryDto } from "./product";
 export { PaginationQueryDto } from "./query";
 export { GetRolesQueryDto } from "./role";
 
