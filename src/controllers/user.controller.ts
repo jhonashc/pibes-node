@@ -4,6 +4,7 @@ import { CreateUserDto, GetUsersQueryDto, UpdateUserDto } from "../dtos";
 import { Gender, User } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
 import { GenderService, UserService } from "../services";
+import { validRoles } from "../data";
 
 export class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
@@ -38,11 +39,15 @@ export class UserController {
         );
       }
 
-      // const rolesFound: Role[] = await RoleService.getRolesByIds(roleIds);
+      const areTheRolesValid: boolean | undefined = roles?.every((role) =>
+        validRoles.includes(role)
+      );
 
-      // if (rolesFound.length !== roleIds.length) {
-      //   throw new NotFoundException("The id of some role is invalid");
-      // }
+      if (!areTheRolesValid) {
+        throw new NotFoundException(
+          `You must enter valid roles [${validRoles}]`
+        );
+      }
 
       const createdUserDto: CreateUserDto = {
         firstName,
@@ -53,7 +58,7 @@ export class UserController {
         email,
         password,
         avatarUrl,
-        roles,
+        roles: roles?.length ? roles : ["user"],
       };
 
       const createdUser: User | undefined = await UserService.createUser(
@@ -148,13 +153,15 @@ export class UserController {
         }
       }
 
-      // if (roleIds) {
-      //   const rolesFound: Role[] = await RoleService.getRolesByIds(roleIds);
+      const areTheRolesValid: boolean | undefined = roles?.every((role) =>
+        validRoles.includes(role)
+      );
 
-      //   if (rolesFound.length !== roleIds.length) {
-      //     throw new NotFoundException(`The id of some role is invalid`);
-      //   }
-      // }
+      if (!areTheRolesValid) {
+        throw new NotFoundException(
+          `You must enter valid roles [${validRoles}]`
+        );
+      }
 
       const updateUserDto: UpdateUserDto = {
         firstName,
@@ -165,7 +172,7 @@ export class UserController {
         email,
         password,
         avatarUrl,
-        roles,
+        roles: roles?.length ? roles : ["user"],
       };
 
       const updatedUser: User | undefined = await UserService.updateUserById(
