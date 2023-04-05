@@ -46,8 +46,6 @@ export class Product extends Base {
   )
   categories: ProductCategory[];
 
-  @OneToMany(() => ProductCombo, (productCombo) => productCombo.product, {
-    cascade: true,
-  })
+  @OneToMany(() => ProductCombo, (productCombo) => productCombo.product)
   combos?: ProductCombo[];
 }

@@ -26,6 +26,7 @@ export class Combo extends Base {
   /* Relations */
   @OneToMany(() => ProductCombo, (productCombo) => productCombo.combo, {
     eager: true,
+    cascade: true,
   })
   products: ProductCombo[];
 }
