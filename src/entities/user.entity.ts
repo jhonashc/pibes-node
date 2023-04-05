@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
 
+import { Address } from "./address.entity";
 import { Base } from "./base.entity";
 import { Person } from "./person.entity";
 
@@ -28,6 +29,13 @@ export class User extends Base {
   })
   avatarUrl?: string;
 
+  @Column({
+    type: "text",
+    array: true,
+    default: ["user"],
+  })
+  roles: string[];
+
   /* Relations */
   @OneToOne(() => Person, (person) => person.user, {
     eager: true,
@@ -36,10 +44,6 @@ export class User extends Base {
   @JoinColumn({ name: "person_id" })
   person: Person;
 
-  @Column({
-    type: "text",
-    array: true,
-    default: ["user"],
-  })
-  roles: string[];
+  @OneToMany(() => Address, (address) => address.user)
+  addresses?: Address[];
 }
