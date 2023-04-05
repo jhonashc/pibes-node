@@ -5,7 +5,7 @@ import express, { Application } from "express";
 
 import { AppDataSource } from "./config";
 import { exceptionHandler } from "./middlewares";
-import { userRouter } from "./routes";
+import { userAddressRouter, userRouter } from "./routes";
 
 class Server {
   private app: Application;
@@ -36,6 +36,7 @@ class Server {
 
   routes() {
     this.app.use(this.apiRoutes.users, userRouter);
+    this.app.use(this.apiRoutes.users, userAddressRouter);
   }
 
   listen() {
