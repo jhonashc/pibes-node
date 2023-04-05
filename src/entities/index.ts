@@ -6,4 +6,4 @@ export { Gender } from "./gender.entity";
 export { Person } from "./person.entity";
 export { ProductCategory } from "./product-category.entity";
 export { Product } from "./product.entity";
-export { User } from "./user.entity";
+export { Roles, User } from "./user.entity";

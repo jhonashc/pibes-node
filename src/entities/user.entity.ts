@@ -4,6 +4,13 @@ import { Address } from "./address.entity";
 import { Base } from "./base.entity";
 import { Person } from "./person.entity";
 
+export enum Roles {
+  USER = "USER",
+  ADVANCED = "ADVANCED",
+  USERADMIN = "USERADMIN",
+  ADMIN = "ADMIN",
+}
+
 @Entity("user")
 export class User extends Base {
   @Column({
@@ -30,11 +37,12 @@ export class User extends Base {
   avatarUrl?: string;
 
   @Column({
-    type: "text",
+    type: "enum",
+    enum: Roles,
     array: true,
-    default: ["user"],
+    default: [Roles.USER],
   })
-  roles: string[];
+  roles: Roles[];
 
   /* Relations */
   @OneToOne(() => Person, (person) => person.user, {
