@@ -1,5 +1,6 @@
 import {
   FindOptionsWhere,
+  In,
   LessThanOrEqual,
   Like,
   MoreThanOrEqual,
@@ -99,6 +100,14 @@ class ProductService {
     return this.productRepository.findOne({
       where: {
         name,
+      },
+    });
+  }
+
+  getProductsByIds(productIds: string[]): Promise<Product[]> {
+    return this.productRepository.find({
+      where: {
+        id: In(productIds),
       },
     });
   }
