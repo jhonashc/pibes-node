@@ -11,6 +11,7 @@ export class Category extends Base {
   })
   name: string;
 
+  /* Relations */
   @OneToMany(
     () => ProductCategory,
     (productCategory) => productCategory.category

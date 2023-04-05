@@ -17,6 +17,7 @@ export class ProductCategory extends Date {
   productId: string;
 
   @ManyToOne(() => Category, (category) => category.products, {
+    eager: true,
     onDelete: "CASCADE",
   })
   @JoinColumn({

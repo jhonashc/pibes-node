@@ -37,8 +37,9 @@ export class Product extends Base {
   /* Relations */
   @OneToMany(
     () => ProductCategory,
-    (productCategory) => productCategory.category,
+    (productCategory) => productCategory.product,
     {
+      eager: true,
       cascade: true,
     }
   )
