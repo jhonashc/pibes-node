@@ -1,11 +1,14 @@
 import {
   IsArray,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUUID,
   MaxLength,
 } from "class-validator";
+
+import { Roles } from "../../entities";
 
 export class CreateUserDto {
   /* Person */
@@ -44,10 +47,10 @@ export class CreateUserDto {
   avatarUrl?: string;
 
   /* Roles */
-  @IsString({
-    each: true,
-  })
   @IsArray()
   @IsOptional()
-  roles?: string[];
+  @IsEnum(Roles, {
+    each: true,
+  })
+  roles?: Roles[];
 }
