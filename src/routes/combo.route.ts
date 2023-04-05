@@ -1,7 +1,12 @@
 import { Router } from "express";
 
 import { ComboController } from "../controllers";
-import { CreateComboDto, GetCombosQueryDto, UuidParamDto } from "../dtos";
+import {
+  CreateComboDto,
+  GetCombosQueryDto,
+  UpdateComboDto,
+  UuidParamDto,
+} from "../dtos";
 import { ValidationType } from "../interfaces";
 import { validateRequest } from "../middlewares";
 
@@ -21,6 +26,19 @@ router.get(
   "/:id",
   validateRequest(UuidParamDto, ValidationType.PARAMS),
   comboController.getComboById
+);
+
+router.patch(
+  "/:id",
+  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  validateRequest(UpdateComboDto),
+  comboController.updateComboById
+);
+
+router.delete(
+  "/:id",
+  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  comboController.deleteComboById
 );
 
 export default router;
