@@ -8,7 +8,11 @@ import {
 } from "typeorm";
 
 import { AppDataSource } from "../config";
-import { CreateProductDto, GetProductsQueryDto } from "../dtos";
+import {
+  CreateProductDto,
+  GetProductsQueryDto,
+  UpdateProductDto,
+} from "../dtos";
 import { Product, ProductCategory } from "../entities";
 
 class ProductService {
@@ -110,6 +114,65 @@ class ProductService {
         id: In(productIds),
       },
     });
+  }
+
+  async updateProductById(
+    product: Product,
+    updateProductDto: UpdateProductDto
+  ): Promise<Product | undefined> {
+    const { name, description, imageUrl, price, stock, categoryIds } =
+      updateProductDto;
+
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const newProduct: Product = this.productRepository.create({
+        id: product.id,
+        name,
+        description,
+        imageUrl,
+        price,
+        stock,
+      });
+
+      if (categoryIds?.length) {
+        await this.productCategoryRepository.delete({
+          product: {
+            id: product.id,
+          },
+        });
+
+        newProduct.categories = categoryIds.map((categoryId) =>
+          this.productCategoryRepository.create({
+            category: {
+              id: categoryId,
+            },
+          })
+        );
+        console.log("hay categorias");
+      } else {
+        console.log("no hay categorias");
+      }
+
+      const updatedProduct: Product = await this.productRepository.save(
+        newProduct
+      );
+
+      await queryRunner.commitTransaction();
+      await queryRunner.release();
+
+      return updatedProduct;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  deleteProductById(product: Product): Promise<Product> {
+    return this.productRepository.remove(product);
   }
 }
 
