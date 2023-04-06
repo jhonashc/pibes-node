@@ -1,4 +1,12 @@
-import { IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
+import {
+  ArrayNotEmpty,
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  IsUUID,
+} from "class-validator";
 
 export class UpdateComboDto {
   @IsString()
@@ -13,4 +21,12 @@ export class UpdateComboDto {
   @IsPositive()
   @IsOptional()
   price?: number;
+
+  @IsUUID("4", {
+    each: true,
+  })
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsOptional()
+  productIds?: string[];
 }

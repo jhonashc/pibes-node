@@ -1,4 +1,5 @@
 import {
+  ArrayNotEmpty,
   IsArray,
   IsNotEmpty,
   IsNumber,
@@ -25,6 +26,7 @@ export class CreateComboDto {
     each: true,
   })
   @IsArray()
+  @ArrayNotEmpty()
   @IsOptional()
   productIds: string[];
 }
