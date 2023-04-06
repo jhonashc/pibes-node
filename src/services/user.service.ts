@@ -5,13 +5,17 @@ import { CreateUserDto, GetUsersQueryDto, UpdateUserDto } from "../dtos";
 import { Gender, Person, User } from "../entities";
 
 class UserService {
+  private readonly genderRepository: Repository<Gender>;
+  private readonly personRepository: Repository<Person>;
   private readonly userRepository: Repository<User>;
 
   constructor() {
+    this.genderRepository = AppDataSource.getRepository(Gender);
     this.userRepository = AppDataSource.getRepository(User);
+    this.personRepository = AppDataSource.getRepository(Person);
   }
 
-  async createUser(createUserDto: CreateUserDto): Promise<User | undefined> {
+  createUser(createUserDto: CreateUserDto): Promise<User> {
     const {
       firstName,
       lastName,
@@ -24,42 +28,23 @@ class UserService {
       roles,
     } = createUserDto;
 
-    const queryRunner = AppDataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      const newPerson: Person = queryRunner.manager.create(Person, {
+    const newUser: User = this.userRepository.create({
+      username,
+      email,
+      password,
+      avatarUrl,
+      roles,
+      person: this.personRepository.create({
         firstName,
         lastName,
         telephone,
-        gender: queryRunner.manager.create(Gender, {
+        gender: this.genderRepository.create({
           id: genderId,
         }),
-      });
+      }),
+    });
 
-      await queryRunner.manager.save(newPerson);
-
-      const newUser: User = queryRunner.manager.create(User, {
-        person: newPerson,
-        username,
-        email,
-        password,
-        avatarUrl,
-        roles,
-      });
-
-      const createdUser: User = await queryRunner.manager.save(newUser);
-
-      await queryRunner.commitTransaction();
-      await queryRunner.release();
-
-      return createdUser;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-    } finally {
-      await queryRunner.release();
-    }
+    return this.userRepository.save(newUser);
   }
 
   getUsers(getUsersQueryDto: GetUsersQueryDto): Promise<User[]> {
@@ -94,10 +79,7 @@ class UserService {
     });
   }
 
-  async updateUserById(
-    user: User,
-    updateUserDto: UpdateUserDto
-  ): Promise<User | undefined> {
+  updateUserById(user: User, updateUserDto: UpdateUserDto): Promise<User> {
     const {
       firstName,
       lastName,
@@ -110,74 +92,29 @@ class UserService {
       roles,
     } = updateUserDto;
 
-    const queryRunner = AppDataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      const newUser: User = queryRunner.manager.create(User, {
-        id: user.id,
-        username,
-        email,
-        password,
-        avatarUrl,
-        person: user.person,
-        roles,
-      });
-
-      const newPerson: Person = queryRunner.manager.create(Person, {
-        id: newUser.person.id,
+    const newUser: User = this.userRepository.create({
+      id: user.id,
+      username,
+      email,
+      password,
+      avatarUrl,
+      roles,
+      person: this.personRepository.create({
+        id: user.person.id,
         firstName,
         lastName,
         telephone,
-        gender: queryRunner.manager.create(Gender, {
+        gender: this.genderRepository.create({
           id: genderId,
         }),
-      });
+      }),
+    });
 
-      // Saving the new changes to the person entity
-      await queryRunner.manager.save(newPerson);
-
-      newUser.person = newPerson;
-
-      // Saving the new changes to the user entity
-      const updatedUser: User = await queryRunner.manager.save(newUser);
-
-      await queryRunner.commitTransaction();
-      await queryRunner.release();
-
-      return updatedUser;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-    } finally {
-      await queryRunner.release();
-    }
+    return this.userRepository.save(newUser);
   }
 
-  async deleteUserById(user: User): Promise<User | undefined> {
-    const queryRunner = AppDataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      const person: Person | null = await queryRunner.manager.findOne(Person, {
-        where: {
-          id: user.person.id,
-        },
-      });
-
-      await queryRunner.manager.remove(user);
-      await queryRunner.manager.remove(person);
-
-      await queryRunner.commitTransaction();
-      await queryRunner.release();
-
-      return user;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-    } finally {
-      await queryRunner.release();
-    }
+  deleteUserById(user: User): Promise<Person> {
+    return this.personRepository.remove(user.person);
   }
 }
 
