@@ -1,0 +1,40 @@
+import {
+  IsArray,
+  IsInt,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  IsUUID,
+} from "class-validator";
+
+export class UpdateProductDto {
+  @IsString()
+  @IsOptional()
+  name?: string;
+
+  @IsString()
+  @IsOptional()
+  description?: string;
+
+  @IsString()
+  @IsOptional()
+  imageUrl?: string;
+
+  @IsNumber()
+  @IsPositive()
+  @IsOptional()
+  price?: number;
+
+  @IsInt()
+  @IsPositive()
+  @IsOptional()
+  stock?: number;
+
+  @IsUUID("4", {
+    each: true,
+  })
+  @IsArray()
+  @IsOptional()
+  categoryIds?: string[];
+}

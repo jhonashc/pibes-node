@@ -13,7 +13,13 @@ export {
 
 export { CreateComboDto, GetCombosQueryDto, UpdateComboDto } from "./combo";
 export { UuidParamDto } from "./params";
-export { CreateProductDto, GetProductsQueryDto } from "./product";
+
+export {
+  CreateProductDto,
+  GetProductsQueryDto,
+  UpdateProductDto,
+} from "./product";
+
 export { PaginationQueryDto } from "./query";
 export { GetRolesQueryDto } from "./role";
 
