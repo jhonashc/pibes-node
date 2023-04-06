@@ -8,11 +8,13 @@ import {
 } from "typeorm";
 
 import { AppDataSource } from "../config";
+
 import {
   CreateProductDto,
   GetProductsQueryDto,
   UpdateProductDto,
 } from "../dtos";
+
 import { Product, ProductCategory } from "../entities";
 
 class ProductService {
@@ -151,9 +153,6 @@ class ProductService {
             },
           })
         );
-        console.log("hay categorias");
-      } else {
-        console.log("no hay categorias");
       }
 
       const updatedProduct: Product = await this.productRepository.save(

@@ -8,7 +8,7 @@ import {
 
 import { AppDataSource } from "../config";
 import { CreateComboDto, GetCombosQueryDto, UpdateComboDto } from "../dtos";
-import { Combo, Product, ProductCombo } from "../entities";
+import { Combo, ProductCombo } from "../entities";
 
 class ComboService {
   private readonly comboRepository: Repository<Combo>;
@@ -78,20 +78,51 @@ class ComboService {
     });
   }
 
-  updateComboById(
+  async updateComboById(
     combo: Combo,
     updateComboDto: UpdateComboDto
-  ): Promise<Combo> {
-    const { name, imageUrl, price } = updateComboDto;
+  ): Promise<Combo | undefined> {
+    const { name, imageUrl, price, productIds } = updateComboDto;
 
-    const newCombo: Combo = this.comboRepository.create({
-      id: combo.id,
-      name,
-      imageUrl,
-      price,
-    });
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-    return this.comboRepository.save(newCombo);
+    try {
+      const newCombo: Combo = this.comboRepository.create({
+        id: combo.id,
+        name,
+        imageUrl,
+        price,
+      });
+
+      if (productIds?.length) {
+        await this.productComboRepository.delete({
+          combo: {
+            id: combo.id,
+          },
+        });
+
+        newCombo.products = productIds.map((productId) =>
+          this.productComboRepository.create({
+            product: {
+              id: productId,
+            },
+          })
+        );
+      }
+
+      const updatedCombo: Combo = await this.comboRepository.save(newCombo);
+
+      await queryRunner.commitTransaction();
+      await queryRunner.release();
+
+      return updatedCombo;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   deleteComboById(combo: Combo): Promise<Combo> {
