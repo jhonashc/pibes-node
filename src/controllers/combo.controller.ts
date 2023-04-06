@@ -101,7 +101,7 @@ export class ComboController {
   async updateComboById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { name, imageUrl, price } = req.body as UpdateComboDto;
+      const { name, imageUrl, price, productIds } = req.body as UpdateComboDto;
 
       const comboFound: Combo | null = await ComboService.getComboById(id);
 
@@ -111,16 +111,25 @@ export class ComboController {
         );
       }
 
+      if (productIds?.length) {
+        const productsFound: Product[] = await ProductService.getProductsByIds(
+          productIds
+        );
+
+        if (productsFound.length !== productIds.length) {
+          throw new NotFoundException("The id of some product is invalid");
+        }
+      }
+
       const updateComboDto: UpdateComboDto = {
         name,
         imageUrl,
         price,
+        productIds,
       };
 
-      const updatedCombo: Combo = await ComboService.updateComboById(
-        comboFound,
-        updateComboDto
-      );
+      const updatedCombo: Combo | undefined =
+        await ComboService.updateComboById(comboFound, updateComboDto);
 
       res.json({
         status: true,
