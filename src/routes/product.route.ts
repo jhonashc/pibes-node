@@ -1,7 +1,14 @@
 import { Router } from "express";
 
 import { ProductController } from "../controllers";
-import { CreateProductDto, GetUsersQueryDto, UuidParamDto } from "../dtos";
+
+import {
+  CreateProductDto,
+  GetUsersQueryDto,
+  UpdateProductDto,
+  UuidParamDto,
+} from "../dtos";
+
 import { ValidationType } from "../interfaces";
 import { validateRequest } from "../middlewares";
 
@@ -25,6 +32,19 @@ router.get(
   "/:id",
   validateRequest(UuidParamDto, ValidationType.PARAMS),
   productController.getProductById
+);
+
+router.patch(
+  "/:id",
+  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  validateRequest(UpdateProductDto),
+  productController.updateProductById
+);
+
+router.delete(
+  "/:id",
+  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  productController.deleteProductById
 );
 
 export default router;
