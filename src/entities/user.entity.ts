@@ -55,7 +55,9 @@ export class User extends Base {
   /* Relations */
   @OneToOne(() => Person, (person) => person.user, {
     eager: true,
+    cascade: true,
     nullable: false,
+    onDelete: "CASCADE",
   })
   @JoinColumn({ name: "person_id" })
   person: Person;
