@@ -64,13 +64,7 @@ export class UserController {
         roles: roles?.length ? roles : [Roles.USER],
       };
 
-      const createdUser: User | undefined = await UserService.createUser(
-        createdUserDto
-      );
-
-      if (!createdUser) {
-        throw new ConflictException("There was a problem creating the user");
-      }
+      const createdUser: User = await UserService.createUser(createdUserDto);
 
       res.status(201).json({
         status: true,
@@ -178,14 +172,10 @@ export class UserController {
         roles: roles?.length ? roles : [Roles.USER],
       };
 
-      const updatedUser: User | undefined = await UserService.updateUserById(
+      const updatedUser: User = await UserService.updateUserById(
         userFound,
         updateUserDto
       );
-
-      if (!updatedUser) {
-        throw new ConflictException("There was a problem updating the user");
-      }
 
       res.json({
         status: true,
@@ -208,17 +198,11 @@ export class UserController {
         );
       }
 
-      const deletedUser: User | undefined = await UserService.deleteUserById(
-        userFound
-      );
-
-      if (!deletedUser) {
-        throw new ConflictException("There was a problem deleting the user");
-      }
+      await UserService.deleteUserById(userFound);
 
       res.json({
         status: true,
-        data: deletedUser,
+        data: userFound,
       });
     } catch (error) {
       next(error);
