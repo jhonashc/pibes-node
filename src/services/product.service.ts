@@ -28,14 +28,8 @@ class ProductService {
   }
 
   createProduct(createProductDto: CreateProductDto): Promise<Product> {
-    const {
-      name,
-      description,
-      imageUrl,
-      price,
-      stock,
-      categoryIds = [],
-    } = createProductDto;
+    const { name, description, imageUrl, price, stock, categoryIds } =
+      createProductDto;
 
     const newProduct: Product = this.productRepository.create({
       name,
@@ -139,7 +133,7 @@ class ProductService {
         stock,
       });
 
-      if (categoryIds?.length) {
+      if (categoryIds) {
         await this.productCategoryRepository.delete({
           product: {
             id: product.id,
