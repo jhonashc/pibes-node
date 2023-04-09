@@ -1,4 +1,5 @@
 import {
+  ArrayNotEmpty,
   IsArray,
   IsInt,
   IsNotEmpty,
@@ -34,6 +35,6 @@ export class CreateProductDto {
     each: true,
   })
   @IsArray()
-  @IsOptional()
-  categoryIds?: string[];
+  @ArrayNotEmpty()
+  categoryIds: string[];
 }

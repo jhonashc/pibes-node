@@ -1,4 +1,5 @@
 import {
+  ArrayNotEmpty,
   IsArray,
   IsInt,
   IsNumber,
@@ -35,6 +36,7 @@ export class UpdateProductDto {
     each: true,
   })
   @IsArray()
+  @ArrayNotEmpty()
   @IsOptional()
   categoryIds?: string[];
 }
