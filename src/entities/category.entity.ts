@@ -11,6 +11,14 @@ export class Category extends Base {
   })
   name: string;
 
+  @Column({
+    type: "text",
+    unique: true,
+    nullable: true,
+    name: "emoji_code",
+  })
+  emojiCode?: string;
+
   /* Relations */
   @OneToMany(
     () => ProductCategory,
