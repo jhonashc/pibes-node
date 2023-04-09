@@ -29,26 +29,11 @@ export class ProductController {
         );
       }
 
-      if (!categoryIds?.length) {
-        const defaultCategory: Category | null =
-          await CategoryService.getCategoryByName("all");
+      const categoriesFound: Category[] =
+        await CategoryService.getCategoriesByIds(categoryIds);
 
-        if (!defaultCategory) {
-          throw new NotFoundException(
-            `The category with the name all has not been found`
-          );
-        }
-
-        newCategoryIds.push(defaultCategory.id);
-      } else {
-        const categoriesFound: Category[] =
-          await CategoryService.getCategoriesByIds(categoryIds);
-
-        if (categoriesFound.length !== categoryIds.length) {
-          throw new NotFoundException("The id of some category is invalid");
-        }
-
-        newCategoryIds = categoryIds;
+      if (categoriesFound.length !== categoryIds.length) {
+        throw new NotFoundException("The id of some category is invalid");
       }
 
       const createProductDto: CreateProductDto = {
@@ -57,7 +42,7 @@ export class ProductController {
         imageUrl,
         price,
         stock,
-        categoryIds: newCategoryIds,
+        categoryIds,
       };
 
       const createdProduct: Product = await ProductService.createProduct(
@@ -141,26 +126,13 @@ export class ProductController {
         );
       }
 
-      if (!categoryIds?.length) {
-        const defaultCategory: Category | null =
-          await CategoryService.getCategoryByName("all");
-
-        if (!defaultCategory) {
-          throw new NotFoundException(
-            `The category with the name all has not been found`
-          );
-        }
-
-        newCategoryIds.push(defaultCategory.id);
-      } else {
+      if (categoryIds) {
         const categoriesFound: Category[] =
           await CategoryService.getCategoriesByIds(categoryIds);
 
         if (categoriesFound.length !== categoryIds.length) {
           throw new NotFoundException("The id of some category is invalid");
         }
-
-        newCategoryIds = categoryIds;
       }
 
       const updateProductDto: UpdateProductDto = {
@@ -169,7 +141,7 @@ export class ProductController {
         imageUrl,
         price,
         stock,
-        categoryIds: newCategoryIds,
+        categoryIds,
       };
 
       const updatedProduct: Product | undefined =
