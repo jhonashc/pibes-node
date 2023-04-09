@@ -67,11 +67,12 @@ class CategoryService {
     category: Category,
     updateCategoryDto: UpdateCategoryDto
   ): Promise<Category> {
-    const { name } = updateCategoryDto;
+    const { name, emojiCode } = updateCategoryDto;
 
     const newCategory: Category = this.categoryRepository.create({
       id: category.id,
       name,
+      emojiCode,
     });
 
     return this.categoryRepository.save(newCategory);
