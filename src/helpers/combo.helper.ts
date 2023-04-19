@@ -12,13 +12,5 @@ export const mapCombo = (combo: Combo): ComboMapped => {
 };
 
 export const mapCombos = (combos: Combo[]): ComboMapped[] => {
-  return combos.map((combo) => {
-    return {
-      ...combo,
-      products: combo.products.map(({ product }) => ({
-        ...product,
-        categories: product.categories.map(({ category }) => category),
-      })),
-    };
-  });
+  return combos.map((combo) => mapCombo(combo));
 };

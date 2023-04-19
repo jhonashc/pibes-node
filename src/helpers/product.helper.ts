@@ -9,10 +9,5 @@ export const mapProduct = (product: Product): ProductMapped => {
 };
 
 export const mapProducts = (products: Product[]): ProductMapped[] => {
-  return products.map((product) => {
-    return {
-      ...product,
-      categories: product.categories.map(({ category }) => category),
-    };
-  });
+  return products.map((product) => mapProduct(product));
 };
