@@ -11,6 +11,12 @@ export class Combo extends Base {
   })
   name: string;
 
+  @Column({
+    type: "text",
+    nullable: true,
+  })
+  description?: string;
+
   @Column("float", {
     default: 0,
   })
