@@ -1,5 +1,6 @@
 import "dotenv/config";
 import "reflect-metadata";
+import cors from "cors";
 import morgan from "morgan";
 import express, { Application } from "express";
 
@@ -36,6 +37,7 @@ class Server {
   }
 
   middlewares() {
+    this.app.use(cors());
     this.app.use(morgan("dev"));
     this.app.use(express.json());
   }
