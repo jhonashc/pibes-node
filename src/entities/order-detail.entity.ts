@@ -22,6 +22,7 @@ export class OrderDetail extends Base {
 
   @ManyToOne(() => Product, (product) => product.orderDetails, {
     onDelete: "CASCADE",
+    eager: true,
     nullable: true,
   })
   @JoinColumn({
@@ -31,6 +32,7 @@ export class OrderDetail extends Base {
 
   @ManyToOne(() => Combo, (combo) => combo.orderDetails, {
     onDelete: "CASCADE",
+    eager: true,
     nullable: true,
   })
   @JoinColumn({
