@@ -10,6 +10,7 @@ import { exceptionHandler } from "./middlewares";
 import {
   categoryRouter,
   comboRouter,
+  orderRouter,
   productRouter,
   userAddressRouter,
   userRouter,
@@ -22,6 +23,7 @@ class Server {
   private apiRoutes = {
     categories: "/api/categories",
     combos: "/api/combos",
+    orders: "/api/orders",
     products: "/api/products",
     users: "/api/users",
   };
@@ -49,6 +51,7 @@ class Server {
   routes() {
     this.app.use(this.apiRoutes.categories, categoryRouter);
     this.app.use(this.apiRoutes.combos, comboRouter);
+    this.app.use(this.apiRoutes.orders, orderRouter);
     this.app.use(this.apiRoutes.products, productRouter);
     this.app.use(this.apiRoutes.users, userRouter);
     this.app.use(this.apiRoutes.users, userAddressRouter);
