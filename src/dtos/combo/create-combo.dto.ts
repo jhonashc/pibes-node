@@ -16,6 +16,10 @@ export class CreateComboDto {
 
   @IsString()
   @IsOptional()
+  description?: string;
+
+  @IsString()
+  @IsOptional()
   imageUrl?: string;
 
   @IsNumber()

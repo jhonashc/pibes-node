@@ -15,6 +15,10 @@ export class UpdateComboDto {
 
   @IsString()
   @IsOptional()
+  description?: string;
+
+  @IsString()
+  @IsOptional()
   imageUrl?: string;
 
   @IsNumber()
