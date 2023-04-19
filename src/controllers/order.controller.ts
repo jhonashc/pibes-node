@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { CreateOrderDto, GetOrdersQueryDto } from "../dtos";
 import { Order, User } from "../entities";
 import { NotFoundException } from "../exceptions";
-import { mapOrders } from "../helpers";
+import { mapOrder, mapOrders } from "../helpers";
 import { OrderMapped } from "../interfaces";
 import { OrderService, UserService } from "../services";
 
@@ -39,8 +39,6 @@ export class OrderController {
         data: createdOrder,
       });
     } catch (error) {
-      console.log(error);
-
       next(error);
     }
   }
@@ -60,6 +58,29 @@ export class OrderController {
       res.json({
         status: true,
         data: mappedOrders,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getOrderById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+
+      const orderFound: Order | null = await OrderService.getOrderById(id);
+
+      if (!orderFound) {
+        throw new NotFoundException(
+          `The order with id ${id} has not been found`
+        );
+      }
+
+      const mappedOrder: OrderMapped = mapOrder(orderFound);
+
+      res.json({
+        status: true,
+        data: mappedOrder,
       });
     } catch (error) {
       next(error);
