@@ -10,6 +10,7 @@ import {
 import { Address } from "./address.entity";
 import { Base } from "./base.entity";
 import { Person } from "./person.entity";
+import { Order } from "./order.entity";
 import { encryptPassword } from "../helpers";
 
 export enum Roles {
@@ -59,11 +60,16 @@ export class User extends Base {
     nullable: false,
     onDelete: "CASCADE",
   })
-  @JoinColumn({ name: "person_id" })
+  @JoinColumn({
+    name: "person_id",
+  })
   person: Person;
 
   @OneToMany(() => Address, (address) => address.user)
   addresses?: Address[];
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders?: Order[];
 
   /* Listeners */
   @BeforeInsert()

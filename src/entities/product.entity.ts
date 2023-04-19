@@ -3,6 +3,7 @@ import { Column, Entity, OneToMany } from "typeorm";
 import { Base } from "./base.entity";
 import { ProductCategory } from "./product-category.entity";
 import { ProductCombo } from "./product-combo.entity";
+import { OrderDetail } from "./order-detail.entity";
 
 @Entity("product")
 export class Product extends Base {
@@ -48,4 +49,7 @@ export class Product extends Base {
 
   @OneToMany(() => ProductCombo, (productCombo) => productCombo.product)
   combos?: ProductCombo[];
+
+  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.product)
+  orderDetails?: OrderDetail[];
 }

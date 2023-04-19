@@ -27,6 +27,8 @@ export class Address extends Base {
   @ManyToOne(() => User, (user) => user.addresses, {
     nullable: false,
   })
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn({
+    name: "user_id",
+  })
   user: User;
 }

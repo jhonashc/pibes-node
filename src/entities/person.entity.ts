@@ -28,7 +28,9 @@ export class Person extends Base {
     eager: true,
     nullable: false,
   })
-  @JoinColumn({ name: "gender_id" })
+  @JoinColumn({
+    name: "gender_id",
+  })
   gender: Gender;
 
   @OneToOne(() => User, (user) => user.person)
