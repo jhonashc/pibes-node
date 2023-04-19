@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { OrderController } from "../controllers";
-import { CreateOrderDto, GetOrdersQueryDto } from "../dtos";
+import { CreateOrderDto, GetOrdersQueryDto, UuidParamDto } from "../dtos";
 import { ValidationType } from "../interfaces";
 import { validateRequest } from "../middlewares";
 
@@ -15,6 +15,12 @@ router.get(
   "/",
   validateRequest(GetOrdersQueryDto, ValidationType.QUERY),
   orderController.getOrders
+);
+
+router.get(
+  "/:id",
+  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  orderController.getOrderById
 );
 
 export default router;
