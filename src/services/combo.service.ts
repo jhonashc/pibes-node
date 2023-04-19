@@ -20,10 +20,11 @@ class ComboService {
   }
 
   createCombo(createComboDto: CreateComboDto): Promise<Combo> {
-    const { name, price, imageUrl, productIds } = createComboDto;
+    const { name, description, price, imageUrl, productIds } = createComboDto;
 
     const newCombo: Combo = this.comboRepository.create({
       name,
+      description,
       price,
       imageUrl,
       products: productIds.map((productId) =>
@@ -82,7 +83,7 @@ class ComboService {
     combo: Combo,
     updateComboDto: UpdateComboDto
   ): Promise<Combo | undefined> {
-    const { name, imageUrl, price, productIds } = updateComboDto;
+    const { name, description, imageUrl, price, productIds } = updateComboDto;
 
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
@@ -92,6 +93,7 @@ class ComboService {
       const newCombo: Combo = this.comboRepository.create({
         id: combo.id,
         name,
+        description,
         imageUrl,
         price,
       });
