@@ -12,6 +12,9 @@ export {
 } from "./category";
 
 export { CreateComboDto, GetCombosQueryDto, UpdateComboDto } from "./combo";
+
+export { CreateOrderDetail, CreateOrderDto, GetOrdersQueryDto } from "./order";
+
 export { UuidParamDto } from "./params";
 
 export {
@@ -21,7 +24,6 @@ export {
 } from "./product";
 
 export { PaginationQueryDto } from "./query";
-export { GetRolesQueryDto } from "./role";
 
 export {
   CreateUserDto,

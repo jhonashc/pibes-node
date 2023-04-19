@@ -2,8 +2,8 @@ import { IsOptional, IsString } from "class-validator";
 
 import { PaginationQueryDto } from "../query";
 
-export class GetRolesQueryDto extends PaginationQueryDto {
-  @IsOptional()
+export class GetOrdersQueryDto extends PaginationQueryDto {
   @IsString()
-  name?: string;
+  @IsOptional()
+  user?: string;
 }
