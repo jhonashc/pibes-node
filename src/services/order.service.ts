@@ -72,6 +72,14 @@ class OrderService {
       skip: offset,
     });
   }
+
+  getOrderById(id: string): Promise<Order | null> {
+    return this.orderRepository.findOne({
+      where: {
+        id,
+      },
+    });
+  }
 }
 
 export default new OrderService();
