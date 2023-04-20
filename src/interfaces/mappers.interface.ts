@@ -7,19 +7,19 @@ export interface ComboMapped {
   products: ProductMapped[];
 }
 
-export interface OrderMapped {
+export interface OrderMapped<T> {
   id: string;
   paymentMethod: PaymentMethods;
   orderStatus: OrderStatus;
   subtotal: number;
   total: number;
   user: User;
-  details: OrderDetailMapped[];
+  details: OrderDetailMapped<T>[];
 }
 
-export interface OrderDetailMapped {
-  combo?: ComboMapped;
-  product?: ProductMapped;
+export interface OrderDetailMapped<T> {
+  item: T;
+  isCombo: boolean;
   quantity: number;
   price: number;
 }
