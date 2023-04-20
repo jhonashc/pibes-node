@@ -56,7 +56,7 @@ class OrderService {
   }
 
   getOrders(getOrdersQueryDto: GetOrdersQueryDto): Promise<Order[]> {
-    const { user, limit = 10, offset = 0 } = getOrdersQueryDto;
+    const { user, status, limit = 10, offset = 0 } = getOrdersQueryDto;
 
     const findOptionsWhere: FindOptionsWhere<Order> = {};
 
@@ -64,6 +64,10 @@ class OrderService {
       findOptionsWhere.user = {
         username: Like(user.toLowerCase()),
       };
+    }
+
+    if (status) {
+      findOptionsWhere.orderStatus = status;
     }
 
     return this.orderRepository.find({
@@ -79,6 +83,10 @@ class OrderService {
         id,
       },
     });
+  }
+
+  deleteOrderById(order: Order): Promise<Order> {
+    return this.orderRepository.remove(order);
   }
 }
 

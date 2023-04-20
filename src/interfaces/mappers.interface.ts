@@ -1,4 +1,4 @@
-import { Category, ORDER_STATUS, PAYMENT_METHODS, User } from "../entities";
+import { Category, OrderStatus, PaymentMethods, User } from "../entities";
 
 export interface ComboMapped {
   name: string;
@@ -9,8 +9,8 @@ export interface ComboMapped {
 
 export interface OrderMapped {
   id: string;
-  paymentMethod: PAYMENT_METHODS;
-  orderStatus: ORDER_STATUS;
+  paymentMethod: PaymentMethods;
+  orderStatus: OrderStatus;
   subtotal: number;
   total: number;
   user: User;
