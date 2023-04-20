@@ -1,4 +1,4 @@
-import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 
 import { Combo } from "./combo.entity";
 import { Date } from "./date.entity";
@@ -32,4 +32,9 @@ export class ProductCombo extends Date {
     name: "product_id",
   })
   product: Product;
+
+  @Column("int", {
+    default: 1,
+  })
+  quantity: number;
 }
