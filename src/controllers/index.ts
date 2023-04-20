@@ -1,3 +1,4 @@
+export { AuthController } from "./auth.controller";
 export { CategoryController } from "./category.controller";
 export { ComboController } from "./combo.controller";
 export { OrderController } from "./order.controller";
