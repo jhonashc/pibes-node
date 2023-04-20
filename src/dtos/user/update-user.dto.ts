@@ -1,5 +1,6 @@
 import {
   IsArray,
+  IsEmail,
   IsEnum,
   IsOptional,
   IsString,
@@ -33,7 +34,7 @@ export class UpdateUserDto {
   @IsOptional()
   username?: string;
 
-  @IsString()
+  @IsEmail()
   @IsOptional()
   email?: string;
 

@@ -1,5 +1,6 @@
 import {
   IsArray,
+  IsEmail,
   IsEnum,
   IsNotEmpty,
   IsOptional,
@@ -34,7 +35,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   username: string;
 
-  @IsString()
+  @IsEmail()
   @IsNotEmpty()
   email: string;
 
