@@ -10,15 +10,15 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 
-import { ORDER_STATUS, PAYMENT_METHODS } from "../../entities";
+import { OrderStatus, PaymentMethods } from "../../entities";
 import { CreateOrderDetail } from "./create-order-detail.dto";
 
 export class CreateOrderDto {
-  @IsEnum(PAYMENT_METHODS)
-  paymentMethod: PAYMENT_METHODS;
+  @IsEnum(PaymentMethods)
+  paymentMethod: PaymentMethods;
 
-  @IsEnum(ORDER_STATUS)
-  orderStatus: ORDER_STATUS;
+  @IsEnum(OrderStatus)
+  orderStatus: OrderStatus;
 
   @IsNumber()
   @IsPositive()
