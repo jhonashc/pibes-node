@@ -4,7 +4,7 @@
   "description": "A simple REST API using Node & Express",
   "main": "index.js",
   "scripts": {
-    "build": "npx tsc",
+    "build": "pnpm exec tsc",
     "start": "node dist/index.js",
     "dev": "nodemon --exec ts-node src/index.ts"
   },
