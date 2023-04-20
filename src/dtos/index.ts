@@ -22,6 +22,7 @@ export {
   CreateOrderDetailDto,
   CreateOrderDto,
   GetOrdersQueryDto,
+  UpdateOrderDto,
 } from "./order";
 
 export { UuidParamDto } from "./params";
