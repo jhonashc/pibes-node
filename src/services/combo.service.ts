@@ -1,5 +1,6 @@
 import {
   FindOptionsWhere,
+  In,
   LessThanOrEqual,
   Like,
   MoreThanOrEqual,
@@ -76,6 +77,14 @@ class ComboService {
     return this.comboRepository.findOne({
       where: {
         name: Like(name),
+      },
+    });
+  }
+
+  getCombosByIds(comboIds: string[]): Promise<Combo[]> {
+    return this.comboRepository.find({
+      where: {
+        id: In(comboIds),
       },
     });
   }
