@@ -10,7 +10,7 @@ import { ComboService, ProductService } from "../services";
 export class ComboController {
   async createCombo(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, description, imageUrl, price, productIds } =
+      const { name, description, imageUrl, price, products } =
         req.body as CreateComboDto;
 
       const lowerCaseName: string = name.trim().toLowerCase();
@@ -25,6 +25,8 @@ export class ComboController {
         );
       }
 
+      const productIds = products.map(({ id }) => id);
+
       const productsFound: Product[] = await ProductService.getProductsByIds(
         productIds
       );
@@ -38,7 +40,7 @@ export class ComboController {
         description,
         imageUrl,
         price,
-        productIds,
+        products,
       };
 
       const createdCombo: Combo = await ComboService.createCombo(
@@ -103,7 +105,7 @@ export class ComboController {
   async updateComboById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { name, description, imageUrl, price, productIds } =
+      const { name, description, imageUrl, price, products } =
         req.body as UpdateComboDto;
 
       const comboFound: Combo | null = await ComboService.getComboById(id);
@@ -114,7 +116,9 @@ export class ComboController {
         );
       }
 
-      if (productIds?.length) {
+      if (products?.length) {
+        const productIds = products.map(({ id }) => id);
+
         const productsFound: Product[] = await ProductService.getProductsByIds(
           productIds
         );
@@ -129,7 +133,7 @@ export class ComboController {
         description,
         imageUrl,
         price,
-        productIds,
+        products,
       };
 
       const updatedCombo: Combo | undefined =

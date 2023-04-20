@@ -4,7 +4,7 @@ import { CreateOrderDto, GetOrdersQueryDto } from "../dtos";
 import { Order, User } from "../entities";
 import { NotFoundException } from "../exceptions";
 import { mapOrder, mapOrders } from "../helpers";
-import { ComboMapped, OrderMapped, ProductMapped } from "../interfaces";
+import { OrderMapped } from "../interfaces";
 import { OrderService, UserService } from "../services";
 
 export class OrderController {
@@ -54,8 +54,7 @@ export class OrderController {
         offset,
       });
 
-      const mappedOrders: OrderMapped<ComboMapped | ProductMapped>[] =
-        mapOrders(orders);
+      const mappedOrders: OrderMapped[] = mapOrders(orders);
 
       res.json({
         status: true,
@@ -78,8 +77,7 @@ export class OrderController {
         );
       }
 
-      const mappedOrder: OrderMapped<ComboMapped | ProductMapped> =
-        mapOrder(orderFound);
+      const mappedOrder: OrderMapped = mapOrder(orderFound);
 
       res.json({
         status: true,
