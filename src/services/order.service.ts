@@ -1,7 +1,7 @@
 import { FindOptionsWhere, Like, Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
-import { CreateOrderDto, GetOrdersQueryDto } from "../dtos";
+import { CreateOrderDto, GetOrdersQueryDto, UpdateOrderDto } from "../dtos";
 import { Combo, Order, OrderDetail, Product, User } from "../entities";
 
 class OrderService {
@@ -83,6 +83,67 @@ class OrderService {
         id,
       },
     });
+  }
+
+  async updateOrderById(
+    order: Order,
+    updateOrderDto: UpdateOrderDto
+  ): Promise<Order | undefined> {
+    const { paymentMethod, orderStatus, subtotal, total, details } =
+      updateOrderDto;
+
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const newOrder: Order = this.orderRepository.create({
+        id: order.id,
+        paymentMethod,
+        orderStatus,
+        subtotal,
+        total,
+      });
+
+      if (details) {
+        await this.orderDetailRepository.delete({
+          order: {
+            id: order.id,
+          },
+        });
+
+        newOrder.details = details.map(({ id, isCombo, quantity, price }) => {
+          if (isCombo) {
+            return this.orderDetailRepository.create({
+              combo: this.comboRepository.create({
+                id,
+              }),
+              quantity,
+              price,
+            });
+          }
+
+          return this.orderDetailRepository.create({
+            product: this.productRepository.create({
+              id,
+            }),
+            quantity,
+            price,
+          });
+        });
+      }
+
+      const updatedOrder: Order = await this.orderRepository.save(newOrder);
+
+      await queryRunner.commitTransaction();
+      await queryRunner.release();
+
+      return updatedOrder;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   deleteOrderById(order: Order): Promise<Order> {
