@@ -45,10 +45,11 @@ export class OrderController {
 
   async getOrders(req: Request, res: Response, next: NextFunction) {
     try {
-      const { user, limit, offset } = req.query as GetOrdersQueryDto;
+      const { user, status, limit, offset } = req.query as GetOrdersQueryDto;
 
       const orders: Order[] = await OrderService.getOrders({
         user,
+        status,
         limit,
         offset,
       });
@@ -81,6 +82,31 @@ export class OrderController {
       res.json({
         status: true,
         data: mappedOrder,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteOrderById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+
+      const orderFound: Order | null = await OrderService.getOrderById(id);
+
+      if (!orderFound) {
+        throw new NotFoundException(
+          `The order with id ${id} has not been found`
+        );
+      }
+
+      const deletedOrder: Order = await OrderService.deleteOrderById(
+        orderFound
+      );
+
+      res.json({
+        status: true,
+        data: deletedOrder,
       });
     } catch (error) {
       next(error);
