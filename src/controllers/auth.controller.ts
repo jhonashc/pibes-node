@@ -1,11 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 
-import { CreateLoginDto } from "../dtos";
-import { User } from "../entities";
-import { UnauthorizedException } from "../exceptions";
+import { CreateLoginDto, CreateRegisterDto } from "../dtos";
+import { Gender, User } from "../entities";
+
+import {
+  ConflictException,
+  NotFoundException,
+  UnauthorizedException,
+} from "../exceptions";
+
 import { comparePasswords, generateToken } from "../helpers";
 import { Token } from "../interfaces";
-import { UserService } from "../services";
+import { GenderService, UserService } from "../services";
 
 export class AuthController {
   async login(req: Request, res: Response, next: NextFunction) {
@@ -30,6 +36,67 @@ export class AuthController {
       const token: Token = generateToken(userFound);
 
       res.status(200).json({
+        status: true,
+        ...token,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async register(req: Request, res: Response, next: NextFunction) {
+    try {
+      const {
+        firstName,
+        lastName,
+        telephone,
+        genderId,
+        username,
+        email,
+        password,
+        avatarUrl,
+      } = req.body as CreateRegisterDto;
+
+      const lowerCaseEmail: string = email.trim().toLowerCase();
+
+      const userFound: User | null = await UserService.getUserByEmail(
+        lowerCaseEmail
+      );
+
+      if (userFound) {
+        throw new ConflictException(
+          `The user with the email ${lowerCaseEmail} already exists`
+        );
+      }
+
+      const genderFound: Gender | null = await GenderService.getGenderById(
+        genderId
+      );
+
+      if (!genderFound) {
+        throw new NotFoundException(
+          `The gender with id ${genderId} has not been found`
+        );
+      }
+
+      const createRegisterDto: CreateRegisterDto = {
+        firstName,
+        lastName,
+        telephone,
+        genderId,
+        username,
+        email: lowerCaseEmail,
+        password,
+        avatarUrl,
+      };
+
+      const registerdUser: User = await UserService.createUser(
+        createRegisterDto
+      );
+
+      const token: Token = generateToken(registerdUser);
+
+      res.status(201).json({
         status: true,
         ...token,
       });
