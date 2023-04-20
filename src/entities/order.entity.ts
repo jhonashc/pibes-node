@@ -4,12 +4,12 @@ import { Base } from "./base.entity";
 import { User } from "./user.entity";
 import { OrderDetail } from "./order-detail.entity";
 
-export enum PAYMENT_METHODS {
+export enum PaymentMethods {
   CASH = "CASH",
   TRANSFER = "TRANSFER",
 }
 
-export enum ORDER_STATUS {
+export enum OrderStatus {
   PENDING = "PENDING",
   IN_PROGRESS = "IN PROGRESS",
   REJECTED = "REJECTED",
@@ -20,18 +20,18 @@ export class Order extends Base {
   @Column({
     type: "enum",
     name: "payment_method",
-    enum: PAYMENT_METHODS,
-    default: PAYMENT_METHODS.CASH,
+    enum: PaymentMethods,
+    default: PaymentMethods.CASH,
   })
-  paymentMethod: PAYMENT_METHODS;
+  paymentMethod: PaymentMethods;
 
   @Column({
     type: "enum",
     name: "order_status",
-    enum: ORDER_STATUS,
-    default: ORDER_STATUS.PENDING,
+    enum: OrderStatus,
+    default: OrderStatus.PENDING,
   })
-  orderStatus: ORDER_STATUS;
+  orderStatus: OrderStatus;
 
   @Column("float", {
     default: 0,
