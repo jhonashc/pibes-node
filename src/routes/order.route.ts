@@ -23,4 +23,10 @@ router.get(
   orderController.getOrderById
 );
 
+router.delete(
+  "/:id",
+  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  orderController.deleteOrderById
+);
+
 export default router;
