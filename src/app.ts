@@ -8,6 +8,7 @@ import { AppDataSource } from "./config";
 import { exceptionHandler } from "./middlewares";
 
 import {
+  authRouter,
   categoryRouter,
   comboRouter,
   orderRouter,
@@ -20,6 +21,7 @@ class Server {
   private app: Application;
   private port: string;
   private apiRoutes = {
+    auth: "/api/auth",
     categories: "/api/categories",
     combos: "/api/combos",
     orders: "/api/orders",
@@ -47,6 +49,7 @@ class Server {
   }
 
   routes() {
+    this.app.use(this.apiRoutes.auth, authRouter);
     this.app.use(this.apiRoutes.categories, categoryRouter);
     this.app.use(this.apiRoutes.combos, comboRouter);
     this.app.use(this.apiRoutes.orders, orderRouter);

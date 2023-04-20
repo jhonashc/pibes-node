@@ -1,3 +1,4 @@
+export { default as authRouter } from "./auth.route";
 export { default as categoryRouter } from "./category.route";
 export { default as comboRouter } from "./combo.route";
 export { default as orderRouter } from "./order.route";
