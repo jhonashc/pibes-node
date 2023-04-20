@@ -2,7 +2,7 @@ import { FindOptionsWhere, Like, Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
 import { CreateUserDto, GetUsersQueryDto, UpdateUserDto } from "../dtos";
-import { Gender, Person, User } from "../entities";
+import { Gender, Person, Roles, User } from "../entities";
 
 class UserService {
   private readonly genderRepository: Repository<Gender>;
@@ -33,7 +33,7 @@ class UserService {
       email,
       password,
       avatarUrl,
-      roles,
+      roles: roles?.length ? roles : [Roles.USER],
       person: this.personRepository.create({
         firstName,
         lastName,
@@ -98,7 +98,7 @@ class UserService {
       email,
       password,
       avatarUrl,
-      roles,
+      roles: roles?.length ? roles : [Roles.USER],
       person: this.personRepository.create({
         id: user.person.id,
         firstName,
