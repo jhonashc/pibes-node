@@ -52,7 +52,7 @@ export class UserController {
         );
       }
 
-      const createdUserDto: CreateUserDto = {
+      const createUserDto: CreateUserDto = {
         firstName,
         lastName,
         telephone,
@@ -61,10 +61,10 @@ export class UserController {
         email: lowerCaseEmail,
         password,
         avatarUrl,
-        roles: roles?.length ? roles : [Roles.USER],
+        roles,
       };
 
-      const createdUser: User = await UserService.createUser(createdUserDto);
+      const createdUser: User = await UserService.createUser(createUserDto);
 
       res.status(201).json({
         status: true,
@@ -169,7 +169,7 @@ export class UserController {
         email,
         password,
         avatarUrl,
-        roles: roles?.length ? roles : [Roles.USER],
+        roles,
       };
 
       const updatedUser: User = await UserService.updateUserById(
