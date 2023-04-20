@@ -25,7 +25,7 @@ export class ComboController {
         );
       }
 
-      const productIds = products.map(({ id }) => id);
+      const productIds: string[] = products.map(({ id }) => id);
 
       const productsFound: Product[] = await ProductService.getProductsByIds(
         productIds
@@ -117,7 +117,7 @@ export class ComboController {
       }
 
       if (products?.length) {
-        const productIds = products.map(({ id }) => id);
+        const productIds: string[] = products.map(({ id }) => id);
 
         const productsFound: Product[] = await ProductService.getProductsByIds(
           productIds
