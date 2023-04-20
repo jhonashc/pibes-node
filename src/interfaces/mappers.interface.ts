@@ -1,34 +1,25 @@
-import { Category, OrderStatus, PaymentMethods, User } from "../entities";
+import { Category } from "../entities";
 
 export interface ComboMapped {
-  name: string;
-  imageUrl?: string;
-  price: number;
-  products: ProductMapped[];
+  products: ProductComboMapped[];
 }
 
-export interface OrderMapped<T> {
-  id: string;
-  paymentMethod: PaymentMethods;
-  orderStatus: OrderStatus;
-  subtotal: number;
-  total: number;
-  user: User;
-  details: OrderDetailMapped<T>[];
+export interface ProductComboMapped {
+  product: ProductMapped;
+  quantity: number;
 }
 
-export interface OrderDetailMapped<T> {
-  item: T;
+export interface OrderMapped {
+  details: OrderDetailMapped[];
+}
+
+export interface OrderDetailMapped {
+  item: ComboMapped | ProductMapped;
   isCombo: boolean;
   quantity: number;
   price: number;
 }
 
 export interface ProductMapped {
-  name: string;
-  description?: string;
-  imageUrl?: string;
-  price: number;
-  stock: number;
   categories: Category[];
 }
