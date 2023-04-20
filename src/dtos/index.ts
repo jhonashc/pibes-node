@@ -11,9 +11,18 @@ export {
   UpdateCategoryDto,
 } from "./category";
 
-export { CreateComboDto, GetCombosQueryDto, UpdateComboDto } from "./combo";
+export {
+  CreateComboDto,
+  CreateProductComboDto,
+  GetCombosQueryDto,
+  UpdateComboDto,
+} from "./combo";
 
-export { CreateOrderDetail, CreateOrderDto, GetOrdersQueryDto } from "./order";
+export {
+  CreateOrderDetailDto,
+  CreateOrderDto,
+  GetOrdersQueryDto,
+} from "./order";
 
 export { UuidParamDto } from "./params";
 

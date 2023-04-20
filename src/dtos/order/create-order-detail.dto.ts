@@ -7,7 +7,7 @@ import {
   IsUUID,
 } from "class-validator";
 
-export class CreateOrderDetail {
+export class CreateOrderDetailDto {
   @IsUUID()
   @IsNotEmpty()
   id: string;

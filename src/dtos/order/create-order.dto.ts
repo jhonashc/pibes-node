@@ -11,7 +11,7 @@ import {
 import { Type } from "class-transformer";
 
 import { OrderStatus, PaymentMethods } from "../../entities";
-import { CreateOrderDetail } from "./create-order-detail.dto";
+import { CreateOrderDetailDto } from "./create-order-detail.dto";
 
 export class CreateOrderDto {
   @IsEnum(PaymentMethods)
@@ -36,7 +36,9 @@ export class CreateOrderDto {
   /* Details */
   @IsArray()
   @ArrayNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => CreateOrderDetail)
-  details: CreateOrderDetail[];
+  @ValidateNested({
+    each: true,
+  })
+  @Type(() => CreateOrderDetailDto)
+  details: CreateOrderDetailDto[];
 }

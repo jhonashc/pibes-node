@@ -5,8 +5,10 @@ import {
   IsOptional,
   IsPositive,
   IsString,
-  IsUUID,
+  ValidateNested,
 } from "class-validator";
+import { CreateProductComboDto } from "./create-product-combo.dto";
+import { Type } from "class-transformer";
 
 export class UpdateComboDto {
   @IsString()
@@ -26,11 +28,12 @@ export class UpdateComboDto {
   @IsOptional()
   price?: number;
 
-  @IsUUID("4", {
+  @IsArray()
+  @IsOptional()
+  @ArrayNotEmpty()
+  @ValidateNested({
     each: true,
   })
-  @IsArray()
-  @ArrayNotEmpty()
-  @IsOptional()
-  productIds?: string[];
+  @Type(() => CreateProductComboDto)
+  products?: CreateProductComboDto[];
 }
