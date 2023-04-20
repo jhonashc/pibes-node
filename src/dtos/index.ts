@@ -5,6 +5,8 @@ export {
   UpdateAddressDto,
 } from "./address";
 
+export { CreateLoginDto } from "./auth";
+
 export {
   CreateCategoryDto,
   GetCategoriesQueryDto,
