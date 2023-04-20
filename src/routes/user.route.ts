@@ -1,12 +1,14 @@
 import { Router } from "express";
 
 import { UserController } from "../controllers";
+
 import {
   CreateUserDto,
   GetUsersQueryDto,
   UpdateUserDto,
   UuidParamDto,
 } from "../dtos";
+
 import { ValidationType } from "../interfaces";
 import { validateRequest } from "../middlewares";
 
