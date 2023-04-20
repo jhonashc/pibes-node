@@ -1,25 +1,19 @@
 import { Order } from "../entities";
 import { mapCombo, mapProduct } from "../helpers";
-import { ComboMapped, OrderMapped, ProductMapped } from "../interfaces";
+import { OrderMapped } from "../interfaces";
 
-export const mapOrder = (
-  order: Order
-): OrderMapped<ComboMapped | ProductMapped> => {
+export const mapOrder = (order: Order): OrderMapped => {
   return {
     ...order,
-    details: order.details.map(({ combo, product, quantity, price }) => {
-      return {
-        item: combo ? mapCombo(combo) : mapProduct(product!),
-        isCombo: combo ? true : false,
-        quantity,
-        price,
-      };
-    }),
+    details: order.details.map(({ combo, product, quantity, price }) => ({
+      item: combo ? mapCombo(combo) : mapProduct(product!),
+      isCombo: combo ? true : false,
+      quantity,
+      price,
+    })),
   };
 };
 
-export const mapOrders = (
-  orders: Order[]
-): OrderMapped<ComboMapped | ProductMapped>[] => {
+export const mapOrders = (orders: Order[]): OrderMapped[] => {
   return orders.map((order) => mapOrder(order));
 };

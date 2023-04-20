@@ -4,9 +4,12 @@ import { ComboMapped } from "../interfaces";
 export const mapCombo = (combo: Combo): ComboMapped => {
   return {
     ...combo,
-    products: combo.products.map(({ product }) => ({
-      ...product,
-      categories: product.categories.map(({ category }) => category),
+    products: combo.products.map(({ product, quantity }) => ({
+      product: {
+        ...product,
+        categories: product.categories.map(({ category }) => category),
+      },
+      quantity,
     })),
   };
 };
