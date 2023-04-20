@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import { CreateOrderDto, GetOrdersQueryDto } from "../dtos";
+import { CreateOrderDto, GetOrdersQueryDto, UpdateOrderDto } from "../dtos";
 import { Combo, Order, Product, User } from "../entities";
 import { NotFoundException } from "../exceptions";
 import { mapOrder, mapOrders } from "../helpers";
@@ -116,6 +116,69 @@ export class OrderController {
       res.json({
         status: true,
         data: mappedOrder,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateOrderById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const { paymentMethod, orderStatus, subtotal, total, details } =
+        req.body as UpdateOrderDto;
+
+      const orderFound: Order | null = await OrderService.getOrderById(id);
+
+      if (!orderFound) {
+        throw new NotFoundException(
+          `The order with id ${id} has not been found`
+        );
+      }
+
+      if (details) {
+        const comboIds: string[] = details
+          .filter((orderDetail) => orderDetail.isCombo)
+          .map(({ id }) => id);
+
+        const productIds: string[] = details
+          .filter((orderDetail) => !orderDetail.isCombo)
+          .map(({ id }) => id);
+
+        if (comboIds.length) {
+          const combosFound: Combo[] = await ComboService.getCombosByIds(
+            comboIds
+          );
+
+          if (combosFound.length !== comboIds.length) {
+            throw new NotFoundException("The id of some combo is invalid");
+          }
+        }
+
+        if (productIds.length) {
+          const productsFound: Product[] =
+            await ProductService.getProductsByIds(productIds);
+
+          if (productsFound.length !== productIds.length) {
+            throw new NotFoundException("The id of some product is invalid");
+          }
+        }
+      }
+
+      const updateOrderDto: UpdateOrderDto = {
+        paymentMethod,
+        orderStatus,
+        subtotal,
+        total,
+        details,
+      };
+
+      const updatedOrder: Order | undefined =
+        await OrderService.updateOrderById(orderFound, updateOrderDto);
+
+      res.json({
+        status: true,
+        data: updatedOrder,
       });
     } catch (error) {
       next(error);

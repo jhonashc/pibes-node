@@ -114,8 +114,6 @@ export class ProductController {
       const { name, description, imageUrl, price, stock, categoryIds } =
         req.body as UpdateProductDto;
 
-      let newCategoryIds: string[] = [];
-
       const productFound: Product | null = await ProductService.getProductById(
         id
       );
