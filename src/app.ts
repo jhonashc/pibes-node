@@ -19,7 +19,6 @@ import {
 class Server {
   private app: Application;
   private port: string;
-  private environment: string;
   private apiRoutes = {
     categories: "/api/categories",
     combos: "/api/combos",
@@ -31,7 +30,6 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT || "8000";
-    this.environment = process.env.NODE_ENV || "dev";
 
     this.middlewares();
     this.routes();
@@ -62,7 +60,7 @@ class Server {
       .then(() => {
         this.app.listen(this.port, () => {
           console.log(`🚀 App running on port ${this.port}`);
-          console.log(`Running in ${this.environment}`);
+          console.log(`Running in ${process.env.NODE_ENV}`);
         });
       })
       .catch((error) => console.error(error));

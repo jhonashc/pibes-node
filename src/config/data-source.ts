@@ -11,6 +11,4 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME || "pibesdb",
   synchronize: process.env.NODE_ENV === "dev" ? true : false,
   entities: [`${BASE_DIR}/**/*.entity{.ts,.js}`],
-  subscribers: [],
-  migrations: [],
 });
