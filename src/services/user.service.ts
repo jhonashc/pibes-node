@@ -75,28 +75,26 @@ class UserService {
   }
 
   updateUserById(user: User, updateUserDto: UpdateUserDto): Promise<User> {
-    const { person, username, email, password, avatarUrl, roles } =
-      updateUserDto;
+    const { person, username, password, avatarUrl, roles } = updateUserDto;
 
     const newUser: User = this.userRepository.create({
       id: user.id,
       username,
-      email,
       password,
       avatarUrl,
       roles: roles?.length ? roles : [Roles.USER],
-      person:
-        person &&
-        this.personRepository.create({
-          firstName: person?.firstName,
-          lastName: person?.lastName,
-          telephone: person?.telephone,
-          gender: person?.genderId
-            ? this.genderRepository.create({
-                id: person.genderId,
-              })
-            : user.person?.gender,
-        }),
+      person: person
+        ? this.personRepository.create({
+            firstName: person?.firstName,
+            lastName: person?.lastName,
+            telephone: person?.telephone,
+            gender: person?.genderId
+              ? this.genderRepository.create({
+                  id: person.genderId,
+                })
+              : user.person?.gender,
+          })
+        : user.person,
     });
 
     return this.userRepository.save(newUser);
