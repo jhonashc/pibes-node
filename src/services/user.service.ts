@@ -85,6 +85,18 @@ class UserService {
       password,
       avatarUrl,
       roles: roles?.length ? roles : [Roles.USER],
+      person:
+        person &&
+        this.personRepository.create({
+          firstName: person?.firstName,
+          lastName: person?.lastName,
+          telephone: person?.telephone,
+          gender: person?.genderId
+            ? this.genderRepository.create({
+                id: person.genderId,
+              })
+            : user.person?.gender,
+        }),
     });
 
     return this.userRepository.save(newUser);
