@@ -1,10 +1,12 @@
 import {
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
-  IsUUID,
   MaxLength,
 } from "class-validator";
+
+import { Gender } from "../../entities";
 
 export class CreatePersonDto {
   @IsString()
@@ -23,8 +25,7 @@ export class CreatePersonDto {
   @MaxLength(10)
   telephone?: string;
 
-  @IsUUID()
-  @IsNotEmpty()
   @IsOptional()
-  genderId?: string;
+  @IsEnum(Gender)
+  gender?: Gender;
 }
