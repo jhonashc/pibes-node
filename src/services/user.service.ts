@@ -16,17 +16,8 @@ class UserService {
   }
 
   createUser(createUserDto: CreateUserDto): Promise<User> {
-    const {
-      firstName,
-      lastName,
-      telephone,
-      genderId,
-      username,
-      email,
-      password,
-      avatarUrl,
-      roles,
-    } = createUserDto;
+    const { person, username, email, password, avatarUrl, roles } =
+      createUserDto;
 
     const newUser: User = this.userRepository.create({
       username,
@@ -34,14 +25,18 @@ class UserService {
       password,
       avatarUrl,
       roles: roles?.length ? roles : [Roles.USER],
-      person: this.personRepository.create({
-        firstName,
-        lastName,
-        telephone,
-        gender: this.genderRepository.create({
-          id: genderId,
+      person:
+        person &&
+        this.personRepository.create({
+          firstName: person?.firstName,
+          lastName: person?.lastName,
+          telephone: person?.telephone,
+          gender: person?.genderId
+            ? this.genderRepository.create({
+                id: person.genderId,
+              })
+            : undefined,
         }),
-      }),
     });
 
     return this.userRepository.save(newUser);
@@ -80,17 +75,8 @@ class UserService {
   }
 
   updateUserById(user: User, updateUserDto: UpdateUserDto): Promise<User> {
-    const {
-      firstName,
-      lastName,
-      telephone,
-      genderId,
-      username,
-      email,
-      password,
-      avatarUrl,
-      roles,
-    } = updateUserDto;
+    const { person, username, email, password, avatarUrl, roles } =
+      updateUserDto;
 
     const newUser: User = this.userRepository.create({
       id: user.id,
@@ -99,22 +85,20 @@ class UserService {
       password,
       avatarUrl,
       roles: roles?.length ? roles : [Roles.USER],
-      person: this.personRepository.create({
-        id: user.person.id,
-        firstName,
-        lastName,
-        telephone,
-        gender: this.genderRepository.create({
-          id: genderId,
-        }),
-      }),
     });
 
     return this.userRepository.save(newUser);
   }
 
-  deleteUserById(user: User): Promise<Person> {
-    return this.personRepository.remove(user.person);
+  async deleteUserById(user: User): Promise<User> {
+    const { person } = user;
+
+    if (person) {
+      await this.personRepository.remove(person);
+      return user;
+    }
+
+    return this.userRepository.remove(user);
   }
 }
 
