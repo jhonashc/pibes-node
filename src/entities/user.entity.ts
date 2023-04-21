@@ -1,6 +1,5 @@
 import {
   BeforeInsert,
-  BeforeUpdate,
   Column,
   Entity,
   JoinColumn,
@@ -12,8 +11,8 @@ import { encryptPassword } from "../helpers";
 
 import { Address } from "./address.entity";
 import { Base } from "./base.entity";
-import { Person } from "./person.entity";
 import { Order } from "./order.entity";
+import { Person } from "./person.entity";
 
 export enum Roles {
   USER = "USER",
@@ -74,7 +73,6 @@ export class User extends Base {
 
   /* Listeners */
   @BeforeInsert()
-  @BeforeUpdate()
   async hashPassword() {
     this.password = await encryptPassword(this.password);
   }

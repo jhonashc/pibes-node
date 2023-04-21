@@ -1,8 +1,13 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
+import { Column, Entity, OneToOne } from "typeorm";
 
 import { Base } from "./base.entity";
-import { Gender } from "./gender.entity";
 import { User } from "./user.entity";
+
+export enum Gender {
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  UNDEFINED = "UNDEFINED",
+}
 
 @Entity("person")
 export class Person extends Base {
@@ -26,15 +31,12 @@ export class Person extends Base {
   })
   telephone?: string;
 
-  /* Relations */
-  @ManyToOne(() => Gender, (gender) => gender.people, {
-    eager: true,
-    nullable: true,
+  @Column({
+    type: "enum",
+    enum: Gender,
+    default: Gender.UNDEFINED,
   })
-  @JoinColumn({
-    name: "gender_id",
-  })
-  gender?: Gender;
+  gender: Gender;
 
   @OneToOne(() => User, (user) => user.person)
   user: User;
