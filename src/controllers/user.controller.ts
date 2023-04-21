@@ -8,17 +8,8 @@ import { GenderService, UserService } from "../services";
 export class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const {
-        firstName,
-        lastName,
-        telephone,
-        genderId,
-        username,
-        email,
-        password,
-        avatarUrl,
-        roles,
-      } = req.body as CreateUserDto;
+      const { person, username, email, password, avatarUrl, roles } =
+        req.body as CreateUserDto;
 
       const lowerCaseEmail: string = email.trim().toLowerCase();
 
@@ -32,14 +23,20 @@ export class UserController {
         );
       }
 
-      const genderFound: Gender | null = await GenderService.getGenderById(
-        genderId
-      );
+      console.log({person});
 
-      if (!genderFound) {
-        throw new NotFoundException(
-          `The gender with id ${genderId} has not been found`
-        );
+      if (person) {
+        if (person.genderId) {
+          const genderFound: Gender | null = await GenderService.getGenderById(
+            person.genderId
+          );
+
+          if (!genderFound) {
+            throw new NotFoundException(
+              `The gender with id ${person.genderId} has not been found`
+            );
+          }
+        }
       }
 
       const areTheRolesValid: boolean | undefined = roles?.every(
@@ -53,10 +50,7 @@ export class UserController {
       }
 
       const createUserDto: CreateUserDto = {
-        firstName,
-        lastName,
-        telephone,
-        genderId,
+        person,
         username,
         email: lowerCaseEmail,
         password,
@@ -118,17 +112,8 @@ export class UserController {
   async updateUserById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const {
-        firstName,
-        lastName,
-        telephone,
-        genderId,
-        username,
-        email,
-        password,
-        avatarUrl,
-        roles,
-      } = req.body as UpdateUserDto;
+      const { person, username, email, password, avatarUrl, roles } =
+        req.body as UpdateUserDto;
 
       const userFound: User | null = await UserService.getUserById(id);
 
@@ -138,15 +123,17 @@ export class UserController {
         );
       }
 
-      if (genderId) {
-        const genderFound: Gender | null = await GenderService.getGenderById(
-          genderId
-        );
-
-        if (!genderFound) {
-          throw new NotFoundException(
-            `The gender with id ${genderId} has not been found`
+      if (person) {
+        if (person.genderId) {
+          const genderFound: Gender | null = await GenderService.getGenderById(
+            person.genderId
           );
+
+          if (!genderFound) {
+            throw new NotFoundException(
+              `The gender with id ${person.genderId} has not been found`
+            );
+          }
         }
       }
 
@@ -161,10 +148,7 @@ export class UserController {
       }
 
       const updateUserDto: UpdateUserDto = {
-        firstName,
-        lastName,
-        telephone,
-        genderId,
+        person,
         username,
         email,
         password,
