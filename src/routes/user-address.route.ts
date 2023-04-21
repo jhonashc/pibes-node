@@ -3,10 +3,10 @@ import { Router } from "express";
 import { UserAddressController } from "../controllers";
 
 import {
-  AddressUuidParamDto,
   CreateUserAddressDto,
   GetUserAddressesQueryDto,
   UpdateUserAddressDto,
+  UserAddressUuidParamDto,
   UserUuidParamDto,
 } from "../dtos";
 
@@ -33,23 +33,20 @@ router.get(
 
 router.get(
   "/:userId/addresses/:addressId",
-  validateRequest(UserUuidParamDto, ValidationType.PARAMS),
-  validateRequest(AddressUuidParamDto, ValidationType.PARAMS),
+  validateRequest(UserAddressUuidParamDto, ValidationType.PARAMS),
   userAddressController.getUserAddress
 );
 
 router.patch(
   "/:userId/addresses/:addressId",
-  validateRequest(UserUuidParamDto, ValidationType.PARAMS),
-  validateRequest(AddressUuidParamDto, ValidationType.PARAMS),
+  validateRequest(UserAddressUuidParamDto, ValidationType.PARAMS),
   validateRequest(UpdateUserAddressDto),
   userAddressController.updateUserAddress
 );
 
 router.delete(
   "/:userId/addresses/:addressId",
-  validateRequest(UserUuidParamDto, ValidationType.PARAMS),
-  validateRequest(AddressUuidParamDto, ValidationType.PARAMS),
+  validateRequest(UserAddressUuidParamDto, ValidationType.PARAMS),
   userAddressController.deleteUserAddress
 );
 

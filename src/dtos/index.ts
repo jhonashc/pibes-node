@@ -38,8 +38,8 @@ export {
 } from "./user";
 
 export {
-  AddressUuidParamDto,
   CreateUserAddressDto,
   GetUserAddressesQueryDto,
   UpdateUserAddressDto,
+  UserAddressUuidParamDto,
 } from "./user-address";
