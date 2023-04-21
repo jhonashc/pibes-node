@@ -1,14 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
 import { CreateLoginDto, CreateRegisterDto } from "../dtos";
-import { Gender, User } from "../entities";
-
-import {
-  ConflictException,
-  NotFoundException,
-  UnauthorizedException,
-} from "../exceptions";
-
+import { User } from "../entities";
+import { ConflictException, UnauthorizedException } from "../exceptions";
 import { comparePasswords, generateToken } from "../helpers";
 import { Token } from "../interfaces";
 import { UserService } from "../services";
@@ -46,16 +40,8 @@ export class AuthController {
 
   async register(req: Request, res: Response, next: NextFunction) {
     try {
-      const {
-        firstName,
-        lastName,
-        telephone,
-        genderId,
-        username,
-        email,
-        password,
-        avatarUrl,
-      } = req.body as CreateRegisterDto;
+      const { person, username, email, password, avatarUrl } =
+        req.body as CreateRegisterDto;
 
       const lowerCaseEmail: string = email.trim().toLowerCase();
 
@@ -70,10 +56,7 @@ export class AuthController {
       }
 
       const createRegisterDto: CreateRegisterDto = {
-        firstName,
-        lastName,
-        telephone,
-        genderId,
+        person,
         username,
         email: lowerCaseEmail,
         password,
