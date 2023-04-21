@@ -1,20 +1,20 @@
 import { NextFunction, Request, Response } from "express";
 
 import {
-  CreateAddressDto,
-  GetAddressesQueryDto,
-  UpdateAddressDto,
+  CreateUserAddressDto,
+  GetUserAddressesQueryDto,
+  UpdateUserAddressDto,
 } from "../dtos";
 import { Address, User } from "../entities";
 import { NotFoundException } from "../exceptions";
-import { AddressService, UserService } from "../services";
+import { AddressService, UserAddressService, UserService } from "../services";
 
 export class UserAddressController {
   async createUserAddress(req: Request, res: Response, next: NextFunction) {
     try {
       const { userId } = req.params;
       const { addressLine1, addressLine2, addressReference } =
-        req.body as CreateAddressDto;
+        req.body as CreateUserAddressDto;
 
       const userFound: User | null = await UserService.getUserById(userId);
 
@@ -24,20 +24,21 @@ export class UserAddressController {
         );
       }
 
-      const newAddress: CreateAddressDto = {
+      const createUserAddressDto: CreateUserAddressDto = {
         addressLine1,
         addressLine2,
         addressReference,
-        userId,
       };
 
-      const createdAddress: Address = await AddressService.createAddress(
-        newAddress
-      );
+      const createdUserAddress: Address =
+        await UserAddressService.createUserAddress(
+          userId,
+          createUserAddressDto
+        );
 
       res.status(201).json({
         status: true,
-        data: createdAddress,
+        data: createdUserAddress,
       });
     } catch (error) {
       next(error);
@@ -47,34 +48,26 @@ export class UserAddressController {
   async getUserAddresses(req: Request, res: Response, next: NextFunction) {
     try {
       const { userId } = req.params;
-      const { limit, offset } = req.query as GetAddressesQueryDto;
+      const { limit, offset } = req.query as GetUserAddressesQueryDto;
 
-      const addresses: Address[] = await AddressService.getUserAddress({
-        userId,
-        limit,
-        offset,
-      });
+      const userAddresses: Address[] =
+        await UserAddressService.getUserAddresses(userId, {
+          limit,
+          offset,
+        });
 
       res.json({
         status: true,
-        data: addresses,
+        data: userAddresses,
       });
     } catch (error) {
       next(error);
     }
   }
 
-  async getUserAddressById(req: Request, res: Response, next: NextFunction) {
+  async getUserAddress(req: Request, res: Response, next: NextFunction) {
     try {
-      const { userId, addressId } = req.params;
-
-      const userFound: User | null = await UserService.getUserById(userId);
-
-      if (!userFound) {
-        throw new NotFoundException(
-          `The user with id ${userId} has not been found`
-        );
-      }
+      const { addressId, userId } = req.params;
 
       const addressFound: Address | null = await AddressService.getAddressById(
         addressId
@@ -86,28 +79,37 @@ export class UserAddressController {
         );
       }
 
+      const userFound: User | null = await UserService.getUserById(userId);
+
+      if (!userFound) {
+        throw new NotFoundException(
+          `The user with id ${userId} has not been found`
+        );
+      }
+
+      const userAddressFound: Address | null =
+        await UserAddressService.getUserAddress(addressId, userId);
+
+      if (!userAddressFound) {
+        throw new NotFoundException(
+          `The user address with id ${addressId} has not been found`
+        );
+      }
+
       res.json({
         status: true,
-        data: addressFound,
+        data: userAddressFound,
       });
     } catch (error) {
       next(error);
     }
   }
 
-  async updateUserAddressById(req: Request, res: Response, next: NextFunction) {
+  async updateUserAddress(req: Request, res: Response, next: NextFunction) {
     try {
       const { userId, addressId } = req.params;
       const { addressLine1, addressLine2, addressReference } =
-        req.body as UpdateAddressDto;
-
-      const userFound: User | null = await UserService.getUserById(userId);
-
-      if (!userFound) {
-        throw new NotFoundException(
-          `The user with id ${userId} has not been found`
-        );
-      }
+        req.body as UpdateUserAddressDto;
 
       const addressFound: Address | null = await AddressService.getAddressById(
         addressId
@@ -119,37 +121,39 @@ export class UserAddressController {
         );
       }
 
-      const updateAddressDto: UpdateAddressDto = {
+      const userFound: User | null = await UserService.getUserById(userId);
+
+      if (!userFound) {
+        throw new NotFoundException(
+          `The user with id ${userId} has not been found`
+        );
+      }
+
+      const updateUserAddressDto: UpdateUserAddressDto = {
         addressLine1,
         addressLine2,
         addressReference,
       };
 
-      const updatedAddress: Address = await AddressService.updateAddressById(
-        addressFound,
-        updateAddressDto
-      );
+      const updatedUserAddress: Address =
+        await UserAddressService.updateUserAddress(
+          userId,
+          addressId,
+          updateUserAddressDto
+        );
 
       res.json({
         status: true,
-        data: updatedAddress,
+        data: updatedUserAddress,
       });
     } catch (error) {
       next(error);
     }
   }
 
-  async deleteUserAddressById(req: Request, res: Response, next: NextFunction) {
+  async deleteUserAddress(req: Request, res: Response, next: NextFunction) {
     try {
       const { userId, addressId } = req.params;
-
-      const userFound: User | null = await UserService.getUserById(userId);
-
-      if (!userFound) {
-        throw new NotFoundException(
-          `The user with id ${userId} has not been found`
-        );
-      }
 
       const addressFound: Address | null = await AddressService.getAddressById(
         addressId
@@ -161,13 +165,29 @@ export class UserAddressController {
         );
       }
 
-      const deletedAddress: Address = await AddressService.deleteAddressById(
-        addressFound
-      );
+      const userFound: User | null = await UserService.getUserById(userId);
+
+      if (!userFound) {
+        throw new NotFoundException(
+          `The user with id ${userId} has not been found`
+        );
+      }
+
+      const userAddressFound: Address | null =
+        await UserAddressService.getUserAddress(addressId, userId);
+
+      if (!userAddressFound) {
+        throw new NotFoundException(
+          `The user address with id ${addressId} has not been found`
+        );
+      }
+
+      const deletedUserAddress: Address =
+        await UserAddressService.deleteUserAddress(addressFound);
 
       res.json({
         status: true,
-        data: deletedAddress,
+        data: deletedUserAddress,
       });
     } catch (error) {
       next(error);
