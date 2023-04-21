@@ -31,6 +31,7 @@ export {
 export { PaginationQueryDto } from "./query";
 
 export {
+  CreatePersonDto,
   CreateUserDto,
   GetUsersQueryDto,
   UserUuidParamDto,

@@ -1,30 +1,23 @@
 import {
   IsEmail,
   IsNotEmpty,
+  IsNotEmptyObject,
   IsOptional,
   IsString,
-  IsUUID,
-  MaxLength,
+  ValidateNested,
 } from "class-validator";
+import { Type } from "class-transformer";
+
+import { CreatePersonDto } from "../user";
 
 export class CreateRegisterDto {
   /* Person */
-  @IsString()
-  @IsNotEmpty()
-  firstName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  lastName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(10)
-  telephone: string;
-
-  @IsUUID()
-  @IsNotEmpty()
-  genderId: string;
+  /* Person */
+  @IsOptional()
+  @ValidateNested()
+  @IsNotEmptyObject()
+  @Type(() => CreatePersonDto)
+  person?: CreatePersonDto;
 
   /* User */
   @IsString()
