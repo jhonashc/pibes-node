@@ -2,15 +2,13 @@ import { FindOptionsWhere, Like, Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
 import { CreateUserDto, GetUsersQueryDto, UpdateUserDto } from "../dtos";
-import { Gender, Person, Roles, User } from "../entities";
+import { Person, Roles, User } from "../entities";
 
 class UserService {
-  private readonly genderRepository: Repository<Gender>;
   private readonly personRepository: Repository<Person>;
   private readonly userRepository: Repository<User>;
 
   constructor() {
-    this.genderRepository = AppDataSource.getRepository(Gender);
     this.userRepository = AppDataSource.getRepository(User);
     this.personRepository = AppDataSource.getRepository(Person);
   }
@@ -31,11 +29,7 @@ class UserService {
           firstName: person?.firstName,
           lastName: person?.lastName,
           telephone: person?.telephone,
-          gender: person?.genderId
-            ? this.genderRepository.create({
-                id: person.genderId,
-              })
-            : undefined,
+          gender: person?.gender,
         }),
     });
 
@@ -75,24 +69,26 @@ class UserService {
   }
 
   updateUserById(user: User, updateUserDto: UpdateUserDto): Promise<User> {
-    const { person, username, password, avatarUrl, roles } = updateUserDto;
+    const { person, username, avatarUrl, roles } = updateUserDto;
 
     const newUser: User = this.userRepository.create({
       id: user.id,
       username,
-      password,
       avatarUrl,
-      roles: roles?.length ? roles : [Roles.USER],
+      roles: roles?.length ? roles : user.roles,
       person: person
         ? this.personRepository.create({
-            firstName: person?.firstName,
-            lastName: person?.lastName,
-            telephone: person?.telephone,
-            gender: person?.genderId
-              ? this.genderRepository.create({
-                  id: person.genderId,
-                })
-              : user.person?.gender,
+            id: user.person?.id,
+            firstName: person.firstName
+              ? person.firstName
+              : user.person?.firstName,
+            lastName: person?.lastName
+              ? person.lastName
+              : user.person?.lastName,
+            telephone: person?.telephone
+              ? person.telephone
+              : user.person?.telephone,
+            gender: person?.gender ? person.gender : user.person?.gender,
           })
         : user.person,
     });
