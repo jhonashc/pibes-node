@@ -4,9 +4,9 @@ import { UserAddressController } from "../controllers";
 
 import {
   AddressUuidParamDto,
-  CreateAddressDto,
-  GetAddressesQueryDto,
-  UpdateAddressDto,
+  CreateUserAddressDto,
+  GetUserAddressesQueryDto,
+  UpdateUserAddressDto,
   UserUuidParamDto,
 } from "../dtos";
 
@@ -20,14 +20,14 @@ const userAddressController = new UserAddressController();
 router.post(
   "/:userId/addresses",
   validateRequest(UserUuidParamDto, ValidationType.PARAMS),
-  validateRequest(CreateAddressDto),
+  validateRequest(CreateUserAddressDto),
   userAddressController.createUserAddress
 );
 
 router.get(
   "/:userId/addresses",
   validateRequest(UserUuidParamDto, ValidationType.PARAMS),
-  validateRequest(GetAddressesQueryDto, ValidationType.QUERY),
+  validateRequest(GetUserAddressesQueryDto, ValidationType.QUERY),
   userAddressController.getUserAddresses
 );
 
@@ -35,22 +35,22 @@ router.get(
   "/:userId/addresses/:addressId",
   validateRequest(UserUuidParamDto, ValidationType.PARAMS),
   validateRequest(AddressUuidParamDto, ValidationType.PARAMS),
-  userAddressController.getUserAddressById
+  userAddressController.getUserAddress
 );
 
 router.patch(
   "/:userId/addresses/:addressId",
   validateRequest(UserUuidParamDto, ValidationType.PARAMS),
   validateRequest(AddressUuidParamDto, ValidationType.PARAMS),
-  validateRequest(UpdateAddressDto),
-  userAddressController.updateUserAddressById
+  validateRequest(UpdateUserAddressDto),
+  userAddressController.updateUserAddress
 );
 
 router.delete(
   "/:userId/addresses/:addressId",
   validateRequest(UserUuidParamDto, ValidationType.PARAMS),
   validateRequest(AddressUuidParamDto, ValidationType.PARAMS),
-  userAddressController.deleteUserAddressById
+  userAddressController.deleteUserAddress
 );
 
 export default router;
