@@ -20,25 +20,24 @@ class OrderService {
   }
 
   createOrder(CreateOrderDto: CreateOrderDto): Promise<Order> {
-    const { paymentMethod, status, userId, subtotal, total, details } =
+    const { deliveryType, paymentMethod, status, userId, total, details } =
       CreateOrderDto;
 
     const newOrder: Order = this.orderRepository.create({
+      deliveryType,
       paymentMethod,
       status,
+      total,
       user: this.userRepository.create({
         id: userId,
       }),
-      subtotal,
-      total,
-      details: details.map(({ id, isCombo, quantity, price }) => {
+      details: details.map(({ id, isCombo, quantity }) => {
         if (isCombo) {
           return this.orderDetailRepository.create({
             combo: this.comboRepository.create({
               id,
             }),
             quantity,
-            price,
           });
         }
 
@@ -47,7 +46,6 @@ class OrderService {
             id,
           }),
           quantity,
-          price,
         });
       }),
     });
@@ -89,7 +87,14 @@ class OrderService {
     order: Order,
     updateOrderDto: UpdateOrderDto
   ): Promise<Order | undefined> {
-    const { paymentMethod, status, subtotal, total, details } = updateOrderDto;
+    const {
+      deliveryStatus,
+      deliveryType,
+      paymentMethod,
+      status,
+      total,
+      details,
+    } = updateOrderDto;
 
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
@@ -98,9 +103,10 @@ class OrderService {
     try {
       const newOrder: Order = this.orderRepository.create({
         id: order.id,
+        deliveryStatus,
+        deliveryType,
         paymentMethod,
         status,
-        subtotal,
         total,
       });
 
@@ -111,14 +117,13 @@ class OrderService {
           },
         });
 
-        newOrder.details = details.map(({ id, isCombo, quantity, price }) => {
+        newOrder.details = details.map(({ id, isCombo, quantity }) => {
           if (isCombo) {
             return this.orderDetailRepository.create({
               combo: this.comboRepository.create({
                 id,
               }),
               quantity,
-              price,
             });
           }
 
@@ -127,7 +132,6 @@ class OrderService {
               id,
             }),
             quantity,
-            price,
           });
         });
       }
