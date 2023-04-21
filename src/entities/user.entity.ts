@@ -1,5 +1,6 @@
 import {
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   JoinColumn,
@@ -73,6 +74,7 @@ export class User extends Base {
 
   /* Listeners */
   @BeforeInsert()
+  @BeforeUpdate()
   async hashPassword() {
     this.password = await encryptPassword(this.password);
   }
