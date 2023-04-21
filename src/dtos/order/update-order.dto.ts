@@ -9,11 +9,24 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 
-import { OrderStatus, PaymentMethods } from "../../entities";
+import {
+  DeliveryStatus,
+  DeliveryType,
+  OrderStatus,
+  PaymentMethods,
+} from "../../entities";
 
 import { CreateOrderDetailDto } from "./create-order-detail.dto";
 
 export class UpdateOrderDto {
+  @IsOptional()
+  @IsEnum(DeliveryStatus)
+  deliveryStatus?: DeliveryStatus;
+
+  @IsOptional()
+  @IsEnum(DeliveryType)
+  deliveryType?: DeliveryType;
+
   @IsOptional()
   @IsEnum(PaymentMethods)
   paymentMethod?: PaymentMethods;
@@ -21,11 +34,6 @@ export class UpdateOrderDto {
   @IsOptional()
   @IsEnum(OrderStatus)
   status?: OrderStatus;
-
-  @IsNumber()
-  @IsOptional()
-  @IsPositive()
-  subtotal?: number;
 
   @IsOptional()
   @IsNumber()

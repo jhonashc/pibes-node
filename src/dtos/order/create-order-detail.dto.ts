@@ -2,7 +2,6 @@ import {
   IsBoolean,
   IsInt,
   IsNotEmpty,
-  IsNumber,
   IsPositive,
   IsUUID,
 } from "class-validator";
@@ -19,8 +18,4 @@ export class CreateOrderDetailDto {
   @IsInt()
   @IsPositive()
   quantity: number;
-
-  @IsNumber()
-  @IsPositive()
-  price: number;
 }
