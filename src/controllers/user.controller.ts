@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 
 import { CreateUserDto, GetUsersQueryDto, UpdateUserDto } from "../dtos";
-import { Gender, Roles, User } from "../entities";
+import { Roles, User } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
-import { GenderService, UserService } from "../services";
+import { UserService } from "../services";
 
 export class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
@@ -21,22 +21,6 @@ export class UserController {
         throw new ConflictException(
           `The user with the email ${lowerCaseEmail} already exists`
         );
-      }
-
-      console.log({ person });
-
-      if (person) {
-        if (person.genderId) {
-          const genderFound: Gender | null = await GenderService.getGenderById(
-            person.genderId
-          );
-
-          if (!genderFound) {
-            throw new NotFoundException(
-              `The gender with id ${person.genderId} has not been found`
-            );
-          }
-        }
       }
 
       const areTheRolesValid: boolean | undefined = roles?.every(
@@ -112,8 +96,7 @@ export class UserController {
   async updateUserById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { person, username, password, avatarUrl, roles } =
-        req.body as UpdateUserDto;
+      const { person, username, avatarUrl, roles } = req.body as UpdateUserDto;
 
       const userFound: User | null = await UserService.getUserById(id);
 
@@ -121,20 +104,6 @@ export class UserController {
         throw new NotFoundException(
           `The user with id ${id} has not been found`
         );
-      }
-
-      if (person) {
-        if (person.genderId) {
-          const genderFound: Gender | null = await GenderService.getGenderById(
-            person.genderId
-          );
-
-          if (!genderFound) {
-            throw new NotFoundException(
-              `The gender with id ${person.genderId} has not been found`
-            );
-          }
-        }
       }
 
       const areTheRolesValid: boolean | undefined = roles?.every(
@@ -150,7 +119,6 @@ export class UserController {
       const updateUserDto: UpdateUserDto = {
         person,
         username,
-        password,
         avatarUrl,
         roles,
       };

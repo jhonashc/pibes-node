@@ -11,7 +11,7 @@ import {
 
 import { comparePasswords, generateToken } from "../helpers";
 import { Token } from "../interfaces";
-import { GenderService, UserService } from "../services";
+import { UserService } from "../services";
 
 export class AuthController {
   async login(req: Request, res: Response, next: NextFunction) {
@@ -66,16 +66,6 @@ export class AuthController {
       if (userFound) {
         throw new ConflictException(
           `The user with the email ${lowerCaseEmail} already exists`
-        );
-      }
-
-      const genderFound: Gender | null = await GenderService.getGenderById(
-        genderId
-      );
-
-      if (!genderFound) {
-        throw new NotFoundException(
-          `The gender with id ${genderId} has not been found`
         );
       }
 
