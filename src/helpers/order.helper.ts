@@ -5,11 +5,10 @@ import { OrderMapped } from "../interfaces";
 export const mapOrder = (order: Order): OrderMapped => {
   return {
     ...order,
-    details: order.details.map(({ combo, product, quantity, price }) => ({
+    details: order.details.map(({ combo, product, quantity }) => ({
       item: combo ? mapCombo(combo) : mapProduct(product!),
       isCombo: combo ? true : false,
       quantity,
-      price,
     })),
   };
 };

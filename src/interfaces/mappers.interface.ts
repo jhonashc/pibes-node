@@ -17,7 +17,6 @@ export interface OrderDetailMapped {
   item: ComboMapped | ProductMapped;
   isCombo: boolean;
   quantity: number;
-  price: number;
 }
 
 export interface ProductMapped {
