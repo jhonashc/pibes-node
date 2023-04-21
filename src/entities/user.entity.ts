@@ -58,13 +58,12 @@ export class User extends Base {
   @OneToOne(() => Person, (person) => person.user, {
     eager: true,
     cascade: true,
-    nullable: false,
     onDelete: "CASCADE",
   })
   @JoinColumn({
     name: "person_id",
   })
-  person: Person;
+  person?: Person;
 
   @OneToMany(() => Address, (address) => address.user)
   addresses?: Address[];

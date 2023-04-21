@@ -13,5 +13,5 @@ export class Gender extends Base {
 
   /* Relations */
   @OneToMany(() => Person, (person) => person.gender)
-  people: Person[];
+  people?: Person[];
 }

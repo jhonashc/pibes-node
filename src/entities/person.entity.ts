@@ -8,30 +8,33 @@ import { User } from "./user.entity";
 export class Person extends Base {
   @Column({
     type: "text",
+    nullable: true,
     name: "first_name",
   })
-  firstName: string;
+  firstName?: string;
 
   @Column({
     type: "text",
+    nullable: true,
     name: "last_name",
   })
-  lastName: string;
+  lastName?: string;
 
   @Column({
     type: "text",
+    nullable: true,
   })
-  telephone: string;
+  telephone?: string;
 
   /* Relations */
   @ManyToOne(() => Gender, (gender) => gender.people, {
     eager: true,
-    nullable: false,
+    nullable: true,
   })
   @JoinColumn({
     name: "gender_id",
   })
-  gender: Gender;
+  gender?: Gender;
 
   @OneToOne(() => User, (user) => user.person)
   user: User;
