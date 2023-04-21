@@ -23,7 +23,7 @@ export class UserController {
         );
       }
 
-      console.log({person});
+      console.log({ person });
 
       if (person) {
         if (person.genderId) {
@@ -112,7 +112,7 @@ export class UserController {
   async updateUserById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { person, username, email, password, avatarUrl, roles } =
+      const { person, username, password, avatarUrl, roles } =
         req.body as UpdateUserDto;
 
       const userFound: User | null = await UserService.getUserById(id);
@@ -150,7 +150,6 @@ export class UserController {
       const updateUserDto: UpdateUserDto = {
         person,
         username,
-        email,
         password,
         avatarUrl,
         roles,
