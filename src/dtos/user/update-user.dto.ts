@@ -3,32 +3,24 @@ import {
   IsArray,
   IsEmail,
   IsEnum,
+  IsNotEmptyObject,
   IsOptional,
   IsString,
-  IsUUID,
-  MaxLength,
+  ValidateNested,
 } from "class-validator";
+import { Type } from "class-transformer";
 
 import { Roles } from "../../entities";
 
+import { CreatePersonDto } from "./create-person.dto";
+
 export class UpdateUserDto {
   /* Person */
-  @IsString()
   @IsOptional()
-  firstName?: string;
-
-  @IsString()
-  @IsOptional()
-  lastName?: string;
-
-  @IsString()
-  @IsOptional()
-  @MaxLength(10)
-  telephone?: string;
-
-  @IsUUID()
-  @IsOptional()
-  genderId?: string;
+  @ValidateNested()
+  @IsNotEmptyObject()
+  @Type(() => CreatePersonDto)
+  person?: CreatePersonDto;
 
   /* User */
   @IsString()
