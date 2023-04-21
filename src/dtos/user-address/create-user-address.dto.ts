@@ -1,6 +1,6 @@
-import { IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 
-export class CreateAddressDto {
+export class CreateUserAddressDto {
   @IsString()
   @IsNotEmpty()
   addressLine1: string;
@@ -12,8 +12,4 @@ export class CreateAddressDto {
   @IsString()
   @IsNotEmpty()
   addressReference: string;
-
-  @IsUUID()
-  @IsNotEmpty()
-  userId: string;
 }

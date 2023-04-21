@@ -1,10 +1,3 @@
-export {
-  AddressUuidParamDto,
-  CreateAddressDto,
-  GetAddressesQueryDto,
-  UpdateAddressDto,
-} from "./address";
-
 export { CreateLoginDto, CreateRegisterDto } from "./auth";
 
 export {
@@ -43,3 +36,10 @@ export {
   UserUuidParamDto,
   UpdateUserDto,
 } from "./user";
+
+export {
+  AddressUuidParamDto,
+  CreateUserAddressDto,
+  GetUserAddressesQueryDto,
+  UpdateUserAddressDto,
+} from "./user-address";
