@@ -27,11 +27,10 @@ export class Order extends Base {
 
   @Column({
     type: "enum",
-    name: "order_status",
     enum: OrderStatus,
     default: OrderStatus.PENDING,
   })
-  orderStatus: OrderStatus;
+  status: OrderStatus;
 
   @Column("float", {
     default: 0,

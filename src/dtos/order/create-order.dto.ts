@@ -11,6 +11,7 @@ import {
 import { Type } from "class-transformer";
 
 import { OrderStatus, PaymentMethods } from "../../entities";
+
 import { CreateOrderDetailDto } from "./create-order-detail.dto";
 
 export class CreateOrderDto {
@@ -18,7 +19,7 @@ export class CreateOrderDto {
   paymentMethod: PaymentMethods;
 
   @IsEnum(OrderStatus)
-  orderStatus: OrderStatus;
+  status: OrderStatus;
 
   @IsNumber()
   @IsPositive()

@@ -1,4 +1,5 @@
 import {
+  ArrayNotEmpty,
   IsArray,
   IsEmail,
   IsEnum,
@@ -49,6 +50,7 @@ export class UpdateUserDto {
   /* Roles */
   @IsArray()
   @IsOptional()
+  @ArrayNotEmpty()
   @IsEnum(Roles, {
     each: true,
   })

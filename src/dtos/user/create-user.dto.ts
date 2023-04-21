@@ -1,4 +1,5 @@
 import {
+  ArrayNotEmpty,
   IsArray,
   IsEmail,
   IsEnum,
@@ -50,6 +51,7 @@ export class CreateUserDto {
   /* Roles */
   @IsArray()
   @IsOptional()
+  @ArrayNotEmpty()
   @IsEnum(Roles, {
     each: true,
   })

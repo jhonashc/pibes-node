@@ -20,12 +20,12 @@ class OrderService {
   }
 
   createOrder(CreateOrderDto: CreateOrderDto): Promise<Order> {
-    const { paymentMethod, orderStatus, userId, subtotal, total, details } =
+    const { paymentMethod, status, userId, subtotal, total, details } =
       CreateOrderDto;
 
     const newOrder: Order = this.orderRepository.create({
       paymentMethod,
-      orderStatus,
+      status,
       user: this.userRepository.create({
         id: userId,
       }),
@@ -67,7 +67,7 @@ class OrderService {
     }
 
     if (status) {
-      findOptionsWhere.orderStatus = status;
+      findOptionsWhere.status = status;
     }
 
     return this.orderRepository.find({
@@ -89,8 +89,7 @@ class OrderService {
     order: Order,
     updateOrderDto: UpdateOrderDto
   ): Promise<Order | undefined> {
-    const { paymentMethod, orderStatus, subtotal, total, details } =
-      updateOrderDto;
+    const { paymentMethod, status, subtotal, total, details } = updateOrderDto;
 
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
@@ -100,7 +99,7 @@ class OrderService {
       const newOrder: Order = this.orderRepository.create({
         id: order.id,
         paymentMethod,
-        orderStatus,
+        status,
         subtotal,
         total,
       });

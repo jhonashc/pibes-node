@@ -17,7 +17,6 @@ export class ProductController {
       const { name, description, imageUrl, price, stock, categoryIds } =
         req.body as CreateProductDto;
 
-      let newCategoryIds: string[] = [];
       const lowerCaseName: string = name.trim().toLowerCase();
 
       const productFound: Product | null =

@@ -7,11 +7,12 @@ import {
   OneToOne,
 } from "typeorm";
 
+import { encryptPassword } from "../helpers";
+
 import { Address } from "./address.entity";
 import { Base } from "./base.entity";
 import { Person } from "./person.entity";
 import { Order } from "./order.entity";
-import { encryptPassword } from "../helpers";
 
 export enum Roles {
   USER = "USER",

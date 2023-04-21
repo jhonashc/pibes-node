@@ -16,7 +16,7 @@ import {
 export class OrderController {
   async createOrder(req: Request, res: Response, next: NextFunction) {
     try {
-      const { paymentMethod, orderStatus, userId, subtotal, total, details } =
+      const { paymentMethod, status, userId, subtotal, total, details } =
         req.body as CreateOrderDto;
 
       const userFound: User | null = await UserService.getUserById(userId);
@@ -57,7 +57,7 @@ export class OrderController {
 
       const createOrderDto: CreateOrderDto = {
         paymentMethod,
-        orderStatus,
+        status,
         userId,
         subtotal,
         total,
@@ -125,7 +125,7 @@ export class OrderController {
   async updateOrderById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { paymentMethod, orderStatus, subtotal, total, details } =
+      const { paymentMethod, status, subtotal, total, details } =
         req.body as UpdateOrderDto;
 
       const orderFound: Order | null = await OrderService.getOrderById(id);
@@ -167,7 +167,7 @@ export class OrderController {
 
       const updateOrderDto: UpdateOrderDto = {
         paymentMethod,
-        orderStatus,
+        status,
         subtotal,
         total,
         details,

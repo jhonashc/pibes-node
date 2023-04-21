@@ -2,16 +2,15 @@ import {
   ArrayNotEmpty,
   IsArray,
   IsEnum,
-  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsPositive,
-  IsUUID,
   ValidateNested,
 } from "class-validator";
 import { Type } from "class-transformer";
 
 import { OrderStatus, PaymentMethods } from "../../entities";
+
 import { CreateOrderDetailDto } from "./create-order-detail.dto";
 
 export class UpdateOrderDto {
@@ -21,7 +20,7 @@ export class UpdateOrderDto {
 
   @IsOptional()
   @IsEnum(OrderStatus)
-  orderStatus?: OrderStatus;
+  status?: OrderStatus;
 
   @IsNumber()
   @IsOptional()
