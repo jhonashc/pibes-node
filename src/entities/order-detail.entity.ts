@@ -44,9 +44,4 @@ export class OrderDetail extends Base {
     default: 1,
   })
   quantity: number;
-
-  @Column("float", {
-    default: 0,
-  })
-  price: number;
 }
