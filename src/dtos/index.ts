@@ -13,6 +13,8 @@ export {
   UpdateComboDto,
 } from "./combo";
 
+export { CreateFavoriteComboDto, CreateFavoriteProductDto } from "./favorite";
+
 export {
   CreateOrderDetailDto,
   CreateOrderDto,
