@@ -1,8 +1,9 @@
 import { Column, Entity, OneToMany } from "typeorm";
 
 import { Base } from "./base.entity";
-import { ProductCombo } from "./product-combo.entity";
+import { FavoriteCombo } from "./favorite-combo.entity";
 import { OrderDetail } from "./order-detail.entity";
+import { ProductCombo } from "./product-combo.entity";
 
 @Entity("combo")
 export class Combo extends Base {
@@ -39,4 +40,7 @@ export class Combo extends Base {
 
   @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.combo)
   orderDetails?: OrderDetail[];
+
+  @OneToMany(() => FavoriteCombo, (favoriteCombo) => favoriteCombo.combo)
+  users?: FavoriteCombo[];
 }

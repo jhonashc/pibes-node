@@ -1,9 +1,10 @@
 import { Column, Entity, OneToMany } from "typeorm";
 
 import { Base } from "./base.entity";
+import { FavoriteProduct } from "./favorite-product.entity";
+import { OrderDetail } from "./order-detail.entity";
 import { ProductCategory } from "./product-category.entity";
 import { ProductCombo } from "./product-combo.entity";
-import { OrderDetail } from "./order-detail.entity";
 
 @Entity("product")
 export class Product extends Base {
@@ -52,4 +53,10 @@ export class Product extends Base {
 
   @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.product)
   orderDetails?: OrderDetail[];
+
+  @OneToMany(
+    () => FavoriteProduct,
+    (favoriteProduct) => favoriteProduct.product
+  )
+  users?: FavoriteProduct[];
 }
