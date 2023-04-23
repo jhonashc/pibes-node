@@ -1,6 +1,8 @@
 import { Order } from "../entities";
-import { mapCombo, mapProduct } from "../helpers";
 import { OrderMapped } from "../interfaces";
+
+import { mapCombo } from "./combo.helper";
+import { mapProduct } from "./product.helper";
 
 export const mapOrder = (order: Order): OrderMapped => {
   return {
