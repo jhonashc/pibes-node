@@ -17,6 +17,7 @@ export class FavoriteCombo extends Date {
   userId: string;
 
   @ManyToOne(() => Combo, (combo) => combo.users, {
+    eager: true,
     onDelete: "CASCADE",
   })
   @JoinColumn({
@@ -25,7 +26,6 @@ export class FavoriteCombo extends Date {
   combo: Combo;
 
   @ManyToOne(() => User, (user) => user.favoriteCombos, {
-    eager: true,
     onDelete: "CASCADE",
   })
   @JoinColumn({

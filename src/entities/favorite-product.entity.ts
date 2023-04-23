@@ -17,6 +17,7 @@ export class FavoriteProduct extends Date {
   userId: string;
 
   @ManyToOne(() => Product, (product) => product.users, {
+    eager: true,
     onDelete: "CASCADE",
   })
   @JoinColumn({
@@ -25,7 +26,6 @@ export class FavoriteProduct extends Date {
   product: Product;
 
   @ManyToOne(() => User, (user) => user.favoriteProducts, {
-    eager: true,
     onDelete: "CASCADE",
   })
   @JoinColumn({
