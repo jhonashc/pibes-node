@@ -51,6 +51,38 @@ class FavoriteService {
     return this.favoriteProductRepository.save(newFavoriteProduct);
   }
 
+  getFavoriteCombo(
+    comboId: string,
+    userId: string
+  ): Promise<FavoriteCombo | null> {
+    return this.favoriteComboRepository.findOne({
+      where: {
+        combo: {
+          id: comboId,
+        },
+        user: {
+          id: userId,
+        },
+      },
+    });
+  }
+
+  getFavoriteProduct(
+    productId: string,
+    userId: string
+  ): Promise<FavoriteProduct | null> {
+    return this.favoriteProductRepository.findOne({
+      where: {
+        product: {
+          id: productId,
+        },
+        user: {
+          id: userId,
+        },
+      },
+    });
+  }
+
   deleteFavoriteCombo(favoriteCombo: FavoriteCombo): Promise<FavoriteCombo> {
     return this.favoriteComboRepository.remove(favoriteCombo);
   }
