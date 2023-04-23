@@ -1,6 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 
-import { CreateFavoriteComboDto, CreateFavoriteProductDto } from "../dtos";
+import {
+  CreateFavoriteComboDto,
+  CreateFavoriteProductDto,
+  GetFavoriteCombosQueryDto,
+  GetFavoriteProductsQueryDto,
+} from "../dtos";
 
 import {
   Combo,
@@ -18,6 +23,9 @@ import {
   ProductService,
   UserService,
 } from "../services";
+
+import { mapCombos, mapProducts } from "../helpers";
+import { ComboMapped, ProductMapped } from "../interfaces";
 
 export class FavoriteController {
   async createFavoriteCombo(req: Request, res: Response, next: NextFunction) {
@@ -108,6 +116,73 @@ export class FavoriteController {
       res.status(201).json({
         status: true,
         data: createdFavoriteProduct,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getFavoriteCombos(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { userId } = req.params;
+      const { limit, offset } = req.query as GetFavoriteCombosQueryDto;
+
+      const userFound: User | null = await UserService.getUserById(userId);
+
+      if (!userFound) {
+        throw new NotFoundException(
+          `The user with id ${userId} has not been found`
+        );
+      }
+
+      const favoriteCombos: FavoriteCombo[] =
+        await FavoriteService.getFavoriteCombos(userId, {
+          limit,
+          offset,
+        });
+
+      const combos: Combo[] = favoriteCombos.map(({ combo }) => combo);
+
+      const mappedFavoriteCombos: ComboMapped[] = mapCombos(combos);
+
+      res.json({
+        status: true,
+        data: mappedFavoriteCombos,
+      });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+
+  async getFavoriteProducts(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { userId } = req.params;
+      const { limit, offset } = req.query as GetFavoriteProductsQueryDto;
+
+      const userFound: User | null = await UserService.getUserById(userId);
+
+      if (!userFound) {
+        throw new NotFoundException(
+          `The user with id ${userId} has not been found`
+        );
+      }
+
+      const favoriteProducts: FavoriteProduct[] =
+        await FavoriteService.getFavoriteProducts(userId, {
+          limit,
+          offset,
+        });
+
+      const products: Product[] = favoriteProducts.map(
+        ({ product }) => product
+      );
+
+      const mappedFavoriteProducts: ProductMapped[] = mapProducts(products);
+
+      res.json({
+        status: true,
+        data: mappedFavoriteProducts,
       });
     } catch (error) {
       next(error);
