@@ -5,8 +5,8 @@ import { UserController } from "../controllers";
 import {
   CreateUserDto,
   GetUsersQueryDto,
+  IdParamDto,
   UpdateUserDto,
-  UuidParamDto,
 } from "../dtos";
 
 import { ValidationType } from "../interfaces";
@@ -26,20 +26,20 @@ router.get(
 
 router.get(
   "/:id",
-  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  validateRequest(IdParamDto, ValidationType.PARAMS),
   userController.getUserById
 );
 
 router.patch(
   "/:id",
-  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  validateRequest(IdParamDto, ValidationType.PARAMS),
   validateRequest(UpdateUserDto),
   userController.updateUserById
 );
 
 router.delete(
   "/:id",
-  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  validateRequest(IdParamDto, ValidationType.PARAMS),
   userController.deleteUserById
 );
 

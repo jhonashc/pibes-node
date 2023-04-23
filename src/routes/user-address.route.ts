@@ -7,7 +7,7 @@ import {
   GetUserAddressesQueryDto,
   UpdateUserAddressDto,
   UserAddressUuidParamDto,
-  UserUuidParamDto,
+  UserIdParamDto,
 } from "../dtos";
 
 import { ValidationType } from "../interfaces";
@@ -19,14 +19,14 @@ const userAddressController = new UserAddressController();
 
 router.post(
   "/:userId/addresses",
-  validateRequest(UserUuidParamDto, ValidationType.PARAMS),
+  validateRequest(UserIdParamDto, ValidationType.PARAMS),
   validateRequest(CreateUserAddressDto),
   userAddressController.createUserAddress
 );
 
 router.get(
   "/:userId/addresses",
-  validateRequest(UserUuidParamDto, ValidationType.PARAMS),
+  validateRequest(UserIdParamDto, ValidationType.PARAMS),
   validateRequest(GetUserAddressesQueryDto, ValidationType.QUERY),
   userAddressController.getUserAddresses
 );

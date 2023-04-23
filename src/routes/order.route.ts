@@ -5,8 +5,8 @@ import { OrderController } from "../controllers";
 import {
   CreateOrderDto,
   GetOrdersQueryDto,
+  IdParamDto,
   UpdateOrderDto,
-  UuidParamDto,
 } from "../dtos";
 
 import { ValidationType } from "../interfaces";
@@ -26,20 +26,20 @@ router.get(
 
 router.get(
   "/:id",
-  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  validateRequest(IdParamDto, ValidationType.PARAMS),
   orderController.getOrderById
 );
 
 router.patch(
   "/:id",
-  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  validateRequest(IdParamDto, ValidationType.PARAMS),
   validateRequest(UpdateOrderDto),
   orderController.updateOrderById
 );
 
 router.delete(
   "/:id",
-  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  validateRequest(IdParamDto, ValidationType.PARAMS),
   orderController.deleteOrderById
 );
 

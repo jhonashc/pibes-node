@@ -5,8 +5,8 @@ import { CategoryController } from "../controllers";
 import {
   CreateCategoryDto,
   GetCategoriesQueryDto,
+  IdParamDto,
   UpdateCategoryDto,
-  UuidParamDto,
 } from "../dtos";
 
 import { ValidationType } from "../interfaces";
@@ -30,20 +30,20 @@ router.get(
 
 router.get(
   "/:id",
-  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  validateRequest(IdParamDto, ValidationType.PARAMS),
   categoryController.getCategoryById
 );
 
 router.patch(
   "/:id",
-  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  validateRequest(IdParamDto, ValidationType.PARAMS),
   validateRequest(UpdateCategoryDto),
   categoryController.updateCategoryById
 );
 
 router.delete(
   "/:id",
-  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  validateRequest(IdParamDto, ValidationType.PARAMS),
   categoryController.deleteCategoryById
 );
 

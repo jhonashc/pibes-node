@@ -5,8 +5,8 @@ import { ComboController } from "../controllers";
 import {
   CreateComboDto,
   GetCombosQueryDto,
+  IdParamDto,
   UpdateComboDto,
-  UuidParamDto,
 } from "../dtos";
 
 import { ValidationType } from "../interfaces";
@@ -26,20 +26,20 @@ router.get(
 
 router.get(
   "/:id",
-  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  validateRequest(IdParamDto, ValidationType.PARAMS),
   comboController.getComboById
 );
 
 router.patch(
   "/:id",
-  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  validateRequest(IdParamDto, ValidationType.PARAMS),
   validateRequest(UpdateComboDto),
   comboController.updateComboById
 );
 
 router.delete(
   "/:id",
-  validateRequest(UuidParamDto, ValidationType.PARAMS),
+  validateRequest(IdParamDto, ValidationType.PARAMS),
   comboController.deleteComboById
 );
 
