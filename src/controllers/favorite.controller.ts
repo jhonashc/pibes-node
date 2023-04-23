@@ -24,7 +24,7 @@ import {
   UserService,
 } from "../services";
 
-import { mapCombos, mapProducts } from "../helpers";
+import { mapCombo, mapCombos, mapProduct, mapProducts } from "../helpers";
 import { ComboMapped, ProductMapped } from "../interfaces";
 
 export class FavoriteController {
@@ -150,7 +150,6 @@ export class FavoriteController {
         data: mappedFavoriteCombos,
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
@@ -183,6 +182,96 @@ export class FavoriteController {
       res.json({
         status: true,
         data: mappedFavoriteProducts,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteFavoriteCombo(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { comboId, userId } = req.params;
+
+      const comboFound: Combo | null = await ComboService.getComboById(comboId);
+
+      if (!comboFound) {
+        throw new NotFoundException(
+          `The combo with id ${comboId} has not been found`
+        );
+      }
+
+      const userFound: User | null = await UserService.getUserById(userId);
+
+      if (!userFound) {
+        throw new NotFoundException(
+          `The user with id ${userId} has not been found`
+        );
+      }
+
+      const favoriteComboFound: FavoriteCombo | null =
+        await FavoriteService.getFavoriteCombo(comboId, userId);
+
+      if (!favoriteComboFound) {
+        throw new NotFoundException(
+          `The combo with id ${comboId} has not been found in the favorites`
+        );
+      }
+
+      const deletedFavoriteCombo: FavoriteCombo =
+        await FavoriteService.deleteFavoriteCombo(favoriteComboFound);
+
+      const mappedCombo: ComboMapped = mapCombo(deletedFavoriteCombo.combo);
+
+      res.json({
+        status: true,
+        data: mappedCombo,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteFavoriteProduct(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { productId, userId } = req.params;
+
+      const productFound: Product | null = await ProductService.getProductById(
+        productId
+      );
+
+      if (!productFound) {
+        throw new NotFoundException(
+          `The product with id ${productId} has not been found`
+        );
+      }
+
+      const userFound: User | null = await UserService.getUserById(userId);
+
+      if (!userFound) {
+        throw new NotFoundException(
+          `The user with id ${userId} has not been found`
+        );
+      }
+
+      const favoriteProductFound: FavoriteProduct | null =
+        await FavoriteService.getFavoriteProduct(productId, userId);
+
+      if (!favoriteProductFound) {
+        throw new NotFoundException(
+          `The product with id ${productId} has not been found in the favorites`
+        );
+      }
+
+      const deletedFavoriteProduct: FavoriteProduct =
+        await FavoriteService.deleteFavoriteProduct(favoriteProductFound);
+
+      const mappedProduct: ProductMapped = mapProduct(
+        deletedFavoriteProduct.product
+      );
+
+      res.json({
+        status: true,
+        data: mappedProduct,
       });
     } catch (error) {
       next(error);
