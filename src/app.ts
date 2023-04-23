@@ -11,6 +11,7 @@ import {
   authRouter,
   categoryRouter,
   comboRouter,
+  favoriteRouter,
   orderRouter,
   productRouter,
   userAddressRouter,
@@ -24,6 +25,7 @@ class Server {
     auth: "/api/auth",
     categories: "/api/categories",
     combos: "/api/combos",
+    favorites: "/api/favorites",
     orders: "/api/orders",
     products: "/api/products",
     users: "/api/users",
@@ -52,6 +54,7 @@ class Server {
     this.app.use(this.apiRoutes.auth, authRouter);
     this.app.use(this.apiRoutes.categories, categoryRouter);
     this.app.use(this.apiRoutes.combos, comboRouter);
+    this.app.use(this.apiRoutes.favorites, favoriteRouter);
     this.app.use(this.apiRoutes.orders, orderRouter);
     this.app.use(this.apiRoutes.products, productRouter);
     this.app.use(this.apiRoutes.users, userRouter);
