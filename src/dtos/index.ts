@@ -16,6 +16,8 @@ export {
 export {
   CreateFavoriteComboDto,
   CreateFavoriteProductDto,
+  FavoriteComboIdParamDto,
+  FavoriteProductIdParamDto,
   GetFavoriteCombosQueryDto,
   GetFavoriteProductsQueryDto,
 } from "./favorite";
@@ -48,5 +50,5 @@ export {
   CreateUserAddressDto,
   GetUserAddressesQueryDto,
   UpdateUserAddressDto,
-  UserAddressUuidParamDto,
+  UserAddressIdParamDto,
 } from "./user-address";
