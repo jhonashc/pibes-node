@@ -6,7 +6,7 @@ import {
   CreateUserAddressDto,
   GetUserAddressesQueryDto,
   UpdateUserAddressDto,
-  UserAddressUuidParamDto,
+  UserAddressIdParamDto,
   UserIdParamDto,
 } from "../dtos";
 
@@ -33,20 +33,20 @@ router.get(
 
 router.get(
   "/:userId/addresses/:addressId",
-  validateRequest(UserAddressUuidParamDto, ValidationType.PARAMS),
+  validateRequest(UserAddressIdParamDto, ValidationType.PARAMS),
   userAddressController.getUserAddress
 );
 
 router.patch(
   "/:userId/addresses/:addressId",
-  validateRequest(UserAddressUuidParamDto, ValidationType.PARAMS),
+  validateRequest(UserAddressIdParamDto, ValidationType.PARAMS),
   validateRequest(UpdateUserAddressDto),
   userAddressController.updateUserAddress
 );
 
 router.delete(
   "/:userId/addresses/:addressId",
-  validateRequest(UserAddressUuidParamDto, ValidationType.PARAMS),
+  validateRequest(UserAddressIdParamDto, ValidationType.PARAMS),
   userAddressController.deleteUserAddress
 );
 

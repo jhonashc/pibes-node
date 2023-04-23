@@ -5,6 +5,8 @@ import { FavoriteController } from "../controllers";
 import {
   CreateFavoriteComboDto,
   CreateFavoriteProductDto,
+  FavoriteComboIdParamDto,
+  FavoriteProductIdParamDto,
   UserIdParamDto,
 } from "../dtos";
 
@@ -28,6 +30,12 @@ router.get(
   favoriteController.getFavoriteCombos
 );
 
+router.delete(
+  "/:userId/combos/:comboId",
+  validateRequest(FavoriteComboIdParamDto, ValidationType.PARAMS),
+  favoriteController.deleteFavoriteCombo
+);
+
 /* Products */
 router.post(
   "/products",
@@ -39,6 +47,12 @@ router.get(
   "/:userId/products",
   validateRequest(UserIdParamDto, ValidationType.PARAMS),
   favoriteController.getFavoriteProducts
+);
+
+router.delete(
+  "/:userId/products/:productId",
+  validateRequest(FavoriteProductIdParamDto, ValidationType.PARAMS),
+  favoriteController.deleteFavoriteProduct
 );
 
 export default router;
