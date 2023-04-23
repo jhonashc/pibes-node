@@ -1,7 +1,14 @@
 import { Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
-import { CreateFavoriteComboDto, CreateFavoriteProductDto } from "../dtos";
+
+import {
+  CreateFavoriteComboDto,
+  CreateFavoriteProductDto,
+  GetFavoriteCombosQueryDto,
+  GetFavoriteProductsQueryDto,
+} from "../dtos";
+
 import { FavoriteCombo, FavoriteProduct } from "../entities";
 
 class FavoriteService {
@@ -49,6 +56,46 @@ class FavoriteService {
       });
 
     return this.favoriteProductRepository.save(newFavoriteProduct);
+  }
+
+  getFavoriteCombos(
+    userId: string,
+    getFavoriteCombosQueryDto: GetFavoriteCombosQueryDto
+  ): Promise<FavoriteCombo[]> {
+    const { limit = 10, offset = 0 } = getFavoriteCombosQueryDto;
+
+    return this.favoriteComboRepository.find({
+      where: {
+        user: {
+          id: userId,
+        },
+      },
+      relations: {
+        combo: true,
+      },
+      take: limit,
+      skip: offset,
+    });
+  }
+
+  getFavoriteProducts(
+    userId: string,
+    getFavoriteProductsQueryDto: GetFavoriteProductsQueryDto
+  ): Promise<FavoriteProduct[]> {
+    const { limit = 10, offset = 0 } = getFavoriteProductsQueryDto;
+
+    return this.favoriteProductRepository.find({
+      where: {
+        user: {
+          id: userId,
+        },
+      },
+      relations: {
+        product: true,
+      },
+      take: limit,
+      skip: offset,
+    });
   }
 
   getFavoriteCombo(
