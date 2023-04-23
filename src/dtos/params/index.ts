@@ -1,1 +1,2 @@
-export { UuidParamDto } from "./uuid.dto";
+export { IdParamDto } from "./id.dto";
+export { UserIdParamDto } from "./userId.dto";

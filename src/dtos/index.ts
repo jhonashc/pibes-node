@@ -13,7 +13,12 @@ export {
   UpdateComboDto,
 } from "./combo";
 
-export { CreateFavoriteComboDto, CreateFavoriteProductDto } from "./favorite";
+export {
+  CreateFavoriteComboDto,
+  CreateFavoriteProductDto,
+  GetFavoriteCombosQueryDto,
+  GetFavoriteProductsQueryDto,
+} from "./favorite";
 
 export {
   CreateOrderDetailDto,
@@ -22,7 +27,7 @@ export {
   UpdateOrderDto,
 } from "./order";
 
-export { UuidParamDto } from "./params";
+export { IdParamDto, UserIdParamDto } from "./params";
 
 export {
   CreateProductDto,
@@ -36,7 +41,6 @@ export {
   CreatePersonDto,
   CreateUserDto,
   GetUsersQueryDto,
-  UserUuidParamDto,
   UpdateUserDto,
 } from "./user";
 
