@@ -10,22 +10,26 @@ export class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
       const file = req.file as Express.Multer.File;
-
-      let avatarUrl = file && file.path;
-      if (avatarUrl) await deleteFile(avatarUrl);
-
       const { person, username, email, password, roles } =
         req.body as CreateUserDto;
 
-      const lowerCaseEmail: string = email.trim().toLowerCase();
+      let avatarUrl = file && file.path;
 
-      const userFound: User | null = await UserService.getUserByEmail(
-        lowerCaseEmail
+      if (avatarUrl) await deleteFile(avatarUrl);
+
+      const filteredUsername: string = username.trim().toLowerCase();
+      const filteredEmail: string = email.trim().toLowerCase();
+
+      const userByUsernameFound: User | null =
+        await UserService.getUserByUsername(filteredUsername);
+
+      const userByEmailFound: User | null = await UserService.getUserByEmail(
+        filteredEmail
       );
 
-      if (userFound) {
+      if (userByUsernameFound || userByEmailFound) {
         throw new ConflictException(
-          `The user with the email ${lowerCaseEmail} already exists`
+          `The user with the username ${filteredUsername} or the email ${filteredEmail} already exists`
         );
       }
 
@@ -41,8 +45,8 @@ export class UserController {
 
       const createUserDto: CreateUserDto = {
         person,
-        username,
-        email: lowerCaseEmail,
+        username: filteredUsername,
+        email: filteredEmail,
         password,
         avatarUrl,
         roles,
@@ -102,13 +106,28 @@ export class UserController {
   async updateUserById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { person, username, avatarUrl, roles } = req.body as UpdateUserDto;
+      const file = req.file as Express.Multer.File;
+      const { person, username, roles } = req.body as UpdateUserDto;
+
+      let avatarUrl = file && file.path;
+
+      if (avatarUrl) await deleteFile(avatarUrl);
+
+      const filteredUsername: string | undefined = username
+        ?.trim()
+        .toLowerCase();
 
       const userFound: User | null = await UserService.getUserById(id);
 
       if (!userFound) {
         throw new NotFoundException(
           `The user with id ${id} has not been found`
+        );
+      }
+
+      if (userFound.username.toLowerCase() == filteredUsername) {
+        throw new ConflictException(
+          `The user with the username ${filteredUsername} already exists`
         );
       }
 
@@ -124,7 +143,7 @@ export class UserController {
 
       const updateUserDto: UpdateUserDto = {
         person,
-        username,
+        username: filteredUsername,
         avatarUrl,
         roles,
       };
