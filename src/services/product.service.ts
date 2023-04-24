@@ -32,7 +32,7 @@ class ProductService {
       createProductDto;
 
     const newProduct: Product = this.productRepository.create({
-      name,
+      name: name.trim().toLowerCase(),
       description,
       imageUrl,
       price,
@@ -62,13 +62,13 @@ class ProductService {
     const findOptionsWhere: FindOptionsWhere<Product> = {};
 
     if (name) {
-      findOptionsWhere.name = Like(`%${name.toLowerCase()}%`);
+      findOptionsWhere.name = Like(`%${name.trim().toLowerCase()}%`);
     }
 
     if (category) {
       findOptionsWhere.categories = {
         category: {
-          name: Like(category.toLowerCase()),
+          name: Like(category.trim().toLowerCase()),
         },
       };
     }
@@ -99,7 +99,7 @@ class ProductService {
   getProductByName(name: string): Promise<Product | null> {
     return this.productRepository.findOne({
       where: {
-        name: name.toLowerCase(),
+        name: name.trim().toLowerCase(),
       },
     });
   }
@@ -126,7 +126,7 @@ class ProductService {
     try {
       const newProduct: Product = this.productRepository.create({
         id: product.id,
-        name,
+        name: name?.trim().toLowerCase(),
         description,
         imageUrl,
         price,

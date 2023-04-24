@@ -15,19 +15,19 @@ export class CategoryController {
     try {
       const { name, emojiCode } = req.body as CreateCategoryDto;
 
-      const lowerCaseName: string = name.trim().toLowerCase();
+      const filteredName: string = name.trim().toLowerCase();
 
       const categoryFound: Category | null =
-        await CategoryService.getCategoryByName(lowerCaseName);
+        await CategoryService.getCategoryByName(filteredName);
 
       if (categoryFound) {
         throw new ConflictException(
-          `The category with the name ${lowerCaseName} already exists`
+          `The category with the name ${filteredName} already exists`
         );
       }
 
       const createCategoryDto: CreateCategoryDto = {
-        name: lowerCaseName,
+        name: filteredName,
         emojiCode,
       };
 

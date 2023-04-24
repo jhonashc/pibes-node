@@ -18,7 +18,14 @@ class CategoryService {
   }
 
   createCategory(createCategoryDto: CreateCategoryDto): Promise<Category> {
-    return this.categoryRepository.save(createCategoryDto);
+    const { name, emojiCode } = createCategoryDto;
+
+    const newCategory: Category = this.categoryRepository.create({
+      name: name.trim().toLowerCase(),
+      emojiCode,
+    });
+
+    return this.categoryRepository.save(newCategory);
   }
 
   getCategories(
@@ -29,7 +36,7 @@ class CategoryService {
     const findOptionsWhere: FindOptionsWhere<Category> = {};
 
     if (name) {
-      findOptionsWhere.name = Like(`%${name}%`);
+      findOptionsWhere.name = Like(`%${name.trim().toLowerCase()}%`);
     }
 
     return this.categoryRepository.find({
@@ -50,7 +57,7 @@ class CategoryService {
   getCategoryByName(name: string): Promise<Category | null> {
     return this.categoryRepository.findOne({
       where: {
-        name: Like(name.toLowerCase()),
+        name: Like(name.trim().toLowerCase()),
       },
     });
   }
@@ -71,7 +78,7 @@ class CategoryService {
 
     const newCategory: Category = this.categoryRepository.create({
       id: category.id,
-      name,
+      name: name?.trim().toLowerCase(),
       emojiCode,
     });
 

@@ -18,10 +18,10 @@ export class ProductController {
       const { name, description, imageUrl, price, stock, categoryIds } =
         req.body as CreateProductDto;
 
-      const lowerCaseName: string = name.trim().toLowerCase();
+      const filteredName: string = name.trim().toLowerCase();
 
       const productFound: Product | null =
-        await ProductService.getProductByName(lowerCaseName);
+        await ProductService.getProductByName(filteredName);
 
       if (productFound) {
         throw new ConflictException(
@@ -37,7 +37,7 @@ export class ProductController {
       }
 
       const createProductDto: CreateProductDto = {
-        name,
+        name: filteredName,
         description,
         imageUrl,
         price,

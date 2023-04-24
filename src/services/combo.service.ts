@@ -24,7 +24,7 @@ class ComboService {
     const { name, description, price, imageUrl, products } = createComboDto;
 
     const newCombo: Combo = this.comboRepository.create({
-      name,
+      name: name.trim().toLowerCase(),
       description,
       price,
       imageUrl,
@@ -47,7 +47,7 @@ class ComboService {
     const findOptionsWhere: FindOptionsWhere<Combo> = {};
 
     if (name) {
-      findOptionsWhere.name = Like(`%${name.toLowerCase()}%`);
+      findOptionsWhere.name = Like(`%${name.trim().toLowerCase()}%`);
     }
 
     if (min) {
@@ -76,7 +76,7 @@ class ComboService {
   getComboByName(name: string): Promise<Combo | null> {
     return this.comboRepository.findOne({
       where: {
-        name: Like(name.toLowerCase()),
+        name: Like(name.trim().toLowerCase()),
       },
     });
   }
@@ -102,7 +102,7 @@ class ComboService {
     try {
       const newCombo: Combo = this.comboRepository.create({
         id: combo.id,
-        name,
+        name: name?.trim().toLowerCase(),
         description,
         imageUrl,
         price,

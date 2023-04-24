@@ -13,15 +13,15 @@ export class ComboController {
       const { name, description, imageUrl, price, products } =
         req.body as CreateComboDto;
 
-      const lowerCaseName: string = name.trim().toLowerCase();
+      const filterdName: string = name.trim().toLowerCase();
 
       const comboFound: Combo | null = await ComboService.getComboByName(
-        lowerCaseName
+        filterdName
       );
 
       if (comboFound) {
         throw new ConflictException(
-          `The combo with the name ${lowerCaseName} already exists`
+          `The combo with the name ${filterdName} already exists`
         );
       }
 
@@ -36,7 +36,7 @@ export class ComboController {
       }
 
       const createComboDto: CreateComboDto = {
-        name: lowerCaseName,
+        name: filterdName,
         description,
         imageUrl,
         price,

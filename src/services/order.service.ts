@@ -60,7 +60,7 @@ class OrderService {
 
     if (user) {
       findOptionsWhere.user = {
-        username: Like(user.toLowerCase()),
+        username: Like(user.trim().toLowerCase()),
       };
     }
 

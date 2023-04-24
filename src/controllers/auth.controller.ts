@@ -43,22 +43,26 @@ export class AuthController {
       const { person, username, email, password, avatarUrl } =
         req.body as CreateRegisterDto;
 
-      const lowerCaseEmail: string = email.trim().toLowerCase();
+      const filteredUsername: string = username.trim().toLowerCase();
+      const filteredEmail: string = email.trim().toLowerCase();
 
-      const userFound: User | null = await UserService.getUserByEmail(
-        lowerCaseEmail
+      const userByUsernameFound: User | null =
+        await UserService.getUserByUsername(filteredUsername);
+
+      const userByEmailFound: User | null = await UserService.getUserByEmail(
+        filteredEmail
       );
 
-      if (userFound) {
+      if (userByUsernameFound || userByEmailFound) {
         throw new ConflictException(
-          `The user with the email ${lowerCaseEmail} already exists`
+          `The user with the username ${filteredUsername} or the email ${filteredEmail} already exists`
         );
       }
 
       const createRegisterDto: CreateRegisterDto = {
         person,
-        username,
-        email: lowerCaseEmail,
+        username: filteredUsername,
+        email: filteredEmail,
         password,
         avatarUrl,
       };
