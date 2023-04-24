@@ -3,12 +3,18 @@ import { NextFunction, Request, Response } from "express";
 import { CreateUserDto, GetUsersQueryDto, UpdateUserDto } from "../dtos";
 import { Roles, User } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
+import { deleteFile } from "../helpers";
 import { UserService } from "../services";
 
 export class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const { person, username, email, password, avatarUrl, roles } =
+      const file = req.file as Express.Multer.File;
+
+      let avatarUrl = file && file.path;
+      if (avatarUrl) await deleteFile(avatarUrl);
+
+      const { person, username, email, password, roles } =
         req.body as CreateUserDto;
 
       const lowerCaseEmail: string = email.trim().toLowerCase();
