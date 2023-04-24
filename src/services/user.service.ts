@@ -18,18 +18,18 @@ class UserService {
       createUserDto;
 
     const newUser: User = this.userRepository.create({
-      username,
-      email,
+      username: username.trim().toLowerCase(),
+      email: email.trim().toLowerCase(),
       password,
       avatarUrl,
       roles: roles?.length ? roles : [Roles.USER],
       person:
         person &&
         this.personRepository.create({
-          firstName: person?.firstName,
-          lastName: person?.lastName,
-          telephone: person?.telephone,
-          gender: person?.gender,
+          firstName: person.firstName?.trim().toLowerCase(),
+          lastName: person.lastName?.trim().toLowerCase(),
+          telephone: person.telephone?.trim().toLowerCase(),
+          gender: person.gender,
         }),
     });
 
@@ -42,7 +42,7 @@ class UserService {
     const findOptionsWhere: FindOptionsWhere<User> = {};
 
     if (username) {
-      findOptionsWhere.username = Like(`%${username.toLowerCase()}%`);
+      findOptionsWhere.username = Like(`%${username.trim().toLowerCase()}%`);
     }
 
     return this.userRepository.find({
@@ -63,7 +63,15 @@ class UserService {
   getUserByEmail(email: string): Promise<User | null> {
     return this.userRepository.findOne({
       where: {
-        email: Like(email.toLowerCase()),
+        email: Like(email.trim().toLowerCase()),
+      },
+    });
+  }
+
+  getUserByUsername(username: string = "") {
+    return this.userRepository.findOne({
+      where: {
+        username: Like(username.trim().toLowerCase()),
       },
     });
   }
@@ -73,22 +81,22 @@ class UserService {
 
     const newUser: User = this.userRepository.create({
       id: user.id,
-      username,
+      username: username?.trim().toLowerCase(),
       avatarUrl,
       roles: roles?.length ? roles : user.roles,
       person: person
         ? this.personRepository.create({
             id: user.person?.id,
             firstName: person.firstName
-              ? person.firstName
+              ? person.firstName.trim().toLowerCase()
               : user.person?.firstName,
-            lastName: person?.lastName
-              ? person.lastName
+            lastName: person.lastName
+              ? person.lastName.trim().toLowerCase()
               : user.person?.lastName,
-            telephone: person?.telephone
-              ? person.telephone
+            telephone: person.telephone
+              ? person.telephone.trim().toLowerCase()
               : user.person?.telephone,
-            gender: person?.gender ? person.gender : user.person?.gender,
+            gender: person.gender ? person.gender : user.person?.gender,
           })
         : user.person,
     });
