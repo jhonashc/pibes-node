@@ -4,5 +4,8 @@ node_modules
 # Ignore built ts files
 dist
 
+# Public files
+public
+
 # Environments
 .env

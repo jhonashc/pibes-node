@@ -37,6 +37,7 @@ router.get(
 
 router.patch(
   "/:id",
+  uploader.single("avatarUrl"),
   validateRequest(IdParamDto, ValidationType.PARAMS),
   validateRequest(UpdateUserDto),
   userController.updateUserById
