@@ -27,6 +27,7 @@ export enum Roles {
 export class User extends Base {
   @Column({
     type: "text",
+    unique: true,
   })
   username: string;
 
