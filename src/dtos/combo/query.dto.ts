@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
+import { IsInt, IsOptional, IsPositive, IsString } from "class-validator";
 
 import { PaginationQueryDto } from "../query";
 
@@ -7,12 +7,12 @@ export class GetCombosQueryDto extends PaginationQueryDto {
   @IsOptional()
   name?: string;
 
-  @IsNumber()
+  @IsInt()
   @IsPositive()
   @IsOptional()
   min?: number;
 
-  @IsNumber()
+  @IsInt()
   @IsPositive()
   @IsOptional()
   max?: number;

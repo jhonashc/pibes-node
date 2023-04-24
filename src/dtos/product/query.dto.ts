@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
+import { IsInt, IsOptional, IsPositive, IsString } from "class-validator";
 
 import { PaginationQueryDto } from "../query";
 
@@ -11,12 +11,12 @@ export class GetProductsQueryDto extends PaginationQueryDto {
   @IsOptional()
   category?: string;
 
-  @IsNumber()
+  @IsInt()
   @IsPositive()
   @IsOptional()
   min?: number;
 
-  @IsNumber()
+  @IsInt()
   @IsPositive()
   @IsOptional()
   max?: number;
