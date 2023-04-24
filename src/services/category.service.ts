@@ -50,7 +50,7 @@ class CategoryService {
   getCategoryByName(name: string): Promise<Category | null> {
     return this.categoryRepository.findOne({
       where: {
-        name: Like(name),
+        name: Like(name.toLowerCase()),
       },
     });
   }

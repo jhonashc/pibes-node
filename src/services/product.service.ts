@@ -62,13 +62,13 @@ class ProductService {
     const findOptionsWhere: FindOptionsWhere<Product> = {};
 
     if (name) {
-      findOptionsWhere.name = Like(`%${name}%`);
+      findOptionsWhere.name = Like(`%${name.toLowerCase()}%`);
     }
 
     if (category) {
       findOptionsWhere.categories = {
         category: {
-          name: Like(category),
+          name: Like(category.toLowerCase()),
         },
       };
     }
@@ -99,7 +99,7 @@ class ProductService {
   getProductByName(name: string): Promise<Product | null> {
     return this.productRepository.findOne({
       where: {
-        name,
+        name: name.toLowerCase(),
       },
     });
   }

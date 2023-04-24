@@ -63,7 +63,7 @@ class UserService {
   getUserByEmail(email: string): Promise<User | null> {
     return this.userRepository.findOne({
       where: {
-        email: Like(email),
+        email: Like(email.toLowerCase()),
       },
     });
   }

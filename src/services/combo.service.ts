@@ -47,7 +47,7 @@ class ComboService {
     const findOptionsWhere: FindOptionsWhere<Combo> = {};
 
     if (name) {
-      findOptionsWhere.name = Like(`%${name}%`);
+      findOptionsWhere.name = Like(`%${name.toLowerCase()}%`);
     }
 
     if (min) {
@@ -76,7 +76,7 @@ class ComboService {
   getComboByName(name: string): Promise<Combo | null> {
     return this.comboRepository.findOne({
       where: {
-        name: Like(name),
+        name: Like(name.toLowerCase()),
       },
     });
   }
