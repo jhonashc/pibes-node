@@ -18,11 +18,10 @@ class CategoryService {
   }
 
   createCategory(createCategoryDto: CreateCategoryDto): Promise<Category> {
-    const { name, emojiCode } = createCategoryDto;
+    const { name } = createCategoryDto;
 
     const newCategory: Category = this.categoryRepository.create({
       name: name.trim().toLowerCase(),
-      emojiCode,
     });
 
     return this.categoryRepository.save(newCategory);
@@ -74,12 +73,11 @@ class CategoryService {
     category: Category,
     updateCategoryDto: UpdateCategoryDto
   ): Promise<Category> {
-    const { name, emojiCode } = updateCategoryDto;
+    const { name } = updateCategoryDto;
 
     const newCategory: Category = this.categoryRepository.create({
       id: category.id,
       name: name?.trim().toLowerCase(),
-      emojiCode,
     });
 
     return this.categoryRepository.save(newCategory);
