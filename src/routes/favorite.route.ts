@@ -19,7 +19,8 @@ const favoriteController = new FavoriteController();
 
 /* Combos */
 router.post(
-  "/combos",
+  "/:userId/combos",
+  validateRequest(UserIdParamDto, ValidationType.PARAMS),
   validateRequest(CreateFavoriteComboDto),
   favoriteController.createFavoriteCombo
 );
@@ -38,7 +39,8 @@ router.delete(
 
 /* Products */
 router.post(
-  "/products",
+  "/:userId/products",
+  validateRequest(UserIdParamDto, ValidationType.PARAMS),
   validateRequest(CreateFavoriteProductDto),
   favoriteController.createFavoriteProduct
 );
