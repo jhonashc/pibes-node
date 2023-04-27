@@ -5,7 +5,5 @@ export class CreateFavoriteComboDto {
   @IsNotEmpty()
   comboId: string;
 
-  @IsUUID()
-  @IsNotEmpty()
   userId: string;
 }

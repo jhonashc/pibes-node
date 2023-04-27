@@ -5,7 +5,5 @@ export class CreateFavoriteProductDto {
   @IsNotEmpty()
   productId: string;
 
-  @IsUUID()
-  @IsNotEmpty()
   userId: string;
 }
