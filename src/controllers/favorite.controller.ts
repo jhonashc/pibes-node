@@ -30,21 +30,22 @@ import { ComboMapped, ProductMapped } from "../interfaces";
 export class FavoriteController {
   async createFavoriteCombo(req: Request, res: Response, next: NextFunction) {
     try {
-      const { comboId, userId } = req.body as CreateFavoriteComboDto;
-
-      const comboFound: Combo | null = await ComboService.getComboById(comboId);
-
-      if (!comboFound) {
-        throw new NotFoundException(
-          `The combo with id ${comboId} has not been found`
-        );
-      }
+      const { userId } = req.params;
+      const { comboId } = req.body as CreateFavoriteComboDto;
 
       const userFound: User | null = await UserService.getUserById(userId);
 
       if (!userFound) {
         throw new NotFoundException(
           `The user with id ${userId} has not been found`
+        );
+      }
+
+      const comboFound: Combo | null = await ComboService.getComboById(comboId);
+
+      if (!comboFound) {
+        throw new NotFoundException(
+          `The combo with id ${comboId} has not been found`
         );
       }
 
@@ -76,7 +77,16 @@ export class FavoriteController {
 
   async createFavoriteProduct(req: Request, res: Response, next: NextFunction) {
     try {
-      const { productId, userId } = req.body as CreateFavoriteProductDto;
+      const { userId } = req.params;
+      const { productId } = req.body as CreateFavoriteProductDto;
+
+      const userFound: User | null = await UserService.getUserById(userId);
+
+      if (!userFound) {
+        throw new NotFoundException(
+          `The user with id ${userId} has not been found`
+        );
+      }
 
       const productFound: Product | null = await ProductService.getProductById(
         productId
@@ -85,14 +95,6 @@ export class FavoriteController {
       if (!productFound) {
         throw new NotFoundException(
           `The product with id ${productId} has not been found`
-        );
-      }
-
-      const userFound: User | null = await UserService.getUserById(userId);
-
-      if (!userFound) {
-        throw new NotFoundException(
-          `The user with id ${userId} has not been found`
         );
       }
 
