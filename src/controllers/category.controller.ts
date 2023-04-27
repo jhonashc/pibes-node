@@ -13,7 +13,7 @@ import { CategoryService } from "../services";
 export class CategoryController {
   async createCategory(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, emojiCode } = req.body as CreateCategoryDto;
+      const { name } = req.body as CreateCategoryDto;
 
       const filteredName: string = name.trim().toLowerCase();
 
@@ -28,7 +28,6 @@ export class CategoryController {
 
       const createCategoryDto: CreateCategoryDto = {
         name: filteredName,
-        emojiCode,
       };
 
       const createdCategory: Category = await CategoryService.createCategory(
@@ -88,7 +87,7 @@ export class CategoryController {
   async updateCategoryById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { name, emojiCode } = req.body as UpdateCategoryDto;
+      const { name } = req.body as UpdateCategoryDto;
 
       const categoryFound: Category | null =
         await CategoryService.getCategoryById(id);
@@ -101,7 +100,6 @@ export class CategoryController {
 
       const updateCategoryDto: UpdateCategoryDto = {
         name,
-        emojiCode,
       };
 
       const updatedCategory: Category =
