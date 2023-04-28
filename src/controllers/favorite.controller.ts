@@ -190,9 +190,17 @@ export class FavoriteController {
     }
   }
 
-  async deleteFavoriteCombo(req: Request, res: Response, next: NextFunction) {
+  async getFavoriteCombo(req: Request, res: Response, next: NextFunction) {
     try {
       const { comboId, userId } = req.params;
+
+      const userFound: User | null = await UserService.getUserById(userId);
+
+      if (!userFound) {
+        throw new NotFoundException(
+          `The user with id ${userId} has not been found`
+        );
+      }
 
       const comboFound: Combo | null = await ComboService.getComboById(comboId);
 
@@ -202,11 +210,87 @@ export class FavoriteController {
         );
       }
 
+      const favoriteComboFound: FavoriteCombo | null =
+        await FavoriteService.getFavoriteCombo(comboId, userId);
+
+      if (!favoriteComboFound) {
+        throw new NotFoundException(
+          `The combo with id ${comboId} has not been found in the favorites`
+        );
+      }
+
+      const mappedCombo: ComboMapped = mapCombo(favoriteComboFound.combo);
+
+      res.json({
+        status: true,
+        data: mappedCombo,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getFavoriteProduct(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { productId, userId } = req.params;
+
       const userFound: User | null = await UserService.getUserById(userId);
 
       if (!userFound) {
         throw new NotFoundException(
           `The user with id ${userId} has not been found`
+        );
+      }
+
+      const productFound: Product | null = await ProductService.getProductById(
+        productId
+      );
+
+      if (!productFound) {
+        throw new NotFoundException(
+          `The product with id ${productId} has not been found`
+        );
+      }
+
+      const favoriteProductFound: FavoriteProduct | null =
+        await FavoriteService.getFavoriteProduct(productId, userId);
+
+      if (!favoriteProductFound) {
+        throw new NotFoundException(
+          `The product with id ${productId} has not been found in the favorites`
+        );
+      }
+
+      const mappedProduct: ProductMapped = mapProduct(
+        favoriteProductFound.product
+      );
+
+      res.json({
+        status: true,
+        data: mappedProduct,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteFavoriteCombo(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { comboId, userId } = req.params;
+
+      const userFound: User | null = await UserService.getUserById(userId);
+
+      if (!userFound) {
+        throw new NotFoundException(
+          `The user with id ${userId} has not been found`
+        );
+      }
+
+      const comboFound: Combo | null = await ComboService.getComboById(comboId);
+
+      if (!comboFound) {
+        throw new NotFoundException(
+          `The combo with id ${comboId} has not been found`
         );
       }
 
@@ -237,6 +321,14 @@ export class FavoriteController {
     try {
       const { productId, userId } = req.params;
 
+      const userFound: User | null = await UserService.getUserById(userId);
+
+      if (!userFound) {
+        throw new NotFoundException(
+          `The user with id ${userId} has not been found`
+        );
+      }
+
       const productFound: Product | null = await ProductService.getProductById(
         productId
       );
@@ -244,14 +336,6 @@ export class FavoriteController {
       if (!productFound) {
         throw new NotFoundException(
           `The product with id ${productId} has not been found`
-        );
-      }
-
-      const userFound: User | null = await UserService.getUserById(userId);
-
-      if (!userFound) {
-        throw new NotFoundException(
-          `The user with id ${userId} has not been found`
         );
       }
 
