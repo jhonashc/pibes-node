@@ -31,6 +31,12 @@ router.get(
   favoriteController.getFavoriteCombos
 );
 
+router.get(
+  "/:userId/combos/:comboId",
+  validateRequest(FavoriteComboIdParamDto, ValidationType.PARAMS),
+  favoriteController.getFavoriteCombo
+);
+
 router.delete(
   "/:userId/combos/:comboId",
   validateRequest(FavoriteComboIdParamDto, ValidationType.PARAMS),
@@ -49,6 +55,12 @@ router.get(
   "/:userId/products",
   validateRequest(UserIdParamDto, ValidationType.PARAMS),
   favoriteController.getFavoriteProducts
+);
+
+router.get(
+  "/:userId/products/:productId",
+  validateRequest(FavoriteProductIdParamDto, ValidationType.PARAMS),
+  favoriteController.getFavoriteProduct
 );
 
 router.delete(
