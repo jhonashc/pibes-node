@@ -4,11 +4,19 @@ import {
   LessThanOrEqual,
   Like,
   MoreThanOrEqual,
+  Not,
   Repository,
 } from "typeorm";
 
 import { AppDataSource } from "../config";
-import { CreateComboDto, GetCombosQueryDto, UpdateComboDto } from "../dtos";
+
+import {
+  CreateComboDto,
+  GetCombosQueryDto,
+  GetSimilarCombosQueryDto,
+  UpdateComboDto,
+} from "../dtos";
+
 import { Combo, ProductCombo } from "../entities";
 
 class ComboService {
@@ -60,6 +68,23 @@ class ComboService {
 
     return this.comboRepository.find({
       where: findOptionsWhere,
+      take: limit,
+      skip: offset,
+    });
+  }
+
+  getSimilarCombos(
+    id: string,
+    name: string,
+    getSimilarCombosQueryDto: GetSimilarCombosQueryDto
+  ): Promise<Combo[]> {
+    const { limit = 10, offset = 0 } = getSimilarCombosQueryDto;
+
+    return this.comboRepository.find({
+      where: {
+        id: Not(id),
+        name: Like(`%${name.trim().toLowerCase()}}%`),
+      },
       take: limit,
       skip: offset,
     });
