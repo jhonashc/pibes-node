@@ -5,6 +5,7 @@ import { ComboController } from "../controllers";
 import {
   CreateComboDto,
   GetCombosQueryDto,
+  GetSimilarCombosQueryDto,
   IdParamDto,
   UpdateComboDto,
 } from "../dtos";
@@ -22,6 +23,13 @@ router.get(
   "/",
   validateRequest(GetCombosQueryDto, ValidationType.QUERY),
   comboController.getCombos
+);
+
+router.get(
+  "/:id/similar",
+  validateRequest(IdParamDto, ValidationType.PARAMS),
+  validateRequest(GetSimilarCombosQueryDto, ValidationType.QUERY),
+  comboController.getSimilarCombos
 );
 
 router.get(
