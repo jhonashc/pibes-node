@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import {
   CreateProductDto,
   GetProductsQueryDto,
+  GetSimilarProductsQueryDto,
   UpdateProductDto,
 } from "../dtos";
 
@@ -77,6 +78,43 @@ export class ProductController {
       res.json({
         status: true,
         data: mappedProducts,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getSimilarProducts(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const { limit, offset } = req.query as GetSimilarProductsQueryDto;
+
+      const productFound: Product | null = await ProductService.getProductById(
+        id
+      );
+
+      if (!productFound) {
+        throw new NotFoundException(
+          `The product with id ${id} has not been found`
+        );
+      }
+
+      const categoryIds: string[] = productFound.categories.map(
+        ({ categoryId }) => categoryId
+      );
+
+      const similarProducts: Product[] =
+        await ProductService.getSimilarProducts(id, categoryIds, {
+          limit,
+          offset,
+        });
+
+      const mappedSimilarProducts: ProductMapped[] =
+        mapProducts(similarProducts);
+
+      res.json({
+        status: true,
+        data: mappedSimilarProducts,
       });
     } catch (error) {
       next(error);
