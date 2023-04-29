@@ -4,7 +4,8 @@ import { ProductController } from "../controllers";
 
 import {
   CreateProductDto,
-  GetUsersQueryDto,
+  GetProductsQueryDto,
+  GetSimilarProductsQueryDto,
   IdParamDto,
   UpdateProductDto,
 } from "../dtos";
@@ -24,8 +25,15 @@ router.post(
 
 router.get(
   "/",
-  validateRequest(GetUsersQueryDto, ValidationType.QUERY),
+  validateRequest(GetProductsQueryDto, ValidationType.QUERY),
   productController.getProducts
+);
+
+router.get(
+  "/:id/similar",
+  validateRequest(IdParamDto, ValidationType.PARAMS),
+  validateRequest(GetSimilarProductsQueryDto, ValidationType.QUERY),
+  productController.getSimilarProducts
 );
 
 router.get(
