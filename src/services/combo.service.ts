@@ -17,27 +17,37 @@ import {
   UpdateComboDto,
 } from "../dtos";
 
-import { Combo, ProductCombo } from "../entities";
+import { Combo, ComboCategory, ComboProduct } from "../entities";
 
 class ComboService {
   private readonly comboRepository: Repository<Combo>;
-  private readonly productComboRepository: Repository<ProductCombo>;
+  private readonly comboProductRepository: Repository<ComboProduct>;
+  private readonly comboCategoryRepository: Repository<ComboCategory>;
 
   constructor() {
     this.comboRepository = AppDataSource.getRepository(Combo);
-    this.productComboRepository = AppDataSource.getRepository(ProductCombo);
+    this.comboProductRepository = AppDataSource.getRepository(ComboProduct);
+    this.comboCategoryRepository = AppDataSource.getRepository(ComboCategory);
   }
 
   createCombo(createComboDto: CreateComboDto): Promise<Combo> {
-    const { name, description, price, imageUrl, products } = createComboDto;
+    const { name, description, price, imageUrl, categoryIds, products } =
+      createComboDto;
 
     const newCombo: Combo = this.comboRepository.create({
       name: name.trim().toLowerCase(),
       description,
       price,
       imageUrl,
+      categories: categoryIds.map((categoryId) =>
+        this.comboCategoryRepository.create({
+          category: {
+            id: categoryId,
+          },
+        })
+      ),
       products: products.map(({ id, quantity }) =>
-        this.productComboRepository.create({
+        this.comboProductRepository.create({
           product: {
             id,
           },
@@ -75,7 +85,7 @@ class ComboService {
 
   getSimilarCombos(
     id: string,
-    name: string,
+    categoryIds: string[],
     getSimilarCombosQueryDto: GetSimilarCombosQueryDto
   ): Promise<Combo[]> {
     const { limit = 10, offset = 0 } = getSimilarCombosQueryDto;
@@ -83,7 +93,11 @@ class ComboService {
     return this.comboRepository.find({
       where: {
         id: Not(id),
-        name: Like(`%${name.trim().toLowerCase()}}%`),
+        categories: {
+          category: {
+            id: In(categoryIds),
+          },
+        },
       },
       take: limit,
       skip: offset,
@@ -118,7 +132,8 @@ class ComboService {
     combo: Combo,
     updateComboDto: UpdateComboDto
   ): Promise<Combo | undefined> {
-    const { name, description, imageUrl, price, products } = updateComboDto;
+    const { name, description, imageUrl, price, categoryIds, products } =
+      updateComboDto;
 
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
@@ -133,15 +148,31 @@ class ComboService {
         price,
       });
 
+      if (categoryIds) {
+        await this.comboCategoryRepository.delete({
+          combo: {
+            id: combo.id,
+          },
+        });
+
+        newCombo.categories = categoryIds.map((categoryId) =>
+          this.comboCategoryRepository.create({
+            category: {
+              id: categoryId,
+            },
+          })
+        );
+      }
+
       if (products?.length) {
-        await this.productComboRepository.delete({
+        await this.comboProductRepository.delete({
           combo: {
             id: combo.id,
           },
         });
 
         newCombo.products = products.map(({ id, quantity }) =>
-          this.productComboRepository.create({
+          this.comboProductRepository.create({
             product: {
               id,
             },
