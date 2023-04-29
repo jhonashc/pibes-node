@@ -4,6 +4,7 @@ import { Base } from "./base.entity";
 import { FavoriteCombo } from "./favorite-combo.entity";
 import { OrderDetail } from "./order-detail.entity";
 import { ProductCombo } from "./product-combo.entity";
+import { ComboCategory } from "./combo-category.entity";
 
 @Entity("combo")
 export class Combo extends Base {
@@ -32,6 +33,12 @@ export class Combo extends Base {
   imageUrl?: string;
 
   /* Relations */
+  @OneToMany(() => ComboCategory, (comboCategory) => comboCategory.combo, {
+    eager: true,
+    cascade: true,
+  })
+  categories: ComboCategory[];
+
   @OneToMany(() => ProductCombo, (productCombo) => productCombo.combo, {
     eager: true,
     cascade: true,
