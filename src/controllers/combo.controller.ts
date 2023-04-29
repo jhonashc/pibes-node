@@ -6,28 +6,36 @@ import {
   GetSimilarCombosQueryDto,
   UpdateComboDto,
 } from "../dtos";
-import { Combo, Product } from "../entities";
+
+import { Category, Combo, Product } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
 import { mapCombo, mapCombos } from "../helpers";
 import { ComboMapped } from "../interfaces";
-import { ComboService, ProductService } from "../services";
+import { CategoryService, ComboService, ProductService } from "../services";
 
 export class ComboController {
   async createCombo(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, description, imageUrl, price, products } =
+      const { name, description, imageUrl, price, categoryIds, products } =
         req.body as CreateComboDto;
 
-      const filterdName: string = name.trim().toLowerCase();
+      const filteredName: string = name.trim().toLowerCase();
 
       const comboFound: Combo | null = await ComboService.getComboByName(
-        filterdName
+        filteredName
       );
 
       if (comboFound) {
         throw new ConflictException(
-          `The combo with the name ${filterdName} already exists`
+          `The combo with the name ${filteredName} already exists`
         );
+      }
+
+      const categoriesFound: Category[] =
+        await CategoryService.getCategoriesByIds(categoryIds);
+
+      if (categoriesFound.length !== categoryIds.length) {
+        throw new NotFoundException("The id of some category is invalid");
       }
 
       const productIds: string[] = products.map(({ id }) => id);
@@ -41,10 +49,11 @@ export class ComboController {
       }
 
       const createComboDto: CreateComboDto = {
-        name: filterdName,
+        name: filteredName,
         description,
         imageUrl,
         price,
+        categoryIds,
         products,
       };
 
@@ -97,9 +106,13 @@ export class ComboController {
         );
       }
 
+      const categoryIds: string[] = comboFound.categories.map(
+        ({ categoryId }) => categoryId
+      );
+
       const similarCombos: Combo[] = await ComboService.getSimilarCombos(
         id,
-        comboFound.name,
+        categoryIds,
         { limit, offset }
       );
 
@@ -140,7 +153,7 @@ export class ComboController {
   async updateComboById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { name, description, imageUrl, price, products } =
+      const { name, description, imageUrl, price, categoryIds, products } =
         req.body as UpdateComboDto;
 
       const comboFound: Combo | null = await ComboService.getComboById(id);
@@ -151,7 +164,16 @@ export class ComboController {
         );
       }
 
-      if (products?.length) {
+      if (categoryIds) {
+        const categoriesFound: Category[] =
+          await CategoryService.getCategoriesByIds(categoryIds);
+
+        if (categoriesFound.length !== categoryIds.length) {
+          throw new NotFoundException("The id of some category is invalid");
+        }
+      }
+
+      if (products) {
         const productIds: string[] = products.map(({ id }) => id);
 
         const productsFound: Product[] = await ProductService.getProductsByIds(
@@ -168,6 +190,7 @@ export class ComboController {
         description,
         imageUrl,
         price,
+        categoryIds,
         products,
       };
 
