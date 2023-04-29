@@ -6,7 +6,7 @@ import {
   IsUUID,
 } from "class-validator";
 
-export class CreateProductComboDto {
+export class CreateComboProductDto {
   @IsUUID()
   @IsNotEmpty()
   id: string;

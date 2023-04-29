@@ -8,7 +8,7 @@ export {
 
 export {
   CreateComboDto,
-  CreateProductComboDto,
+  CreateComboProductDto,
   GetCombosQueryDto,
   GetSimilarCombosQueryDto,
   UpdateComboDto,
