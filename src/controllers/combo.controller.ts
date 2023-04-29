@@ -1,6 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 
-import { CreateComboDto, GetCombosQueryDto, UpdateComboDto } from "../dtos";
+import {
+  CreateComboDto,
+  GetCombosQueryDto,
+  GetSimilarCombosQueryDto,
+  UpdateComboDto,
+} from "../dtos";
 import { Combo, Product } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
 import { mapCombo, mapCombos } from "../helpers";
@@ -73,6 +78,36 @@ export class ComboController {
       res.json({
         status: true,
         data: mappedCombos,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getSimilarCombos(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const { limit, offset } = req.query as GetSimilarCombosQueryDto;
+
+      const comboFound: Combo | null = await ComboService.getComboById(id);
+
+      if (!comboFound) {
+        throw new NotFoundException(
+          `The combo with id ${id} has not been found`
+        );
+      }
+
+      const similarCombos: Combo[] = await ComboService.getSimilarCombos(
+        id,
+        comboFound.name,
+        { limit, offset }
+      );
+
+      const mappedSimilarCombos: ComboMapped[] = mapCombos(similarCombos);
+
+      res.json({
+        status: true,
+        data: mappedSimilarCombos,
       });
     } catch (error) {
       next(error);
