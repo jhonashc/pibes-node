@@ -1,6 +1,7 @@
 import { Category } from "../entities";
 
 export interface ComboMapped {
+  categories: Category[];
   products: ComboProductMapped[];
 }
 

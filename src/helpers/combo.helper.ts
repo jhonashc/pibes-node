@@ -4,6 +4,7 @@ import { ComboMapped } from "../interfaces";
 export const mapCombo = (combo: Combo): ComboMapped => {
   return {
     ...combo,
+    categories: combo.categories.map(({ category }) => category),
     products: combo.products.map(({ product, quantity }) => ({
       product: {
         ...product,
