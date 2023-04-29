@@ -4,6 +4,7 @@ import {
   LessThanOrEqual,
   Like,
   MoreThanOrEqual,
+  Not,
   Repository,
 } from "typeorm";
 
@@ -12,6 +13,7 @@ import { AppDataSource } from "../config";
 import {
   CreateProductDto,
   GetProductsQueryDto,
+  GetSimilarProductsQueryDto,
   UpdateProductDto,
 } from "../dtos";
 
@@ -83,6 +85,27 @@ class ProductService {
 
     return this.productRepository.find({
       where: findOptionsWhere,
+      take: limit,
+      skip: offset,
+    });
+  }
+
+  getSimilarProducts(
+    id: string,
+    categoryIds: string[],
+    getSimilarProductsQueryDto: GetSimilarProductsQueryDto
+  ): Promise<Product[]> {
+    const { limit = 10, offset = 0 } = getSimilarProductsQueryDto;
+
+    return this.productRepository.find({
+      where: {
+        id: Not(id),
+        categories: {
+          category: {
+            id: In(categoryIds),
+          },
+        },
+      },
       take: limit,
       skip: offset,
     });
