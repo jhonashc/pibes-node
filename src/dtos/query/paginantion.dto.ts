@@ -11,7 +11,6 @@ export class PaginationQueryDto {
 
   @IsOptional()
   @Min(0)
-  @Max(20)
   @Type(() => Number)
   offset?: number;
 }

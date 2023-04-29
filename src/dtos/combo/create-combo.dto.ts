@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import {
   ArrayNotEmpty,
   IsArray,
@@ -10,7 +11,6 @@ import {
 } from "class-validator";
 
 import { CreateProductComboDto } from "./create-product-combo.dto";
-import { Type } from "class-transformer";
 
 export class CreateComboDto {
   @IsString()

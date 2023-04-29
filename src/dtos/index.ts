@@ -10,6 +10,7 @@ export {
   CreateComboDto,
   CreateProductComboDto,
   GetCombosQueryDto,
+  GetSimilarCombosQueryDto,
   UpdateComboDto,
 } from "./combo";
 
@@ -34,6 +35,7 @@ export { IdParamDto, UserIdParamDto } from "./params";
 export {
   CreateProductDto,
   GetProductsQueryDto,
+  GetSimilarProductsQueryDto,
   UpdateProductDto,
 } from "./product";
 

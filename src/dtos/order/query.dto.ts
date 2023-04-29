@@ -1,6 +1,7 @@
 import { IsEnum, IsOptional, IsString } from "class-validator";
 
 import { OrderStatus } from "../../entities";
+
 import { PaginationQueryDto } from "../query";
 
 export class GetOrdersQueryDto extends PaginationQueryDto {

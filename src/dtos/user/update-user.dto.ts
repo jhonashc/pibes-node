@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import {
   ArrayNotEmpty,
   IsArray,
@@ -7,7 +8,6 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator";
-import { Type } from "class-transformer";
 
 import { Roles } from "../../entities";
 

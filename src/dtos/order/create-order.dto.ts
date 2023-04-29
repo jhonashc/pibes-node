@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import {
   ArrayNotEmpty,
   IsArray,
@@ -8,7 +9,6 @@ import {
   IsUUID,
   ValidateNested,
 } from "class-validator";
-import { Type } from "class-transformer";
 
 import { DeliveryType, OrderStatus, PaymentMethods } from "../../entities";
 

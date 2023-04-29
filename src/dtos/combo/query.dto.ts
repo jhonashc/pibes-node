@@ -17,3 +17,5 @@ export class GetCombosQueryDto extends PaginationQueryDto {
   @IsOptional()
   max?: number;
 }
+
+export class GetSimilarCombosQueryDto extends PaginationQueryDto {}

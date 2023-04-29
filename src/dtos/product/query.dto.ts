@@ -21,3 +21,5 @@ export class GetProductsQueryDto extends PaginationQueryDto {
   @IsOptional()
   max?: number;
 }
+
+export class GetSimilarProductsQueryDto extends PaginationQueryDto {}
