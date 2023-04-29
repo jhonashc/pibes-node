@@ -1,10 +1,10 @@
 import { Column, Entity, OneToMany } from "typeorm";
 
 import { Base } from "./base.entity";
+import { ComboProduct } from "./combo-product.entity";
+import { ComboCategory } from "./combo-category.entity";
 import { FavoriteCombo } from "./favorite-combo.entity";
 import { OrderDetail } from "./order-detail.entity";
-import { ProductCombo } from "./product-combo.entity";
-import { ComboCategory } from "./combo-category.entity";
 
 @Entity("combo")
 export class Combo extends Base {
@@ -39,11 +39,11 @@ export class Combo extends Base {
   })
   categories: ComboCategory[];
 
-  @OneToMany(() => ProductCombo, (productCombo) => productCombo.combo, {
+  @OneToMany(() => ComboProduct, (comboProduct) => comboProduct.combo, {
     eager: true,
     cascade: true,
   })
-  products: ProductCombo[];
+  products: ComboProduct[];
 
   @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.combo)
   orderDetails?: OrderDetail[];

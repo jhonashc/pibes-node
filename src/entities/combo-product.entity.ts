@@ -4,8 +4,8 @@ import { Combo } from "./combo.entity";
 import { Date } from "./date.entity";
 import { Product } from "./product.entity";
 
-@Entity("product_combo")
-export class ProductCombo extends Date {
+@Entity("combo_product")
+export class ComboProduct extends Date {
   @PrimaryColumn({
     name: "combo_id",
   })
