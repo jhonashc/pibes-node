@@ -1,22 +1,11 @@
-import { Category } from "../entities";
-
-export interface ComboMapped {
-  categories: Category[];
-  products: ComboProductMapped[];
-}
-
-export interface ComboProductMapped {
-  product: ProductMapped;
-  quantity: number;
-}
+import { Category, Product } from "../entities";
 
 export interface OrderMapped {
   details: OrderDetailMapped[];
 }
 
 export interface OrderDetailMapped {
-  item: ComboMapped | ProductMapped;
-  isCombo: boolean;
+  product: ProductMapped;
   quantity: number;
 }
 

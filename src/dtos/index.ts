@@ -7,19 +7,8 @@ export {
 } from "./category";
 
 export {
-  CreateComboDto,
-  CreateComboProductDto,
-  GetCombosQueryDto,
-  GetSimilarCombosQueryDto,
-  UpdateComboDto,
-} from "./combo";
-
-export {
-  CreateFavoriteComboDto,
   CreateFavoriteProductDto,
-  FavoriteComboIdParamDto,
   FavoriteProductIdParamDto,
-  GetFavoriteCombosQueryDto,
   GetFavoriteProductsQueryDto,
 } from "./favorite";
 

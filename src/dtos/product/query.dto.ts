@@ -1,6 +1,7 @@
 import { IsInt, IsOptional, IsPositive, IsString } from "class-validator";
 
 import { PaginationQueryDto } from "../query";
+import { Type } from "class-transformer";
 
 export class GetProductsQueryDto extends PaginationQueryDto {
   @IsString()
@@ -14,11 +15,13 @@ export class GetProductsQueryDto extends PaginationQueryDto {
   @IsInt()
   @IsPositive()
   @IsOptional()
+  @Type(() => Number)
   min?: number;
 
   @IsInt()
   @IsPositive()
   @IsOptional()
+  @Type(() => Number)
   max?: number;
 }
 

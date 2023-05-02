@@ -11,7 +11,6 @@ import { encryptPassword } from "../helpers";
 
 import { Address } from "./address.entity";
 import { Base } from "./base.entity";
-import { FavoriteCombo } from "./favorite-combo.entity";
 import { FavoriteProduct } from "./favorite-product.entity";
 import { Order } from "./order.entity";
 import { Person } from "./person.entity";
@@ -76,9 +75,6 @@ export class User extends Base {
 
   @OneToMany(() => FavoriteProduct, (favoriteProduct) => favoriteProduct.user)
   favoriteProducts?: FavoriteProduct[];
-
-  @OneToMany(() => FavoriteCombo, (favoriteCombo) => favoriteCombo.user)
-  favoriteCombos?: FavoriteCombo[];
 
   /* Listeners */
   @BeforeInsert()

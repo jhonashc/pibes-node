@@ -1,43 +1,15 @@
 import { Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
-
-import {
-  CreateFavoriteComboDto,
-  CreateFavoriteProductDto,
-  GetFavoriteCombosQueryDto,
-  GetFavoriteProductsQueryDto,
-} from "../dtos";
-
-import { FavoriteCombo, FavoriteProduct } from "../entities";
+import { CreateFavoriteProductDto, GetFavoriteProductsQueryDto } from "../dtos";
+import { FavoriteProduct } from "../entities";
 
 class FavoriteService {
-  private readonly favoriteComboRepository: Repository<FavoriteCombo>;
   private readonly favoriteProductRepository: Repository<FavoriteProduct>;
 
   constructor() {
-    this.favoriteComboRepository = AppDataSource.getRepository(FavoriteCombo);
     this.favoriteProductRepository =
       AppDataSource.getRepository(FavoriteProduct);
-  }
-
-  createFavoriteCombo(
-    createFavoriteComboDto: CreateFavoriteComboDto
-  ): Promise<FavoriteCombo> {
-    const { comboId, userId } = createFavoriteComboDto;
-
-    const newFavoriteCombo: FavoriteCombo = this.favoriteComboRepository.create(
-      {
-        combo: {
-          id: comboId,
-        },
-        user: {
-          id: userId,
-        },
-      }
-    );
-
-    return this.favoriteComboRepository.save(newFavoriteCombo);
   }
 
   createFavoriteProduct(
@@ -56,26 +28,6 @@ class FavoriteService {
       });
 
     return this.favoriteProductRepository.save(newFavoriteProduct);
-  }
-
-  getFavoriteCombos(
-    userId: string,
-    getFavoriteCombosQueryDto: GetFavoriteCombosQueryDto
-  ): Promise<FavoriteCombo[]> {
-    const { limit = 10, offset = 0 } = getFavoriteCombosQueryDto;
-
-    return this.favoriteComboRepository.find({
-      where: {
-        user: {
-          id: userId,
-        },
-      },
-      relations: {
-        combo: true,
-      },
-      take: limit,
-      skip: offset,
-    });
   }
 
   getFavoriteProducts(
@@ -98,22 +50,6 @@ class FavoriteService {
     });
   }
 
-  getFavoriteCombo(
-    comboId: string,
-    userId: string
-  ): Promise<FavoriteCombo | null> {
-    return this.favoriteComboRepository.findOne({
-      where: {
-        combo: {
-          id: comboId,
-        },
-        user: {
-          id: userId,
-        },
-      },
-    });
-  }
-
   getFavoriteProduct(
     productId: string,
     userId: string
@@ -128,10 +64,6 @@ class FavoriteService {
         },
       },
     });
-  }
-
-  deleteFavoriteCombo(favoriteCombo: FavoriteCombo): Promise<FavoriteCombo> {
-    return this.favoriteComboRepository.remove(favoriteCombo);
   }
 
   deleteFavoriteProduct(

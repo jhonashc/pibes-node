@@ -1,6 +1,5 @@
 export { default as AddressService } from "./address.service";
 export { default as CategoryService } from "./category.service";
-export { default as ComboService } from "./combo.service";
 export { default as FavoriteService } from "./favorite.service";
 export { default as OrderService } from "./order.service";
 export { default as ProductService } from "./product.service";

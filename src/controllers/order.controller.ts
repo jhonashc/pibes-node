@@ -1,17 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 
 import { CreateOrderDto, GetOrdersQueryDto, UpdateOrderDto } from "../dtos";
-import { Combo, Order, Product, User } from "../entities";
+import { Order, Product, User } from "../entities";
 import { NotFoundException } from "../exceptions";
 import { mapOrder, mapOrders } from "../helpers";
 import { OrderMapped } from "../interfaces";
-
-import {
-  ComboService,
-  OrderService,
-  ProductService,
-  UserService,
-} from "../services";
+import { OrderService, ProductService, UserService } from "../services";
 
 export class OrderController {
   async createOrder(req: Request, res: Response, next: NextFunction) {
@@ -27,23 +21,7 @@ export class OrderController {
         );
       }
 
-      const comboIds: string[] = details
-        .filter((orderDetail) => orderDetail.isCombo)
-        .map(({ id }) => id);
-
-      const productIds: string[] = details
-        .filter((orderDetail) => !orderDetail.isCombo)
-        .map(({ id }) => id);
-
-      if (comboIds.length) {
-        const combosFound: Combo[] = await ComboService.getCombosByIds(
-          comboIds
-        );
-
-        if (combosFound.length !== comboIds.length) {
-          throw new NotFoundException("The id of some combo is invalid");
-        }
-      }
+      const productIds: string[] = details.map(({ productId }) => productId);
 
       if (productIds.length) {
         const productsFound: Product[] = await ProductService.getProductsByIds(
@@ -143,23 +121,7 @@ export class OrderController {
       }
 
       if (details) {
-        const comboIds: string[] = details
-          .filter((orderDetail) => orderDetail.isCombo)
-          .map(({ id }) => id);
-
-        const productIds: string[] = details
-          .filter((orderDetail) => !orderDetail.isCombo)
-          .map(({ id }) => id);
-
-        if (comboIds.length) {
-          const combosFound: Combo[] = await ComboService.getCombosByIds(
-            comboIds
-          );
-
-          if (combosFound.length !== comboIds.length) {
-            throw new NotFoundException("The id of some combo is invalid");
-          }
-        }
+        const productIds: string[] = details.map(({ productId }) => productId);
 
         if (productIds.length) {
           const productsFound: Product[] =

@@ -1,4 +1,5 @@
 import {
+  Between,
   FindOptionsWhere,
   In,
   LessThanOrEqual,
@@ -75,12 +76,16 @@ class ProductService {
       };
     }
 
-    if (min) {
-      findOptionsWhere.price = LessThanOrEqual(min);
+    if (min && !max) {
+      findOptionsWhere.price = MoreThanOrEqual(min);
     }
 
-    if (max) {
-      findOptionsWhere.price = MoreThanOrEqual(max);
+    if (max && !min) {
+      findOptionsWhere.price = LessThanOrEqual(max);
+    }
+
+    if (min && max) {
+      findOptionsWhere.price = Between(min, max);
     }
 
     return this.productRepository.find({

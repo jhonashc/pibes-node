@@ -2,17 +2,15 @@ import { FindOptionsWhere, Like, Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
 import { CreateOrderDto, GetOrdersQueryDto, UpdateOrderDto } from "../dtos";
-import { Combo, Order, OrderDetail, Product, User } from "../entities";
+import { Order, OrderDetail, Product, User } from "../entities";
 
 class OrderService {
-  private readonly comboRepository: Repository<Combo>;
   private readonly orderRepository: Repository<Order>;
   private readonly orderDetailRepository: Repository<OrderDetail>;
   private readonly productRepository: Repository<Product>;
   private readonly userRepository: Repository<User>;
 
   constructor() {
-    this.comboRepository = AppDataSource.getRepository(Combo);
     this.orderRepository = AppDataSource.getRepository(Order);
     this.orderDetailRepository = AppDataSource.getRepository(OrderDetail);
     this.productRepository = AppDataSource.getRepository(Product);
@@ -31,23 +29,14 @@ class OrderService {
       user: this.userRepository.create({
         id: userId,
       }),
-      details: details.map(({ id, isCombo, quantity }) => {
-        if (isCombo) {
-          return this.orderDetailRepository.create({
-            combo: this.comboRepository.create({
-              id,
-            }),
-            quantity,
-          });
-        }
-
-        return this.orderDetailRepository.create({
+      details: details.map(({ productId, quantity }) =>
+        this.orderDetailRepository.create({
           product: this.productRepository.create({
-            id,
+            id: productId,
           }),
           quantity,
-        });
-      }),
+        })
+      ),
     });
 
     return this.orderRepository.save(newOrder);
@@ -117,23 +106,14 @@ class OrderService {
           },
         });
 
-        newOrder.details = details.map(({ id, isCombo, quantity }) => {
-          if (isCombo) {
-            return this.orderDetailRepository.create({
-              combo: this.comboRepository.create({
-                id,
-              }),
-              quantity,
-            });
-          }
-
-          return this.orderDetailRepository.create({
+        newOrder.details = details.map(({ productId, quantity }) =>
+          this.orderDetailRepository.create({
             product: this.productRepository.create({
-              id,
+              id: productId,
             }),
             quantity,
-          });
-        });
+          })
+        );
       }
 
       const updatedOrder: Order = await this.orderRepository.save(newOrder);

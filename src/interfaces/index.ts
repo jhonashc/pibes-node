@@ -1,7 +1,6 @@
 export { DataStoredInToken, Token } from "./jwt.interface";
 
 export {
-  ComboMapped,
   OrderDetailMapped,
   OrderMapped,
   ProductMapped,
