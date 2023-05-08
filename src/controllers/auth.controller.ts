@@ -1,10 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 
-import { CreateLoginDto, CreateRegisterDto } from "../dtos";
+import {
+  CreateLoginDto,
+  CreateRefreshTokenDto,
+  CreateRegisterDto,
+} from "../dtos";
+
 import { User } from "../entities";
 import { ConflictException, UnauthorizedException } from "../exceptions";
-import { comparePasswords, generateToken } from "../helpers";
-import { Token } from "../interfaces";
+import { comparePasswords, generateTokens, verifyToken } from "../helpers";
+import { Payload, Token } from "../interfaces";
 import { UserService } from "../services";
 
 export class AuthController {
@@ -27,11 +32,14 @@ export class AuthController {
         throw new UnauthorizedException("The email or password is incorrect");
       }
 
-      const token: Token = generateToken(userFound);
+      const { accessToken, refreshToken }: Token = generateTokens(userFound);
 
       res.status(200).json({
         status: true,
-        ...token,
+        userId: userFound.id,
+        roles: userFound.roles,
+        accessToken,
+        refreshToken,
       });
     } catch (error) {
       next(error);
@@ -67,18 +75,48 @@ export class AuthController {
         avatarUrl,
       };
 
-      const registerdUser: User = await UserService.createUser(
+      const registeredUser: User = await UserService.createUser(
         createRegisterDto
       );
 
-      const token: Token = generateToken(registerdUser);
+      const { accessToken, refreshToken }: Token =
+        generateTokens(registeredUser);
 
       res.status(201).json({
         status: true,
-        ...token,
+        userId: registeredUser.id,
+        roles: registeredUser.roles,
+        accessToken,
+        refreshToken,
       });
     } catch (error) {
       next(error);
+    }
+  }
+
+  async refreshToken(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { refreshToken } = req.body as CreateRefreshTokenDto;
+
+      const { userId }: Payload = verifyToken(
+        refreshToken,
+        process.env.REFRESH_TOKEN_PRIVATE_KEY || "REFRESH_TOKEN_PRIVATE_KEY"
+      );
+
+      const userFound: User | null = await UserService.getUserById(userId);
+
+      if (!userFound) {
+        return next(new UnauthorizedException("The refresh token is invalid"));
+      }
+
+      const { accessToken }: Token = generateTokens(userFound);
+
+      res.json({
+        status: true,
+        accessToken,
+      });
+    } catch (error) {
+      next(new UnauthorizedException("The refresh token is invalid"));
     }
   }
 }

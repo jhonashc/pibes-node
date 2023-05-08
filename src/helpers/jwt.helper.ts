@@ -1,27 +1,31 @@
 import jwt from "jsonwebtoken";
 
 import { User } from "../entities";
-import { DataStoredInToken, Token } from "../interfaces";
+import { Payload, Token } from "../interfaces";
 
-export const generateToken = (user: User): Token => {
-  const dataStoredInToken: DataStoredInToken = {
-    id: user.id,
+export const generateTokens = (user: User): Token => {
+  const payload: Payload = {
+    userId: user.id,
   };
-  const secretKey: string = process.env.SECRET_KEY || "secret";
-  const expiresIn: number = 60 * 60;
+
+  const accessToken: string = jwt.sign(
+    payload,
+    process.env.ACCESS_TOKEN_PRIVATE_KEY || "ACCESS_TOKEN_PRIVATE_KEY",
+    { expiresIn: "14m" }
+  );
+
+  const refreshToken: string = jwt.sign(
+    payload,
+    process.env.REFRESH_TOKEN_PRIVATE_KEY || "REFRESH_TOKEN_PRIVATE_KEY",
+    { expiresIn: "30d" }
+  );
 
   return {
-    user,
-    token: jwt.sign(dataStoredInToken, secretKey, {
-      expiresIn,
-    }),
-    expiresIn,
+    accessToken,
+    refreshToken,
   };
 };
 
-export const verifyToken = (
-  token: string,
-  secrect: string
-): DataStoredInToken => {
-  return jwt.verify(token, secrect) as DataStoredInToken;
+export const verifyToken = (token: string, secrect: string): Payload => {
+  return jwt.verify(token, secrect) as Payload;
 };

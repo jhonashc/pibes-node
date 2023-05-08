@@ -1,5 +1,5 @@
 export { comparePasswords, encryptPassword } from "./bcrypt.helper";
 export { deleteFile } from "./fs.helper";
-export { generateToken, verifyToken } from "./jwt.helper";
+export { generateTokens, verifyToken } from "./jwt.helper";
 export { mapOrder, mapOrders } from "./order.helper";
 export { mapProduct, mapProducts } from "./product.helper";

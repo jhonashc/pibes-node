@@ -1,11 +1,8 @@
-import { User } from "../entities";
-
-export interface DataStoredInToken {
-  id: string;
+export interface Payload {
+  userId: string;
 }
 
 export interface Token {
-  user: User;
-  token: string;
-  expiresIn: number;
+  accessToken: string;
+  refreshToken: string;
 }

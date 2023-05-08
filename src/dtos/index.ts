@@ -1,4 +1,8 @@
-export { CreateLoginDto, CreateRegisterDto } from "./auth";
+export {
+  CreateLoginDto,
+  CreateRefreshTokenDto,
+  CreateRegisterDto,
+} from "./auth";
 
 export {
   CreateCategoryDto,

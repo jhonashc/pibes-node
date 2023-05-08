@@ -3,7 +3,7 @@ import { NextFunction, Response } from "express";
 import { User } from "../entities";
 import { NotFoundException, UnauthorizedException } from "../exceptions";
 import { verifyToken } from "../helpers";
-import { DataStoredInToken, RequestWithUser } from "../interfaces";
+import { Payload, RequestWithUser } from "../interfaces";
 import { UserService } from "../services";
 
 export const isAuthenticated = async (
@@ -20,14 +20,12 @@ export const isAuthenticated = async (
 
     const token: string = authHeader.split(" ")[1];
 
-    const dataStoredInToken: DataStoredInToken = verifyToken(
+    const { userId }: Payload = verifyToken(
       token,
-      process.env.SECRET_KEY || "secret"
+      process.env.ACCESS_TOKEN_PRIVATE_KEY || "ACCESS_TOKEN_PRIVATE_KEY"
     );
 
-    const userFound: User | null = await UserService.getUserById(
-      dataStoredInToken.id
-    );
+    const userFound: User | null = await UserService.getUserById(userId);
 
     if (!userFound) {
       return next(new UnauthorizedException("The token is invalid"));
@@ -37,6 +35,6 @@ export const isAuthenticated = async (
 
     next();
   } catch (error) {
-    return next(new UnauthorizedException("The token is invalid"));
+    next(new UnauthorizedException("The token is invalid"));
   }
 };

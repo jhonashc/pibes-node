@@ -1,4 +1,4 @@
-export { DataStoredInToken, Token } from "./jwt.interface";
+export { Payload, Token } from "./jwt.interface";
 
 export {
   OrderDetailMapped,
