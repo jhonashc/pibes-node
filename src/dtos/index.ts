@@ -32,6 +32,7 @@ export {
   UpdateProductDto,
 } from "./product";
 
+export { GetPromotionsQueryDto } from "./promotion";
 export { PaginationQueryDto } from "./query";
 
 export {
