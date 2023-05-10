@@ -12,3 +12,7 @@ export interface OrderDetailMapped {
 export interface ProductMapped {
   categories: Category[];
 }
+
+export interface PromotionMapped {
+  products: ProductMapped[];
+}

@@ -4,6 +4,7 @@ export {
   OrderDetailMapped,
   OrderMapped,
   ProductMapped,
+  PromotionMapped,
 } from "./mappers.interface";
 
 export { RequestWithUser } from "./request.interface";
