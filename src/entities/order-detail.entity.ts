@@ -33,7 +33,8 @@ export class OrderDetail extends Base {
   })
   order: Order;
 
-  @Column("int", {
+  @Column({
+    type: "int",
     default: 1,
   })
   quantity: number;

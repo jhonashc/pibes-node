@@ -4,6 +4,7 @@ import { Base } from "./base.entity";
 import { FavoriteProduct } from "./favorite-product.entity";
 import { OrderDetail } from "./order-detail.entity";
 import { ProductCategory } from "./product-category.entity";
+import { ProductPromotion } from "./product-promotion.entity";
 
 @Entity("product")
 export class Product extends Base {
@@ -26,12 +27,14 @@ export class Product extends Base {
   })
   imageUrl?: string;
 
-  @Column("float", {
+  @Column({
+    type: "float",
     default: 0,
   })
   price: number;
 
-  @Column("int", {
+  @Column({
+    type: "int",
     default: 0,
   })
   stock: number;
@@ -49,6 +52,12 @@ export class Product extends Base {
 
   @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.product)
   orderDetails?: OrderDetail[];
+
+  @OneToMany(
+    () => ProductPromotion,
+    (productPromotion) => productPromotion.product
+  )
+  promotions?: ProductPromotion[];
 
   @OneToMany(
     () => FavoriteProduct,

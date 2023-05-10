@@ -58,7 +58,8 @@ export class Order extends Base {
   })
   paymentMethod: PaymentMethods;
 
-  @Column("float", {
+  @Column({
+    type: "float",
     default: 0,
   })
   total: number;
