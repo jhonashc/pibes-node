@@ -13,6 +13,7 @@ import {
   favoriteRouter,
   orderRouter,
   productRouter,
+  promotionRouter,
   userAddressRouter,
   userRouter,
 } from "./routes";
@@ -26,6 +27,7 @@ class Server {
     favorites: "/api/favorites",
     orders: "/api/orders",
     products: "/api/products",
+    promotions: "/api/promotions",
     users: "/api/users",
   };
 
@@ -54,6 +56,7 @@ class Server {
     this.app.use(this.apiRoutes.favorites, favoriteRouter);
     this.app.use(this.apiRoutes.orders, orderRouter);
     this.app.use(this.apiRoutes.products, productRouter);
+    this.app.use(this.apiRoutes.promotions, promotionRouter);
     this.app.use(this.apiRoutes.users, userRouter);
     this.app.use(this.apiRoutes.users, userAddressRouter);
   }
