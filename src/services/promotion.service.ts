@@ -51,6 +51,9 @@ class PromotionService {
 
     if (day) {
       findOptionsWhere.availableDay = day;
+    } else {
+      const currentDay: Days = getCurrentDay();
+      findOptionsWhere.availableDay = Days[currentDay];
     }
 
     return this.promotionRepository.find({
