@@ -10,18 +10,13 @@ import {
 } from "../dtos";
 
 import { ValidationType } from "../interfaces";
-import { uploader, validateRequest } from "../middlewares";
+import { validateRequest } from "../middlewares";
 
 const router = Router();
 
 const userController = new UserController();
 
-router.post(
-  "/",
-  uploader.single("avatarUrl"),
-  validateRequest(CreateUserDto),
-  userController.createUser
-);
+router.post("/", validateRequest(CreateUserDto), userController.createUser);
 
 router.get(
   "/",
@@ -37,7 +32,6 @@ router.get(
 
 router.patch(
   "/:id",
-  uploader.single("avatarUrl"),
   validateRequest(IdParamDto, ValidationType.PARAMS),
   validateRequest(UpdateUserDto),
   userController.updateUserById

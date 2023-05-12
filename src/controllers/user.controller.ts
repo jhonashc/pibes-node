@@ -3,19 +3,13 @@ import { NextFunction, Request, Response } from "express";
 import { CreateUserDto, GetUsersQueryDto, UpdateUserDto } from "../dtos";
 import { Roles, User } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
-import { deleteFile } from "../helpers";
 import { UserService } from "../services";
 
 export class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const file = req.file as Express.Multer.File;
-      const { person, username, email, password, roles } =
+      const { person, username, email, password, avatarUrl, roles } =
         req.body as CreateUserDto;
-
-      let avatarUrl = file && file.path;
-
-      if (avatarUrl) await deleteFile(avatarUrl);
 
       const filteredUsername: string = username.trim().toLowerCase();
       const filteredEmail: string = email.trim().toLowerCase();
@@ -106,12 +100,7 @@ export class UserController {
   async updateUserById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const file = req.file as Express.Multer.File;
-      const { person, username, roles } = req.body as UpdateUserDto;
-
-      let avatarUrl = file && file.path;
-
-      if (avatarUrl) await deleteFile(avatarUrl);
+      const { person, username, avatarUrl, roles } = req.body as UpdateUserDto;
 
       const filteredUsername: string | undefined = username
         ?.trim()
