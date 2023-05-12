@@ -1,9 +1,15 @@
 import { FindOptionsRelations, FindOptionsWhere, Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
-import { CreatePromotionDto, GetPromotionsQueryDto } from "../dtos";
+
+import {
+  CreatePromotionDto,
+  GetPromotionsQueryDto,
+  GetPromotionsWithProductsQueryDto,
+} from "../dtos";
+
 import { Days, ProductPromotion, Promotion } from "../entities";
-import { GetPromotionsWithProductsQueryDto } from "../dtos/promotion/query.dto";
+import { getCurrentDay } from "../helpers";
 
 class PromotionService {
   private readonly promotionRepository: Repository<Promotion>;
@@ -69,6 +75,9 @@ class PromotionService {
 
     if (day) {
       findOptionsWhere.availableDay = day;
+    } else {
+      const currentDay: Days = getCurrentDay();
+      findOptionsWhere.availableDay = Days[currentDay];
     }
 
     return this.promotionRepository.find({
