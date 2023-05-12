@@ -17,7 +17,6 @@ export class ProductPromotion extends Date {
   promotionId: string;
 
   @ManyToOne(() => Product, (product) => product.promotions, {
-    eager: true,
     onDelete: "CASCADE",
   })
   @JoinColumn({

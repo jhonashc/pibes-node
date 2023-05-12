@@ -37,17 +37,15 @@ export class Promotion extends Base {
   @Column({
     type: "enum",
     enum: Days,
-    array: true,
-    name: "available_days",
+    name: "available_day",
   })
-  availableDays: Days[];
+  availableDay: Days;
 
   /* Relations */
   @OneToMany(
     () => ProductPromotion,
     (productPromotion) => productPromotion.promotion,
     {
-      eager: true,
       cascade: true,
     }
   )
