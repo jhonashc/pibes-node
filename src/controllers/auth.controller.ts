@@ -4,7 +4,9 @@ import {
   CreateLoginDto,
   CreateRefreshTokenDto,
   CreateRegisterDto,
+  CreateResendEmailVerficationDto,
   CreateVerifyOtpDtp,
+  UpdateUserDto,
 } from "../dtos";
 
 import { User } from "../entities";
@@ -104,7 +106,6 @@ export class AuthController {
         password,
         avatarUrl,
         otp: {
-          ...otp,
           code: optCode,
           expirationDate,
         },
@@ -120,10 +121,10 @@ export class AuthController {
 
       res.status(201).json({
         status: true,
-        registeredUser,
+        message: "The user has been created successfully",
+        data: registeredUser,
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
@@ -154,24 +155,75 @@ export class AuthController {
         throw new BadRequestException("Invalid OTP");
       }
 
-      const time = new Date(Date.now() + 600000);
-
       if (userFound.otp.expirationDate < new Date()) {
         throw new BadRequestException("OTP code has expired");
       }
 
-      const updatedUser: User = await UserService.updateUserById(userFound, {
+      await UserService.updateUserById(userFound, {
         isActive: true,
       });
 
-      const { accessToken, refreshToken } = generateTokens(updatedUser);
+      res.json({
+        status: true,
+        message: "The account has been successfully verified",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async resendEmailVerification(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { email } = req.body as CreateResendEmailVerficationDto;
+
+      const filteredEmail: string = email.trim().toLowerCase();
+
+      const userFound: User | null = await UserService.getUserByEmail(
+        filteredEmail
+      );
+
+      if (!userFound) {
+        throw new NotFoundException(
+          `The user with the email ${filteredEmail} has not been found`
+        );
+      }
+
+      if (userFound.isActive) {
+        throw new BadRequestException(
+          `the account with the email ${filteredEmail} has already been verified`
+        );
+      }
+
+      const optCode: string = generateOpt();
+
+      /* Expires in 10 minutes */
+      const expirationDate: Date = new Date(Date.now() + 600000);
+
+      const updateUserDto: UpdateUserDto = {
+        otp: {
+          code: optCode,
+          expirationDate,
+        },
+      };
+
+      const updateUser: Promise<User> = UserService.updateUserById(
+        userFound,
+        updateUserDto
+      );
+
+      const sendEmail: Promise<void> = EmailService.sendEmail(
+        newUserEmailTemplate(filteredEmail, userFound.username, optCode)
+      );
+
+      await Promise.all([updateUser, sendEmail]);
 
       res.json({
         status: true,
-        userId: userFound.id,
-        roles: userFound.roles,
-        accessToken,
-        refreshToken,
+        message: "The verification email has been sent again",
       });
     } catch (error) {
       next(error);
