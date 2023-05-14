@@ -17,7 +17,7 @@ class EmailService {
     });
   }
 
-  sendEmail(mailOptions: MailOptions) {
+  sendEmail(mailOptions: MailOptions): Promise<void> {
     return this.transporter.sendMail(mailOptions);
   }
 }

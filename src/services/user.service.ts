@@ -2,15 +2,17 @@ import { FindOptionsWhere, Like, Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
 import { CreateUserDto, GetUsersQueryDto, UpdateUserDto } from "../dtos";
-import { Person, Roles, User } from "../entities";
+import { Person, Roles, User, UserOtp } from "../entities";
 
 class UserService {
   private readonly personRepository: Repository<Person>;
   private readonly userRepository: Repository<User>;
+  private readonly userOtpRepository: Repository<UserOtp>;
 
   constructor() {
     this.userRepository = AppDataSource.getRepository(User);
     this.personRepository = AppDataSource.getRepository(Person);
+    this.userOtpRepository = AppDataSource.getRepository(UserOtp);
   }
 
   createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -78,7 +80,7 @@ class UserService {
   }
 
   updateUserById(user: User, updateUserDto: UpdateUserDto): Promise<User> {
-    const { person, username, avatarUrl, isActive, roles } = updateUserDto;
+    const { person, username, avatarUrl, isActive, otp, roles } = updateUserDto;
 
     const newUser: User = this.userRepository.create({
       id: user.id,
@@ -101,6 +103,13 @@ class UserService {
             gender: person.gender ? person.gender : user.person?.gender,
           })
         : user.person,
+      otp: otp
+        ? this.userOtpRepository.create({
+            id: user.otp.id,
+            code: otp.code,
+            expirationDate: otp.expirationDate,
+          })
+        : user.otp,
     });
 
     return this.userRepository.save(newUser);
