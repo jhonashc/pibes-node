@@ -22,6 +22,8 @@
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
     "multer": "1.4.5-lts.1",
+    "nodemailer": "^6.9.2",
+    "otp-generator": "^4.0.1",
     "pg": "^8.10.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.12"
@@ -35,6 +37,8 @@
     "@types/morgan": "^1.9.4",
     "@types/multer": "^1.4.7",
     "@types/node": "^18.15.11",
+    "@types/nodemailer": "^6.4.7",
+    "@types/otp-generator": "^4.0.0",
     "nodemon": "^2.0.22",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.3"
