@@ -22,6 +22,7 @@ class UserService {
       email: email.trim().toLowerCase(),
       password,
       avatarUrl,
+      isActive: true,
       roles: roles?.length ? roles : [Roles.USER],
       person:
         person &&
@@ -77,12 +78,13 @@ class UserService {
   }
 
   updateUserById(user: User, updateUserDto: UpdateUserDto): Promise<User> {
-    const { person, username, avatarUrl, roles } = updateUserDto;
+    const { person, username, avatarUrl, isActive, roles } = updateUserDto;
 
     const newUser: User = this.userRepository.create({
       id: user.id,
       username: username?.trim().toLowerCase(),
       avatarUrl,
+      isActive: user.isActive ? user.isActive : isActive,
       roles: roles?.length ? roles : user.roles,
       person: person
         ? this.personRepository.create({
