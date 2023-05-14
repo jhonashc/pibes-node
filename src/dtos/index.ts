@@ -2,6 +2,7 @@ export {
   CreateLoginDto,
   CreateRefreshTokenDto,
   CreateRegisterDto,
+  CreateResendEmailVerficationDto,
   CreateUserOtpDto,
   CreateVerifyOtpDtp,
 } from "./auth";

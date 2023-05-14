@@ -12,6 +12,8 @@ import {
 
 import { Roles } from "../../entities";
 
+import { CreateUserOtpDto } from "../auth";
+
 import { CreatePersonDto } from "./create-person.dto";
 
 export class UpdateUserDto {
@@ -34,6 +36,9 @@ export class UpdateUserDto {
   @IsBoolean()
   @IsOptional()
   isActive?: boolean;
+
+  /* User Otp */
+  otp?: CreateUserOtpDto;
 
   /* Roles */
   @IsArray()
