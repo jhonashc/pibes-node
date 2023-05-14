@@ -4,13 +4,28 @@ import {
   CreateLoginDto,
   CreateRefreshTokenDto,
   CreateRegisterDto,
+  CreateVerifyOtpDtp,
 } from "../dtos";
 
 import { User } from "../entities";
-import { ConflictException, UnauthorizedException } from "../exceptions";
-import { comparePasswords, generateTokens, verifyToken } from "../helpers";
+
+import {
+  BadRequestException,
+  ConflictException,
+  NotFoundException,
+  UnauthorizedException,
+} from "../exceptions";
+
+import {
+  comparePasswords,
+  generateOpt,
+  generateTokens,
+  newUserEmailTemplate,
+  verifyToken,
+} from "../helpers";
+
 import { Payload, Token } from "../interfaces";
-import { UserService } from "../services";
+import { AuthService, EmailService, UserService } from "../services";
 
 export class AuthController {
   async login(req: Request, res: Response, next: NextFunction) {
@@ -48,7 +63,7 @@ export class AuthController {
 
   async register(req: Request, res: Response, next: NextFunction) {
     try {
-      const { person, username, email, password, avatarUrl } =
+      const { person, username, email, password, avatarUrl, otp } =
         req.body as CreateRegisterDto;
 
       const filteredUsername: string = username.trim().toLowerCase();
@@ -67,25 +82,83 @@ export class AuthController {
         );
       }
 
+      const optCode: string = generateOpt();
+
+      /* Expires in 10 minutes */
+      const expirationDate: Date = new Date(Date.now() + 600000);
+
       const createRegisterDto: CreateRegisterDto = {
         person,
         username: filteredUsername,
         email: filteredEmail,
         password,
         avatarUrl,
+        otp: {
+          ...otp,
+          code: optCode,
+          expirationDate,
+        },
       };
 
-      const registeredUser: User = await UserService.createUser(
+      const registeredUser: User = await AuthService.register(
         createRegisterDto
       );
 
-      const { accessToken, refreshToken }: Token =
-        generateTokens(registeredUser);
+      await EmailService.sendEmail(
+        newUserEmailTemplate(filteredEmail, filteredUsername, optCode)
+      );
 
       res.status(201).json({
         status: true,
-        userId: registeredUser.id,
-        roles: registeredUser.roles,
+        registeredUser,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async verifyEmail(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email, otp } = req.body as CreateVerifyOtpDtp;
+
+      const filteredEmail: string = email.trim().toLowerCase();
+
+      const userFound: User | null = await UserService.getUserByEmail(
+        filteredEmail
+      );
+
+      if (!userFound) {
+        throw new NotFoundException(
+          `The user with the email ${filteredEmail} has not been found`
+        );
+      }
+
+      if (userFound.isActive) {
+        throw new BadRequestException(
+          `the account with the email ${filteredEmail} has already been verified`
+        );
+      }
+
+      if (otp !== userFound.otp.code) {
+        throw new BadRequestException("Invalid OTP");
+      }
+
+      const time = new Date(Date.now() + 600000);
+
+      if (userFound.otp.expirationDate < new Date()) {
+        throw new BadRequestException("OTP code has expired");
+      }
+
+      const updatedUser: User = await UserService.updateUserById(userFound, {
+        isActive: true,
+      });
+
+      const { accessToken, refreshToken } = generateTokens(updatedUser);
+
+      res.json({
+        status: true,
+        userId: userFound.id,
+        roles: userFound.roles,
         accessToken,
         refreshToken,
       });
