@@ -32,7 +32,17 @@ export class AuthController {
     try {
       const { email, password } = req.body as CreateLoginDto;
 
-      const userFound: User | null = await UserService.getUserByEmail(email);
+      const filteredEmail: string = email.trim().toLowerCase();
+
+      const userFound: User | null = await UserService.getUserByEmail(
+        filteredEmail
+      );
+
+      if (userFound && !userFound.isActive) {
+        throw new UnauthorizedException(
+          `The user with the email ${filteredEmail} has not been verified`
+        );
+      }
 
       if (!userFound) {
         throw new UnauthorizedException("The email or password is incorrect");
@@ -113,6 +123,7 @@ export class AuthController {
         registeredUser,
       });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
@@ -179,7 +190,7 @@ export class AuthController {
       const userFound: User | null = await UserService.getUserById(userId);
 
       if (!userFound) {
-        return next(new UnauthorizedException("The refresh token is invalid"));
+        throw new UnauthorizedException("The refresh token is invalid");
       }
 
       const { accessToken }: Token = generateTokens(userFound);
@@ -189,7 +200,7 @@ export class AuthController {
         accessToken,
       });
     } catch (error) {
-      next(new UnauthorizedException("The refresh token is invalid"));
+      next(error);
     }
   }
 }
