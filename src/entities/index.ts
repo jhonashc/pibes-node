@@ -18,4 +18,5 @@ export { ProductCategory } from "./product-category.entity";
 export { ProductPromotion } from "./product-promotion.entity";
 export { Product } from "./product.entity";
 export { Days, Promotion } from "./promotion.entity";
+export { UserOtp } from "./user-otp.entity";
 export { Roles, User } from "./user.entity";

@@ -14,6 +14,7 @@ import { Base } from "./base.entity";
 import { FavoriteProduct } from "./favorite-product.entity";
 import { Order } from "./order.entity";
 import { Person } from "./person.entity";
+import { UserOtp } from "./user-otp.entity";
 
 export enum Roles {
   USER = "USER",
@@ -56,6 +57,13 @@ export class User extends Base {
   })
   roles: Roles[];
 
+  @Column({
+    type: "boolean",
+    default: false,
+    name: "is_active",
+  })
+  isActive: boolean;
+
   /* Relations */
   @OneToOne(() => Person, (person) => person.user, {
     eager: true,
@@ -66,6 +74,12 @@ export class User extends Base {
     name: "person_id",
   })
   person?: Person;
+
+  @OneToOne(() => UserOtp, (userOpt) => userOpt.user, {
+    eager: true,
+    cascade: true,
+  })
+  otp: UserOtp;
 
   @OneToMany(() => Address, (address) => address.user)
   addresses?: Address[];
