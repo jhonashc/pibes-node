@@ -15,7 +15,7 @@ export const isAuthenticated = async (
     const authHeader: string | undefined = req.headers["authorization"];
 
     if (!authHeader) {
-      return next(new NotFoundException("The token has not been provided"));
+      throw new NotFoundException("The token has not been provided");
     }
 
     const token: string = authHeader.split(" ")[1];
@@ -28,13 +28,13 @@ export const isAuthenticated = async (
     const userFound: User | null = await UserService.getUserById(userId);
 
     if (!userFound) {
-      return next(new UnauthorizedException("The token is invalid"));
+      throw new UnauthorizedException("The token is invalid");
     }
 
     req.user = userFound;
 
     next();
   } catch (error) {
-    next(new UnauthorizedException("The token is invalid"));
+    next(error);
   }
 };
