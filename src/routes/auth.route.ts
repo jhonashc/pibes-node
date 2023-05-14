@@ -6,6 +6,7 @@ import {
   CreateLoginDto,
   CreateRefreshTokenDto,
   CreateRegisterDto,
+  CreateResendEmailVerficationDto,
   CreateVerifyOtpDtp,
 } from "../dtos";
 
@@ -27,6 +28,12 @@ router.post(
   "/verify-email",
   validateRequest(CreateVerifyOtpDtp),
   authController.verifyEmail
+);
+
+router.post(
+  "/resend-email",
+  validateRequest(CreateResendEmailVerficationDto),
+  authController.resendEmailVerification
 );
 
 router.post(
