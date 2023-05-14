@@ -6,6 +6,7 @@ import {
   CreateLoginDto,
   CreateRefreshTokenDto,
   CreateRegisterDto,
+  CreateVerifyOtpDtp,
 } from "../dtos";
 
 import { validateRequest } from "../middlewares";
@@ -20,6 +21,12 @@ router.post(
   "/register",
   validateRequest(CreateRegisterDto),
   authController.register
+);
+
+router.post(
+  "/verify-email",
+  validateRequest(CreateVerifyOtpDtp),
+  authController.verifyEmail
 );
 
 router.post(
