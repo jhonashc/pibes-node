@@ -10,8 +10,9 @@ import {
 
 import { CreatePersonDto } from "../user";
 
+import { CreateUserOtpDto } from "./create-user-otp.dto";
+
 export class CreateRegisterDto {
-  /* Person */
   /* Person */
   @IsOptional()
   @ValidateNested()
@@ -35,4 +36,7 @@ export class CreateRegisterDto {
   @IsString()
   @IsOptional()
   avatarUrl?: string;
+
+  /* User Otp */
+  otp: CreateUserOtpDto;
 }
