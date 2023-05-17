@@ -5,7 +5,7 @@ import {
   CreateRefreshTokenDto,
   CreateRegisterDto,
   CreateResendEmailVerficationDto,
-  CreateVerifyOtpDtp,
+  CreateVerifyAccountDto,
   UpdateUserDto,
 } from "../dtos";
 
@@ -40,12 +40,6 @@ export class AuthController {
         filteredEmail
       );
 
-      if (userFound && !userFound.isActive) {
-        throw new UnauthorizedException(
-          `The user with the email ${filteredEmail} has not been verified`
-        );
-      }
-
       if (!userFound) {
         throw new UnauthorizedException("The email or password is incorrect");
       }
@@ -57,6 +51,12 @@ export class AuthController {
 
       if (!comparedPasswords) {
         throw new UnauthorizedException("The email or password is incorrect");
+      }
+
+      if (!userFound.isActive) {
+        throw new UnauthorizedException(
+          `The user with the email ${filteredEmail} has not been verified`
+        );
       }
 
       const { accessToken, refreshToken }: Token = generateTokens(userFound);
@@ -129,9 +129,9 @@ export class AuthController {
     }
   }
 
-  async verifyEmail(req: Request, res: Response, next: NextFunction) {
+  async verifyAccount(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email, otp } = req.body as CreateVerifyOtpDtp;
+      const { email, otp } = req.body as CreateVerifyAccountDto;
 
       const filteredEmail: string = email.trim().toLowerCase();
 
@@ -147,16 +147,16 @@ export class AuthController {
 
       if (userFound.isActive) {
         throw new BadRequestException(
-          `the account with the email ${filteredEmail} has already been verified`
+          `The account with the email ${filteredEmail} has already been verified`
         );
       }
 
       if (otp !== userFound.otp.code) {
-        throw new BadRequestException("Invalid OTP");
+        throw new BadRequestException("Otp verification code is invalid");
       }
 
       if (userFound.otp.expirationDate < new Date()) {
-        throw new BadRequestException("OTP code has expired");
+        throw new BadRequestException("Otp verification code has expired");
       }
 
       await UserService.updateUserById(userFound, {
