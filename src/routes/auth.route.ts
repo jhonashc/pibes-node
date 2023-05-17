@@ -7,7 +7,7 @@ import {
   CreateRefreshTokenDto,
   CreateRegisterDto,
   CreateResendEmailVerficationDto,
-  CreateVerifyOtpDtp,
+  CreateVerifyAccountDto,
 } from "../dtos";
 
 import { validateRequest } from "../middlewares";
@@ -25,9 +25,9 @@ router.post(
 );
 
 router.post(
-  "/verify-email",
-  validateRequest(CreateVerifyOtpDtp),
-  authController.verifyEmail
+  "/verify-account",
+  validateRequest(CreateVerifyAccountDto),
+  authController.verifyAccount
 );
 
 router.post(
