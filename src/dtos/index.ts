@@ -4,7 +4,7 @@ export {
   CreateRegisterDto,
   CreateResendEmailVerficationDto,
   CreateUserOtpDto,
-  CreateVerifyOtpDtp,
+  CreateVerifyAccountDto,
 } from "./auth";
 
 export {
