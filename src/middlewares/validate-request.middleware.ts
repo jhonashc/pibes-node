@@ -1,6 +1,7 @@
+import i18n from "i18n";
 import { NextFunction, Request, Response } from "express";
-import { ClassConstructor, plainToInstance } from "class-transformer";
 import { ValidationError, validate } from "class-validator";
+import { ClassConstructor, plainToInstance } from "class-transformer";
 
 import { BadRequestException } from "../exceptions";
 import { ValidationType } from "../interfaces";
@@ -18,21 +19,18 @@ export const validateRequest = <T extends object>(
       const errors = await validate(convertedObject);
 
       if (errors.length > 0) {
-        const message = errors
+        const messages: string = errors
           .map((error: ValidationError) => {
-            const { constraints } = error;
+            const { constraints, property, value } = error;
 
             if (constraints) {
-              if (Object.keys(constraints).length > 1) {
-                return Object.values(constraints).join("|");
-              }
-
-              return Object.values(constraints);
+              const key: string = Object.keys(constraints)[0];
+              return i18n.__(`ValidationMessages.${key}`, property, value);
             }
           })
           .join("|");
 
-        throw new BadRequestException(message);
+        throw new BadRequestException(messages);
       }
 
       next();
