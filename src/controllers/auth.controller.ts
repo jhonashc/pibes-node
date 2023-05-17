@@ -88,9 +88,15 @@ export class AuthController {
         filteredEmail
       );
 
-      if (userByUsernameFound || userByEmailFound) {
+      if (userByUsernameFound) {
         throw new ConflictException(
-          `The user with the username ${filteredUsername} or the email ${filteredEmail} already exists`
+          `The user with the username ${filteredUsername} already exists`
+        );
+      }
+
+      if (userByEmailFound) {
+        throw new ConflictException(
+          `The user with the email ${filteredEmail} already exists`
         );
       }
 
