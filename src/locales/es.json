@@ -1,0 +1,17 @@
+{
+  "ValidationMessages": {
+    "isEmail": "El campo %s debe ser una dirección de correo electrónico válida",
+    "isNotEmpty": "El campo %s no debe estar vacío",
+    "isString": "El campo %s debe ser una cadena de texto",
+    "isUuid": "El campo %s debe contener solo UUIDs válidos",
+    "isInt": "El campo %s debe ser un número entero",
+    "isPositive": "El campo %s debe ser un número positivo",
+    "isEnum": "El campo %s debe ser un valor válido",
+    "isArray": "El campo %s debe ser un arreglo",
+    "arrayNotEmpty": "El campo %s no debe estar vacío",
+    "min": "El campo %s debe ser mayor o igual a %d",
+    "max": "El campo %s debe ser menor o igual a %d",
+    "maxLength": "El campo %s debe tener como máximo %d caracteres",
+    "isBoolean": "El campo %s debe ser un valor booleano"
+  }
+}
