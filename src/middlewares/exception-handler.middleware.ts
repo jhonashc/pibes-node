@@ -19,12 +19,12 @@ export const exceptionHandler = (
   } else if (error instanceof JsonWebTokenError) {
     res.status(401).json({
       status: false,
-      message: "The token is invalid",
+      message: "El token no es válido",
     });
   } else {
     res.status(500).json({
       success: false,
-      message: "Something went wrong",
+      message: "Algo salió mal, inténtalo de nuevo más tarde",
     });
   }
 };

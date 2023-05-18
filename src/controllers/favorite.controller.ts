@@ -17,7 +17,7 @@ export class FavoriteController {
 
       if (!userFound) {
         throw new NotFoundException(
-          `The user with id ${userId} has not been found`
+          `El usuario con id ${userId} no ha sido encontrado`
         );
       }
 
@@ -27,7 +27,7 @@ export class FavoriteController {
 
       if (!productFound) {
         throw new NotFoundException(
-          `The product with id ${productId} has not been found`
+          `El producto con id ${productId} no ha sido encontrado`
         );
       }
 
@@ -36,7 +36,7 @@ export class FavoriteController {
 
       if (favoriteProductFound) {
         throw new ConflictException(
-          "The product is already defined as a favorite"
+          "El producto ya está definido como favorito"
         );
       }
 
@@ -50,6 +50,7 @@ export class FavoriteController {
 
       res.status(201).json({
         status: true,
+        message: "El producto ha sido agregado en la favoritos con éxito",
         data: createdFavoriteProduct,
       });
     } catch (error) {
@@ -66,7 +67,7 @@ export class FavoriteController {
 
       if (!userFound) {
         throw new NotFoundException(
-          `The user with id ${userId} has not been found`
+          `El usuario con id ${userId} no ha sido encontrado`
         );
       }
 
@@ -99,7 +100,7 @@ export class FavoriteController {
 
       if (!userFound) {
         throw new NotFoundException(
-          `The user with id ${userId} has not been found`
+          `El usuario con id ${userId} no ha sido encontrado`
         );
       }
 
@@ -109,7 +110,7 @@ export class FavoriteController {
 
       if (!productFound) {
         throw new NotFoundException(
-          `The product with id ${productId} has not been found`
+          `El producto con id ${productId} no ha sido encontrado`
         );
       }
 
@@ -118,7 +119,7 @@ export class FavoriteController {
 
       if (!favoriteProductFound) {
         throw new NotFoundException(
-          `The product with id ${productId} has not been found in the favorites`
+          `El producto con id ${productId} no se ha encontrado en los favoritos`
         );
       }
 
@@ -143,7 +144,7 @@ export class FavoriteController {
 
       if (!userFound) {
         throw new NotFoundException(
-          `The user with id ${userId} has not been found`
+          `El usuario con id ${userId} no ha sido encontrado`
         );
       }
 
@@ -153,7 +154,7 @@ export class FavoriteController {
 
       if (!productFound) {
         throw new NotFoundException(
-          `The product with id ${productId} has not been found`
+          `El producto con id ${productId} no ha sido encontrado`
         );
       }
 
@@ -162,7 +163,7 @@ export class FavoriteController {
 
       if (!favoriteProductFound) {
         throw new NotFoundException(
-          `The product with id ${productId} has not been found in the favorites`
+          `El producto con id ${productId} no se ha encontrado en los favoritos`
         );
       }
 
@@ -175,6 +176,7 @@ export class FavoriteController {
 
       res.json({
         status: true,
+        message: "El producto ha sido eliminado de los favoritos con éxito",
         data: mappedProduct,
       });
     } catch (error) {

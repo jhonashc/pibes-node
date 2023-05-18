@@ -14,16 +14,18 @@ export const hasPermission = (validRoles: Roles[] = []) => {
       }
 
       if (!userFound) {
-        throw new UnauthorizedException("Authentication required");
+        throw new UnauthorizedException(
+          "Necesita estar autenticado para acceder a este módulo"
+        );
       }
 
       for (const role of userFound.roles) {
         if (!validRoles.includes(role)) {
           throw new ForbiddenException(
-            `The user ${userFound.username} needs the ${
+            `El usuario ${userFound.username} necesita ${
               validRoles.length > 1
-                ? `roles of [${validRoles}]`
-                : `${validRoles} role`
+                ? `los roles [${validRoles}]`
+                : `el rol ${validRoles}`
             }`
           );
         }

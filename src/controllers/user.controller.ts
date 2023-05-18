@@ -21,9 +21,15 @@ export class UserController {
         filteredEmail
       );
 
-      if (userByUsernameFound || userByEmailFound) {
+      if (userByUsernameFound) {
         throw new ConflictException(
-          `The user with the username ${filteredUsername} or the email ${filteredEmail} already exists`
+          `El usuario con el nombre de usuario ${filteredUsername} ya existe`
+        );
+      }
+
+      if (userByEmailFound) {
+        throw new ConflictException(
+          `El usuario con el correo electrónico ${filteredEmail} ya existe`
         );
       }
 
@@ -32,8 +38,8 @@ export class UserController {
       );
 
       if (!areTheRolesValid && areTheRolesValid !== undefined) {
-        throw new NotFoundException(
-          `You must enter valid roles [${Object.values(Roles)}]`
+        throw new ConflictException(
+          `Debe ingresar roles válidos [${Object.values(Roles)}]`
         );
       }
 
@@ -50,6 +56,7 @@ export class UserController {
 
       res.status(201).json({
         status: true,
+        message: "El usuario ha sido creado con éxito",
         data: createdUser,
       });
     } catch (error) {
@@ -84,7 +91,7 @@ export class UserController {
 
       if (!userFound) {
         throw new NotFoundException(
-          `The user with id ${id} has not been found`
+          `El usuario con id ${id} no ha sido encontrado`
         );
       }
 
@@ -110,13 +117,13 @@ export class UserController {
 
       if (!userFound) {
         throw new NotFoundException(
-          `The user with id ${id} has not been found`
+          `El usuario con id ${id} no ha sido encontrado`
         );
       }
 
       if (userFound.username.toLowerCase() == filteredUsername) {
         throw new ConflictException(
-          `The user with the username ${filteredUsername} already exists`
+          `El usuario con nombre usuario ${filteredUsername} ya existe`
         );
       }
 
@@ -125,8 +132,8 @@ export class UserController {
       );
 
       if (!areTheRolesValid && areTheRolesValid !== undefined) {
-        throw new NotFoundException(
-          `You must enter valid roles [${Object.values(Roles)}]`
+        throw new ConflictException(
+          `Debe ingresar roles válidos [${Object.values(Roles)}]`
         );
       }
 
@@ -144,6 +151,7 @@ export class UserController {
 
       res.json({
         status: true,
+        message: "El usuario ha sido actualizado con éxito",
         data: updatedUser,
       });
     } catch (error) {
@@ -159,7 +167,7 @@ export class UserController {
 
       if (!userFound) {
         throw new NotFoundException(
-          `The user with id ${id} has not been found`
+          `El usuario con id ${id} no ha sido encontrado`
         );
       }
 
@@ -167,6 +175,7 @@ export class UserController {
 
       res.json({
         status: true,
+        message: "El usuario ha sido eliminado con éxito",
         data: userFound,
       });
     } catch (error) {

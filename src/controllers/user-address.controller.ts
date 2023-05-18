@@ -21,7 +21,7 @@ export class UserAddressController {
 
       if (!userFound) {
         throw new NotFoundException(
-          `The user with id ${userId} has not been found`
+          `El usuario con id ${userId} no ha sido encontrado`
         );
       }
 
@@ -39,6 +39,7 @@ export class UserAddressController {
 
       res.status(201).json({
         status: true,
+        message: "La dirección ha sido creada con éxito",
         data: createdUserAddress,
       });
     } catch (error) {
@@ -76,7 +77,7 @@ export class UserAddressController {
 
       if (!addressFound) {
         throw new NotFoundException(
-          `The address with id ${addressId} has not been found`
+          `La dirección con id ${addressId} no ha sido encontrada`
         );
       }
 
@@ -84,7 +85,7 @@ export class UserAddressController {
 
       if (!userFound) {
         throw new NotFoundException(
-          `The user with id ${userId} has not been found`
+          `El usuario con id ${userId} no ha sido encontrado`
         );
       }
 
@@ -93,7 +94,7 @@ export class UserAddressController {
 
       if (!userAddressFound) {
         throw new NotFoundException(
-          `The user address with id ${addressId} has not been found`
+          `La dirección de usuario con id ${addressId} no ha sido encontrada`
         );
       }
 
@@ -118,7 +119,7 @@ export class UserAddressController {
 
       if (!addressFound) {
         throw new NotFoundException(
-          `The address with id ${addressId} has not been found`
+          `La dirección con id ${addressId} no ha sido encontrada`
         );
       }
 
@@ -126,7 +127,7 @@ export class UserAddressController {
 
       if (!userFound) {
         throw new NotFoundException(
-          `The user with id ${userId} has not been found`
+          `El usuario con id ${userId} no ha sido encontrado`
         );
       }
 
@@ -145,6 +146,7 @@ export class UserAddressController {
 
       res.json({
         status: true,
+        message: "La dirección ha sido actualizada con éxito",
         data: updatedUserAddress,
       });
     } catch (error) {
@@ -162,7 +164,7 @@ export class UserAddressController {
 
       if (!addressFound) {
         throw new NotFoundException(
-          `The address with id ${addressId} has not been found`
+          `La dirección con id ${addressId} no ha sido encontrada`
         );
       }
 
@@ -170,7 +172,7 @@ export class UserAddressController {
 
       if (!userFound) {
         throw new NotFoundException(
-          `The user with id ${userId} has not been found`
+          `El usuario con id ${userId} no ha sido encontrado`
         );
       }
 
@@ -179,7 +181,7 @@ export class UserAddressController {
 
       if (!userAddressFound) {
         throw new NotFoundException(
-          `The user address with id ${addressId} has not been found`
+          `La dirección de usuario con id ${addressId} no ha sido encontrada`
         );
       }
 
@@ -188,6 +190,7 @@ export class UserAddressController {
 
       res.json({
         status: true,
+        message: "La dirección ha sido eliminada con éxito",
         data: deletedUserAddress,
       });
     } catch (error) {

@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { CreateOrderDto, GetOrdersQueryDto, UpdateOrderDto } from "../dtos";
 import { Order, Product, User } from "../entities";
-import { NotFoundException } from "../exceptions";
+import { ConflictException, NotFoundException } from "../exceptions";
 import { mapOrder, mapOrders } from "../helpers";
 import { OrderMapped } from "../interfaces";
 import { OrderService, ProductService, UserService } from "../services";
@@ -17,7 +17,7 @@ export class OrderController {
 
       if (!userFound) {
         throw new NotFoundException(
-          `The user with id ${userId} has not been found`
+          `El usuario con id ${userId} no ha sido encontrado`
         );
       }
 
@@ -29,7 +29,7 @@ export class OrderController {
         );
 
         if (productsFound.length !== productIds.length) {
-          throw new NotFoundException("The id of some product is invalid");
+          throw new ConflictException("El id de algún producto no es válido");
         }
       }
 
@@ -48,6 +48,7 @@ export class OrderController {
 
       res.status(201).json({
         status: true,
+        message: "La orden ha sido creada con éxito",
         data: createdOrder,
       });
     } catch (error) {
@@ -85,7 +86,7 @@ export class OrderController {
 
       if (!orderFound) {
         throw new NotFoundException(
-          `The order with id ${id} has not been found`
+          `La orden con id ${id} no ha sido encontrada`
         );
       }
 
@@ -116,7 +117,7 @@ export class OrderController {
 
       if (!orderFound) {
         throw new NotFoundException(
-          `The order with id ${id} has not been found`
+          `La orden con id ${id} no ha sido encontrada`
         );
       }
 
@@ -128,7 +129,7 @@ export class OrderController {
             await ProductService.getProductsByIds(productIds);
 
           if (productsFound.length !== productIds.length) {
-            throw new NotFoundException("The id of some product is invalid");
+            throw new ConflictException("El id de algún producto no es válido");
           }
         }
       }
@@ -147,6 +148,7 @@ export class OrderController {
 
       res.json({
         status: true,
+        message: "La orden ha sido actualizada con éxito",
         data: updatedOrder,
       });
     } catch (error) {
@@ -162,7 +164,7 @@ export class OrderController {
 
       if (!orderFound) {
         throw new NotFoundException(
-          `The order with id ${id} has not been found`
+          `La orden con id ${id} no ha sido encontrada`
         );
       }
 
@@ -172,6 +174,7 @@ export class OrderController {
 
       res.json({
         status: true,
+        message: "La orden ha sido eliminada con éxito",
         data: deletedOrder,
       });
     } catch (error) {

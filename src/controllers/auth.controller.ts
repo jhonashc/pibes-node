@@ -41,7 +41,9 @@ export class AuthController {
       );
 
       if (!userFound) {
-        throw new UnauthorizedException("The email or password is incorrect");
+        throw new UnauthorizedException(
+          "El correo electrónico o la contraseña son incorrectos"
+        );
       }
 
       const comparedPasswords: boolean = await comparePasswords(
@@ -50,12 +52,14 @@ export class AuthController {
       );
 
       if (!comparedPasswords) {
-        throw new UnauthorizedException("The email or password is incorrect");
+        throw new UnauthorizedException(
+          "El correo electrónico o la contraseña son incorrectos"
+        );
       }
 
       if (!userFound.isActive) {
         throw new UnauthorizedException(
-          `The user with the email ${filteredEmail} has not been verified`
+          `El usuario con el correo electrónico ${filteredEmail} no ha sido verificado`
         );
       }
 
@@ -90,13 +94,13 @@ export class AuthController {
 
       if (userByUsernameFound) {
         throw new ConflictException(
-          `The user with the username ${filteredUsername} already exists`
+          `El usuario con el nombre de usuario ${filteredUsername} ya existe`
         );
       }
 
       if (userByEmailFound) {
         throw new ConflictException(
-          `The user with the email ${filteredEmail} already exists`
+          `El usuario con el correo electrónico ${filteredEmail} ya existe`
         );
       }
 
@@ -127,7 +131,7 @@ export class AuthController {
 
       res.status(201).json({
         status: true,
-        message: "The user has been created successfully",
+        message: "El usuario ha sido registrado con éxito",
         data: registeredUser,
       });
     } catch (error) {
@@ -147,22 +151,26 @@ export class AuthController {
 
       if (!userFound) {
         throw new NotFoundException(
-          `The user with the email ${filteredEmail} has not been found`
+          `El usuario con el correo electrónico ${filteredEmail} no ha sido encontrado`
         );
       }
 
       if (userFound.isActive) {
         throw new BadRequestException(
-          `The account with the email ${filteredEmail} has already been verified`
+          `La cuenta con el correo electrónico ${filteredEmail} ya ha sido verificada`
         );
       }
 
       if (otp !== userFound.otp.code) {
-        throw new BadRequestException("Otp verification code is invalid");
+        throw new BadRequestException(
+          "El código de verificación OTP no es válido"
+        );
       }
 
       if (userFound.otp.expirationDate < new Date()) {
-        throw new BadRequestException("Otp verification code has expired");
+        throw new BadRequestException(
+          "El código de verificación OTP ha caducado"
+        );
       }
 
       await UserService.updateUserById(userFound, {
@@ -171,7 +179,7 @@ export class AuthController {
 
       res.json({
         status: true,
-        message: "The account has been successfully verified",
+        message: "La cuenta ha sido verificada con éxito",
       });
     } catch (error) {
       next(error);
@@ -194,13 +202,13 @@ export class AuthController {
 
       if (!userFound) {
         throw new NotFoundException(
-          `The user with the email ${filteredEmail} has not been found`
+          `El usuario con el correo electrónico ${filteredEmail} no ha sido encontrado`
         );
       }
 
       if (userFound.isActive) {
         throw new BadRequestException(
-          `the account with the email ${filteredEmail} has already been verified`
+          `La cuenta con el correo electrónico ${filteredEmail} ya ha sido verificada`
         );
       }
 
@@ -229,7 +237,8 @@ export class AuthController {
 
       res.json({
         status: true,
-        message: "The verification email has been sent again",
+        message:
+          "El correo electrónico de verificación ha sido enviado de nuevo",
       });
     } catch (error) {
       next(error);
@@ -248,7 +257,7 @@ export class AuthController {
       const userFound: User | null = await UserService.getUserById(userId);
 
       if (!userFound) {
-        throw new UnauthorizedException("The refresh token is invalid");
+        throw new UnauthorizedException("El token no es válido");
       }
 
       const { accessToken }: Token = generateTokens(userFound);

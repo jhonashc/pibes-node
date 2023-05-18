@@ -29,7 +29,7 @@ export class PromotionController {
 
       if (promotionFound) {
         throw new ConflictException(
-          `The promotion with the name ${name} already exists`
+          `La promoción con el nombre ${filteredName} ya existe`
         );
       }
 
@@ -39,7 +39,7 @@ export class PromotionController {
         );
 
         if (productsFound.length !== productIds.length) {
-          throw new NotFoundException("The id of some product is invalid");
+          throw new ConflictException("El id de algún producto no es válido");
         }
       }
 
@@ -56,6 +56,7 @@ export class PromotionController {
 
       res.status(201).json({
         status: true,
+        message: "La promoción ha sido creada con éxito",
         data: createdPromotion,
       });
     } catch (error) {

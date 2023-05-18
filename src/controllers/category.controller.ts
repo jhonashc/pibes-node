@@ -22,7 +22,7 @@ export class CategoryController {
 
       if (categoryFound) {
         throw new ConflictException(
-          `The category with the name ${filteredName} already exists`
+          `La categoría con el nombre ${filteredName} ya existe`
         );
       }
 
@@ -36,6 +36,7 @@ export class CategoryController {
 
       res.status(201).json({
         status: true,
+        message: "La categoría ha sido creada con éxito",
         data: createdCategory,
       });
     } catch (error) {
@@ -71,7 +72,7 @@ export class CategoryController {
 
       if (!categoryFound) {
         throw new NotFoundException(
-          `The category with id ${id} has not been found`
+          `La categoría con id ${id} no ha sido encontrada`
         );
       }
 
@@ -94,7 +95,7 @@ export class CategoryController {
 
       if (!categoryFound) {
         throw new NotFoundException(
-          `The category with id ${id} has not been found`
+          `La categoría con id ${id} no ha sido encontrada`
         );
       }
 
@@ -110,6 +111,7 @@ export class CategoryController {
 
       res.json({
         status: true,
+        message: "La categoría ha sido actualizada con éxito",
         data: updatedCategory,
       });
     } catch (error) {
@@ -126,7 +128,7 @@ export class CategoryController {
 
       if (!categoryFound) {
         throw new NotFoundException(
-          `The category with id ${id} has not been found`
+          `La categoría con id ${id} no ha sido encontrada`
         );
       }
 
@@ -135,6 +137,7 @@ export class CategoryController {
 
       res.json({
         status: true,
+        message: "La categoría ha sido eliminada con éxito",
         data: deletedCategory,
       });
     } catch (error) {

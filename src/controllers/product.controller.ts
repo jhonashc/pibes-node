@@ -26,7 +26,7 @@ export class ProductController {
 
       if (productFound) {
         throw new ConflictException(
-          `The product with the name ${name} already exists`
+          `El producto con el nombre ${filteredName} ya existe`
         );
       }
 
@@ -34,7 +34,7 @@ export class ProductController {
         await CategoryService.getCategoriesByIds(categoryIds);
 
       if (categoriesFound.length !== categoryIds.length) {
-        throw new NotFoundException("The id of some category is invalid");
+        throw new ConflictException("El id de alguna categoría no es válida");
       }
 
       const createProductDto: CreateProductDto = {
@@ -52,6 +52,7 @@ export class ProductController {
 
       res.status(201).json({
         status: true,
+        message: "El producto ha sido creado con éxito",
         data: createdProduct,
       });
     } catch (error) {
@@ -95,7 +96,7 @@ export class ProductController {
 
       if (!productFound) {
         throw new NotFoundException(
-          `The product with id ${id} has not been found`
+          `El producto con id ${id} no ha sido encontrado`
         );
       }
 
@@ -131,7 +132,7 @@ export class ProductController {
 
       if (!productFound) {
         throw new NotFoundException(
-          `The product with id ${id} has not been found`
+          `El producto con id ${id} no ha sido encontrado`
         );
       }
 
@@ -158,7 +159,7 @@ export class ProductController {
 
       if (!productFound) {
         throw new NotFoundException(
-          `The product with id ${id} has not been found`
+          `El producto con id ${id} no ha sido encontrado`
         );
       }
 
@@ -167,7 +168,7 @@ export class ProductController {
           await CategoryService.getCategoriesByIds(categoryIds);
 
         if (categoriesFound.length !== categoryIds.length) {
-          throw new NotFoundException("The id of some category is invalid");
+          throw new ConflictException("El id de alguna categoría no es válida");
         }
       }
 
@@ -185,6 +186,7 @@ export class ProductController {
 
       res.status(201).json({
         status: true,
+        message: "El producto ha sido actualizado con éxito",
         data: updatedProduct,
       });
     } catch (error) {
@@ -202,7 +204,7 @@ export class ProductController {
 
       if (!productFound) {
         throw new NotFoundException(
-          `The product with id ${id} has not been found`
+          `El producto con id ${id} no ha sido encontrado`
         );
       }
 
@@ -214,6 +216,7 @@ export class ProductController {
 
       res.json({
         status: true,
+        message: "El producto ha sido eliminado con éxito",
         data: mappedProduct,
       });
     } catch (error) {
