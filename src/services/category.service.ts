@@ -5,6 +5,7 @@ import { AppDataSource } from "../config";
 import {
   CreateCategoryDto,
   GetCategoriesQueryDto,
+  SearchCategoriesQueryDto,
   UpdateCategoryDto,
 } from "../dtos";
 
@@ -30,7 +31,18 @@ class CategoryService {
   getCategories(
     getCategoriesQueryDto: GetCategoriesQueryDto
   ): Promise<Category[]> {
-    const { name, limit = 10, offset = 0 } = getCategoriesQueryDto;
+    const { limit = 10, offset = 0 } = getCategoriesQueryDto;
+
+    return this.categoryRepository.find({
+      take: limit,
+      skip: offset,
+    });
+  }
+
+  searchCategories(
+    searchCategoriesQueryDto: SearchCategoriesQueryDto
+  ): Promise<Category[]> {
+    const { name, limit = 10, offset = 0 } = searchCategoriesQueryDto;
 
     const findOptionsWhere: FindOptionsWhere<Category> = {};
 
