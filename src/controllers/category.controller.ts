@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import {
   CreateCategoryDto,
   GetCategoriesQueryDto,
+  SearchCategoriesQueryDto,
   UpdateCategoryDto,
 } from "../dtos";
 
@@ -46,9 +47,27 @@ export class CategoryController {
 
   async getCategories(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, limit, offset } = req.query as GetCategoriesQueryDto;
+      const { limit, offset } = req.query as GetCategoriesQueryDto;
 
       const categories: Category[] = await CategoryService.getCategories({
+        limit,
+        offset,
+      });
+
+      res.json({
+        status: true,
+        data: categories,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async searchCategories(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { name, limit, offset } = req.query as SearchCategoriesQueryDto;
+
+      const categories: Category[] = await CategoryService.searchCategories({
         name,
         limit,
         offset,
