@@ -13,7 +13,7 @@ export const exceptionHandler = (
     const { message, statusCode } = error;
 
     res.status(statusCode).json({
-      success: false,
+      status: false,
       message,
     });
   } else if (error instanceof JsonWebTokenError) {
@@ -23,7 +23,7 @@ export const exceptionHandler = (
     });
   } else {
     res.status(500).json({
-      success: false,
+      status: false,
       message: "Algo salió mal, inténtalo de nuevo más tarde",
     });
   }
