@@ -4,7 +4,9 @@ import { OrderStatus } from "../../entities";
 
 import { PaginationQueryDto } from "../query";
 
-export class GetOrdersQueryDto extends PaginationQueryDto {
+export class GetOrdersQueryDto extends PaginationQueryDto {}
+
+export class SearchOrdersQueryDto extends PaginationQueryDto {
   @IsString()
   @IsOptional()
   user?: string;

@@ -9,5 +9,3 @@ export class GetPromotionsQueryDto extends PaginationQueryDto {
   @IsEnum(Days)
   day?: Days;
 }
-
-export class GetPromotionsWithProductsQueryDto extends GetPromotionsQueryDto {}

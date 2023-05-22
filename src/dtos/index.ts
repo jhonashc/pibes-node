@@ -24,6 +24,7 @@ export {
   CreateOrderDetailDto,
   CreateOrderDto,
   GetOrdersQueryDto,
+  SearchOrdersQueryDto,
   UpdateOrderDto,
 } from "./order";
 
@@ -36,11 +37,7 @@ export {
   UpdateProductDto,
 } from "./product";
 
-export {
-  CreatePromotionDto,
-  GetPromotionsQueryDto,
-  GetPromotionsWithProductsQueryDto,
-} from "./promotion";
+export { CreatePromotionDto, GetPromotionsQueryDto } from "./promotion";
 
 export { PaginationQueryDto } from "./query";
 
