@@ -1,6 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 
-import { CreateUserDto, GetUsersQueryDto, UpdateUserDto } from "../dtos";
+import {
+  CreateUserDto,
+  GetUsersQueryDto,
+  SearchUsersQueryDto,
+  UpdateUserDto,
+} from "../dtos";
+
 import { Roles, User } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
 import { UserService } from "../services";
@@ -66,9 +72,27 @@ export class UserController {
 
   async getUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const { username, limit, offset } = req.query as GetUsersQueryDto;
+      const { limit, offset } = req.query as GetUsersQueryDto;
 
       const users: User[] = await UserService.getUsers({
+        limit,
+        offset,
+      });
+
+      res.json({
+        status: true,
+        data: users,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async searchUsers(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { username, limit, offset } = req.query as SearchUsersQueryDto;
+
+      const users: User[] = await UserService.searchUsers({
         username,
         limit,
         offset,
