@@ -28,6 +28,13 @@ export class Promotion extends Base {
   description?: string;
 
   @Column({
+    type: "text",
+    nullable: true,
+    name: "image_url",
+  })
+  imageUrl?: string;
+
+  @Column({
     type: "int",
     default: 0,
     name: "discount_percentage",
