@@ -1,7 +1,14 @@
 import { FindOptionsWhere, Like, Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
-import { CreateOrderDto, GetOrdersQueryDto, UpdateOrderDto } from "../dtos";
+
+import {
+  CreateOrderDto,
+  GetOrdersQueryDto,
+  SearchOrdersQueryDto,
+  UpdateOrderDto,
+} from "../dtos";
+
 import { Order, OrderDetail, Product, User } from "../entities";
 
 class OrderService {
@@ -43,7 +50,16 @@ class OrderService {
   }
 
   getOrders(getOrdersQueryDto: GetOrdersQueryDto): Promise<Order[]> {
-    const { user, status, limit = 10, offset = 0 } = getOrdersQueryDto;
+    const { limit = 10, offset = 0 } = getOrdersQueryDto;
+
+    return this.orderRepository.find({
+      take: limit,
+      skip: offset,
+    });
+  }
+
+  searchOrders(searchOrdersQueryDto: SearchOrdersQueryDto): Promise<Order[]> {
+    const { user, status, limit = 10, offset = 0 } = searchOrdersQueryDto;
 
     const findOptionsWhere: FindOptionsWhere<Order> = {};
 

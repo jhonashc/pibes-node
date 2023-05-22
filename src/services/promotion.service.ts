@@ -1,13 +1,7 @@
-import { FindOptionsRelations, FindOptionsWhere, Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
-
-import {
-  CreatePromotionDto,
-  GetPromotionsQueryDto,
-  GetPromotionsWithProductsQueryDto,
-} from "../dtos";
-
+import { CreatePromotionDto, GetPromotionsQueryDto } from "../dtos";
 import { Days, ProductPromotion, Promotion } from "../entities";
 import { getCurrentDay } from "../helpers";
 
@@ -58,34 +52,6 @@ class PromotionService {
 
     return this.promotionRepository.find({
       where: findOptionsWhere,
-      take: limit,
-      skip: offset,
-    });
-  }
-
-  getPromotionsWithProducts(
-    getPromotionsWithProductsQueryDto: GetPromotionsWithProductsQueryDto
-  ): Promise<Promotion[]> {
-    const { day, limit = 10, offset = 0 } = getPromotionsWithProductsQueryDto;
-
-    const findOptionsWhere: FindOptionsWhere<Promotion> = {};
-
-    const findOptionsRelations: FindOptionsRelations<Promotion> = {
-      products: {
-        product: true,
-      },
-    };
-
-    if (day) {
-      findOptionsWhere.availableDay = day;
-    } else {
-      const currentDay: Days = getCurrentDay();
-      findOptionsWhere.availableDay = Days[currentDay];
-    }
-
-    return this.promotionRepository.find({
-      where: findOptionsWhere,
-      relations: findOptionsRelations,
       take: limit,
       skip: offset,
     });
