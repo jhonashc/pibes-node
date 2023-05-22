@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import {
   CreateProductDto,
   GetProductsQueryDto,
-  GetSimilarProductsQueryDto,
+  SearchProductsQueryDto,
   UpdateProductDto,
 } from "../dtos";
 
@@ -62,10 +62,30 @@ export class ProductController {
 
   async getProducts(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, category, min, max, limit, offset } =
-        req.query as GetProductsQueryDto;
+      const { limit, offset } = req.query as GetProductsQueryDto;
 
       const products: Product[] = await ProductService.getProducts({
+        limit,
+        offset,
+      });
+
+      const mappedProducts: ProductMapped[] = mapProducts(products);
+
+      res.json({
+        status: true,
+        data: mappedProducts,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async searchProducts(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { name, category, min, max, limit, offset } =
+        req.query as SearchProductsQueryDto;
+
+      const products: Product[] = await ProductService.searchProducts({
         name,
         category,
         min,
@@ -88,7 +108,7 @@ export class ProductController {
   async getSimilarProducts(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { limit, offset } = req.query as GetSimilarProductsQueryDto;
+      const { limit, offset } = req.query as GetProductsQueryDto;
 
       const productFound: Product | null = await ProductService.getProductById(
         id

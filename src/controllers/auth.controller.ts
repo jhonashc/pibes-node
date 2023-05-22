@@ -59,7 +59,7 @@ export class AuthController {
 
       if (!userFound.isActive) {
         throw new UnauthorizedException(
-          `El usuario con el correo electrónico ${filteredEmail} no ha sido verificado`
+          `El usuario con el correo electrónico ${filteredEmail} aún no ha sido verificado`
         );
       }
 
