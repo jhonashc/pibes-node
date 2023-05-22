@@ -6,6 +6,7 @@ import {
   CreateUserDto,
   GetUsersQueryDto,
   IdParamDto,
+  SearchUsersQueryDto,
   UpdateUserDto,
 } from "../dtos";
 
@@ -22,6 +23,12 @@ router.get(
   "/",
   validateRequest(GetUsersQueryDto, ValidationType.QUERY),
   userController.getUsers
+);
+
+router.get(
+  "/search",
+  validateRequest(SearchUsersQueryDto, ValidationType.QUERY),
+  userController.searchUsers
 );
 
 router.get(
