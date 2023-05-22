@@ -10,6 +10,7 @@ export {
 export {
   CreateCategoryDto,
   GetCategoriesQueryDto,
+  SearchCategoriesQueryDto,
   UpdateCategoryDto,
 } from "./category";
 
