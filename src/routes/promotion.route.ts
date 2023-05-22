@@ -2,12 +2,7 @@ import { Router } from "express";
 
 import { PromotionController } from "../controllers";
 
-import {
-  CreatePromotionDto,
-  GetPromotionsQueryDto,
-  GetPromotionsWithProductsQueryDto,
-} from "../dtos";
-
+import { CreatePromotionDto, GetPromotionsQueryDto } from "../dtos";
 import { ValidationType } from "../interfaces";
 import { validateRequest } from "../middlewares";
 
@@ -25,12 +20,6 @@ router.get(
   "/",
   validateRequest(GetPromotionsQueryDto, ValidationType.QUERY),
   promotionController.getPromotions
-);
-
-router.get(
-  "/products",
-  validateRequest(GetPromotionsWithProductsQueryDto, ValidationType.QUERY),
-  promotionController.getPromotionsWithProducts
 );
 
 export default router;

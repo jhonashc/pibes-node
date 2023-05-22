@@ -6,6 +6,7 @@ import {
   CreateOrderDto,
   GetOrdersQueryDto,
   IdParamDto,
+  SearchOrdersQueryDto,
   UpdateOrderDto,
 } from "../dtos";
 
@@ -22,6 +23,12 @@ router.get(
   "/",
   validateRequest(GetOrdersQueryDto, ValidationType.QUERY),
   orderController.getOrders
+);
+
+router.get(
+  "/search",
+  validateRequest(SearchOrdersQueryDto, ValidationType.QUERY),
+  orderController.searchOrders
 );
 
 router.get(
