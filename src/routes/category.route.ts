@@ -6,6 +6,7 @@ import {
   CreateCategoryDto,
   GetCategoriesQueryDto,
   IdParamDto,
+  SearchCategoriesQueryDto,
   UpdateCategoryDto,
 } from "../dtos";
 
@@ -26,6 +27,12 @@ router.get(
   "/",
   validateRequest(GetCategoriesQueryDto, ValidationType.QUERY),
   categoryController.getCategories
+);
+
+router.get(
+  "/search",
+  validateRequest(SearchCategoriesQueryDto, ValidationType.QUERY),
+  categoryController.searchCategories
 );
 
 router.get(
