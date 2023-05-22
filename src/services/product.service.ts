@@ -14,7 +14,7 @@ import { AppDataSource } from "../config";
 import {
   CreateProductDto,
   GetProductsQueryDto,
-  GetSimilarProductsQueryDto,
+  SearchProductsQueryDto,
   UpdateProductDto,
 } from "../dtos";
 
@@ -53,6 +53,17 @@ class ProductService {
   }
 
   getProducts(getProductsQueryDto: GetProductsQueryDto): Promise<Product[]> {
+    const { limit = 10, offset = 0 } = getProductsQueryDto;
+
+    return this.productRepository.find({
+      take: limit,
+      skip: offset,
+    });
+  }
+
+  searchProducts(
+    searchProductsQueryDto: SearchProductsQueryDto
+  ): Promise<Product[]> {
     const {
       name,
       category,
@@ -60,7 +71,7 @@ class ProductService {
       max,
       limit = 10,
       offset = 0,
-    } = getProductsQueryDto;
+    } = searchProductsQueryDto;
 
     const findOptionsWhere: FindOptionsWhere<Product> = {};
 
@@ -98,9 +109,9 @@ class ProductService {
   getSimilarProducts(
     id: string,
     categoryIds: string[],
-    getSimilarProductsQueryDto: GetSimilarProductsQueryDto
+    getProductsQueryDto: GetProductsQueryDto
   ): Promise<Product[]> {
-    const { limit = 10, offset = 0 } = getSimilarProductsQueryDto;
+    const { limit = 10, offset = 0 } = getProductsQueryDto;
 
     return this.productRepository.find({
       where: {
