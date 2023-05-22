@@ -22,6 +22,10 @@ export class CreatePromotionDto {
   @IsOptional()
   description?: string;
 
+  @IsString()
+  @IsOptional()
+  imageUrl?: string;
+
   @IsInt()
   @Min(0)
   @Max(100)
