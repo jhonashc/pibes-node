@@ -47,6 +47,7 @@ export {
   CreatePersonDto,
   CreateUserDto,
   GetUsersQueryDto,
+  SearchUsersQueryDto,
   UpdateUserDto,
 } from "./user";
 
