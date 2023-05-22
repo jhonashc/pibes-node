@@ -11,6 +11,7 @@ export class PromotionController {
       const {
         name,
         description,
+        imageUrl,
         discountPercentage,
         availableDay,
         productIds,
@@ -40,6 +41,7 @@ export class PromotionController {
       const createPromotionDto: CreatePromotionDto = {
         name,
         description,
+        imageUrl,
         discountPercentage,
         availableDay,
         productIds,
