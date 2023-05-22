@@ -16,12 +16,19 @@ class PromotionService {
   }
 
   createPromotion(createPromotionDto: CreatePromotionDto): Promise<Promotion> {
-    const { name, description, discountPercentage, availableDay, productIds } =
-      createPromotionDto;
+    const {
+      name,
+      description,
+      imageUrl,
+      discountPercentage,
+      availableDay,
+      productIds,
+    } = createPromotionDto;
 
     const newPromotion: Promotion = this.promotionRepository.create({
       name: name.trim().toLowerCase(),
       description,
+      imageUrl,
       discountPercentage,
       availableDay,
       products: productIds?.map((productId) =>
