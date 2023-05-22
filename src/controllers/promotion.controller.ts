@@ -1,14 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
-import {
-  CreatePromotionDto,
-  GetPromotionsQueryDto,
-  GetPromotionsWithProductsQueryDto,
-} from "../dtos";
+import { CreatePromotionDto, GetPromotionsQueryDto } from "../dtos";
 import { Product, Promotion } from "../entities";
-import { ConflictException, NotFoundException } from "../exceptions";
-import { mapPromotions } from "../helpers";
-import { PromotionMapped } from "../interfaces";
+import { ConflictException } from "../exceptions";
 import { ProductService, PromotionService } from "../services";
 
 export class PromotionController {
@@ -78,33 +72,6 @@ export class PromotionController {
         status: true,
         data: promotions,
       });
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async getPromotionsWithProducts(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    const { day, limit, offset } =
-      req.query as GetPromotionsWithProductsQueryDto;
-
-    const promotions: Promotion[] =
-      await PromotionService.getPromotionsWithProducts({
-        day,
-        limit,
-        offset,
-      });
-
-    const mappedPromotions: PromotionMapped[] = mapPromotions(promotions);
-
-    res.json({
-      status: true,
-      data: mappedPromotions,
-    });
-    try {
     } catch (error) {
       next(error);
     }

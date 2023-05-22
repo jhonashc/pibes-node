@@ -1,6 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 
-import { CreateOrderDto, GetOrdersQueryDto, UpdateOrderDto } from "../dtos";
+import {
+  CreateOrderDto,
+  GetOrdersQueryDto,
+  SearchOrdersQueryDto,
+  UpdateOrderDto,
+} from "../dtos";
+
 import { Order, Product, User } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
 import { mapOrder, mapOrders } from "../helpers";
@@ -58,9 +64,29 @@ export class OrderController {
 
   async getOrders(req: Request, res: Response, next: NextFunction) {
     try {
-      const { user, status, limit, offset } = req.query as GetOrdersQueryDto;
+      const { limit, offset } = req.query as GetOrdersQueryDto;
 
       const orders: Order[] = await OrderService.getOrders({
+        limit,
+        offset,
+      });
+
+      const mappedOrders: OrderMapped[] = mapOrders(orders);
+
+      res.json({
+        status: true,
+        data: mappedOrders,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async searchOrders(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { user, status, limit, offset } = req.query as SearchOrdersQueryDto;
+
+      const orders: Order[] = await OrderService.searchOrders({
         user,
         status,
         limit,
