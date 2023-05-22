@@ -1,9 +1,11 @@
+import { Type } from "class-transformer";
 import { IsInt, IsOptional, IsPositive, IsString } from "class-validator";
 
 import { PaginationQueryDto } from "../query";
-import { Type } from "class-transformer";
 
-export class GetProductsQueryDto extends PaginationQueryDto {
+export class GetProductsQueryDto extends PaginationQueryDto {}
+
+export class SearchProductsQueryDto extends PaginationQueryDto {
   @IsString()
   @IsOptional()
   name?: string;
@@ -24,5 +26,3 @@ export class GetProductsQueryDto extends PaginationQueryDto {
   @Type(() => Number)
   max?: number;
 }
-
-export class GetSimilarProductsQueryDto extends PaginationQueryDto {}

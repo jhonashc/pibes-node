@@ -31,7 +31,7 @@ export { IdParamDto, UserIdParamDto } from "./params";
 export {
   CreateProductDto,
   GetProductsQueryDto,
-  GetSimilarProductsQueryDto,
+  SearchProductsQueryDto,
   UpdateProductDto,
 } from "./product";
 
