@@ -1,7 +1,14 @@
 import { FindOptionsWhere, Like, Repository } from "typeorm";
 
 import { AppDataSource } from "../config";
-import { CreateUserDto, GetUsersQueryDto, UpdateUserDto } from "../dtos";
+
+import {
+  CreateUserDto,
+  GetUsersQueryDto,
+  SearchUsersQueryDto,
+  UpdateUserDto,
+} from "../dtos";
+
 import { Person, Roles, User, UserOtp } from "../entities";
 
 class UserService {
@@ -40,7 +47,16 @@ class UserService {
   }
 
   getUsers(getUsersQueryDto: GetUsersQueryDto): Promise<User[]> {
-    const { username, limit = 10, offset = 0 } = getUsersQueryDto;
+    const { limit = 10, offset = 0 } = getUsersQueryDto;
+
+    return this.userRepository.find({
+      take: limit,
+      skip: offset,
+    });
+  }
+
+  searchUsers(searchUsersQueryDto: SearchUsersQueryDto): Promise<User[]> {
+    const { username, limit = 10, offset = 0 } = searchUsersQueryDto;
 
     const findOptionsWhere: FindOptionsWhere<User> = {};
 
