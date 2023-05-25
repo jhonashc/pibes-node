@@ -1,5 +1,10 @@
 import { Type } from "class-transformer";
-import { IsInt, IsOptional, IsPositive, IsString } from "class-validator";
+import {
+  IsInt,
+  IsOptional,
+  IsPositive,
+  IsString,
+} from "class-validator-multi-lang";
 
 import { PaginationQueryDto } from "../query";
 

@@ -4,7 +4,7 @@ import {
   IsOptional,
   IsString,
   MaxLength,
-} from "class-validator";
+} from "class-validator-multi-lang";
 
 import { Gender } from "../../entities";
 

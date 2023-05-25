@@ -7,7 +7,7 @@ import {
   IsOptional,
   IsPositive,
   ValidateNested,
-} from "class-validator";
+} from "class-validator-multi-lang";
 
 import {
   DeliveryStatus,

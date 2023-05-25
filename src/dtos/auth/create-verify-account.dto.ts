@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString } from "class-validator-multi-lang";
 
 export class CreateVerifyAccountDto {
   @IsEmail()

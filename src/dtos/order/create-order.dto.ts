@@ -8,7 +8,7 @@ import {
   IsPositive,
   IsUUID,
   ValidateNested,
-} from "class-validator";
+} from "class-validator-multi-lang";
 
 import { DeliveryType, OrderStatus, PaymentMethods } from "../../entities";
 

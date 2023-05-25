@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from "class-validator";
+import { IsOptional, IsString } from "class-validator-multi-lang";
 
 export class UpdateCategoryDto {
   @IsString()

@@ -7,7 +7,7 @@ import {
   IsPositive,
   IsString,
   IsUUID,
-} from "class-validator";
+} from "class-validator-multi-lang";
 
 export class UpdateProductDto {
   @IsString()

@@ -9,7 +9,7 @@ import {
   IsUUID,
   Max,
   Min,
-} from "class-validator";
+} from "class-validator-multi-lang";
 
 import { Days } from "../../entities";
 

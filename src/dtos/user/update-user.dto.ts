@@ -8,7 +8,7 @@ import {
   IsOptional,
   IsString,
   ValidateNested,
-} from "class-validator";
+} from "class-validator-multi-lang";
 
 import { Roles } from "../../entities";
 

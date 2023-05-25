@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsString,
   ValidateNested,
-} from "class-validator";
+} from "class-validator-multi-lang";
 
 import { CreatePersonDto } from "../user";
 

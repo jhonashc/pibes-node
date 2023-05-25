@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from "class-validator-multi-lang";
 
 export class UpdateUserAddressDto {
   @IsString()

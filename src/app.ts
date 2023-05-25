@@ -1,8 +1,6 @@
 import "dotenv/config";
 import "reflect-metadata";
 import cors from "cors";
-import i18n from "i18n";
-import path from "path";
 import morgan from "morgan";
 import express, { Application } from "express";
 
@@ -40,23 +38,12 @@ class Server {
     this.middlewares();
     this.routes();
     this.customMiddlewares();
-
-    /* Default spanish */
-    i18n.setLocale("es");
   }
 
   middlewares() {
     this.app.use(cors());
     this.app.use(morgan("dev"));
     this.app.use(express.json());
-
-    /* Locales */
-    i18n.configure({
-      locales: ["es"],
-      directory: path.join(__dirname, "locales"),
-      defaultLocale: "es",
-      objectNotation: true,
-    });
   }
 
   customMiddlewares() {

@@ -1,4 +1,9 @@
-import { IsInt, IsNotEmpty, IsPositive, IsUUID } from "class-validator";
+import {
+  IsInt,
+  IsNotEmpty,
+  IsPositive,
+  IsUUID,
+} from "class-validator-multi-lang";
 
 export class CreateOrderDetailDto {
   @IsUUID()
