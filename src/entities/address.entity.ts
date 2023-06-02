@@ -7,21 +7,20 @@ import { User } from "./user.entity";
 export class Address extends Base {
   @Column({
     type: "text",
-    name: "address_line1",
   })
-  addressLine1: string;
+  name: string;
 
   @Column({
     type: "text",
-    name: "address_line2",
+    name: "side_street",
   })
-  addressLine2: string;
+  sideStreet: string;
 
   @Column({
     type: "text",
-    name: "address_reference",
+    name: "delivery_instruction",
   })
-  addressReference: string;
+  deliveryInstruction: string;
 
   /* Relations */
   @ManyToOne(() => User, (user) => user.addresses, {
