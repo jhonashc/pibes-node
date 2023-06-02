@@ -1,1 +1,1 @@
-export { AppDataSource } from "./data-source";
+export { AppDataSource } from "./typeorm.config";
