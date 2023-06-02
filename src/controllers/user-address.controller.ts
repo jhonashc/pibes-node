@@ -14,7 +14,7 @@ export class UserAddressController {
   async createUserAddress(req: Request, res: Response, next: NextFunction) {
     try {
       const { userId } = req.params;
-      const { addressLine1, addressLine2, addressReference } =
+      const { name, sideStreet, deliveryInstruction } =
         req.body as CreateUserAddressDto;
 
       const userFound: User | null = await UserService.getUserById(userId);
@@ -26,9 +26,9 @@ export class UserAddressController {
       }
 
       const createUserAddressDto: CreateUserAddressDto = {
-        addressLine1,
-        addressLine2,
-        addressReference,
+        name,
+        sideStreet,
+        deliveryInstruction,
       };
 
       const createdUserAddress: Address =
@@ -110,7 +110,7 @@ export class UserAddressController {
   async updateUserAddress(req: Request, res: Response, next: NextFunction) {
     try {
       const { userId, addressId } = req.params;
-      const { addressLine1, addressLine2, addressReference } =
+      const { name, sideStreet, deliveryInstruction } =
         req.body as UpdateUserAddressDto;
 
       const addressFound: Address | null = await AddressService.getAddressById(
@@ -132,9 +132,9 @@ export class UserAddressController {
       }
 
       const updateUserAddressDto: UpdateUserAddressDto = {
-        addressLine1,
-        addressLine2,
-        addressReference,
+        name,
+        sideStreet,
+        deliveryInstruction,
       };
 
       const updatedUserAddress: Address =
