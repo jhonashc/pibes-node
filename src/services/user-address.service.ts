@@ -23,12 +23,12 @@ class UserAddressService {
     userId: string,
     createUserAddress: CreateUserAddressDto
   ): Promise<Address> {
-    const { addressLine1, addressLine2, addressReference } = createUserAddress;
+    const { name, sideStreet, deliveryInstruction } = createUserAddress;
 
     const newUserAddress: Address = this.addressService.create({
-      addressLine1,
-      addressLine2,
-      addressReference,
+      name,
+      sideStreet,
+      deliveryInstruction,
       user: this.userService.create({
         id: userId,
       }),
@@ -70,14 +70,13 @@ class UserAddressService {
     addressId: string,
     updateUserAddressDto: UpdateUserAddressDto
   ): Promise<Address> {
-    const { addressLine1, addressLine2, addressReference } =
-      updateUserAddressDto;
+    const { name, sideStreet, deliveryInstruction } = updateUserAddressDto;
 
     const newUserAddress: Address = this.addressService.create({
       id: addressId,
-      addressLine1,
-      addressLine2,
-      addressReference,
+      name,
+      sideStreet,
+      deliveryInstruction,
       user: this.userService.create({
         id: userId,
       }),
