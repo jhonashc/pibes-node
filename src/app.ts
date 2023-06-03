@@ -6,17 +6,7 @@ import express, { Application } from "express";
 
 import { AppDataSource } from "./config";
 import { exceptionHandler } from "./middlewares";
-
-import {
-  authRouter,
-  categoryRouter,
-  favoriteRouter,
-  orderRouter,
-  productRouter,
-  promotionRouter,
-  userAddressRouter,
-  userRouter,
-} from "./routes";
+import * as routes from "./routes";
 
 class Server {
   private app: Application;
@@ -40,25 +30,25 @@ class Server {
     this.customMiddlewares();
   }
 
-  middlewares() {
+  private middlewares() {
     this.app.use(cors());
     this.app.use(morgan("dev"));
     this.app.use(express.json());
   }
 
-  customMiddlewares() {
+  private customMiddlewares() {
     this.app.use(exceptionHandler);
   }
 
-  routes() {
-    this.app.use(this.apiRoutes.auth, authRouter);
-    this.app.use(this.apiRoutes.categories, categoryRouter);
-    this.app.use(this.apiRoutes.favorites, favoriteRouter);
-    this.app.use(this.apiRoutes.orders, orderRouter);
-    this.app.use(this.apiRoutes.products, productRouter);
-    this.app.use(this.apiRoutes.promotions, promotionRouter);
-    this.app.use(this.apiRoutes.users, userRouter);
-    this.app.use(this.apiRoutes.users, userAddressRouter);
+  private routes() {
+    this.app.use(this.apiRoutes["auth"], routes["authRouter"]);
+    this.app.use(this.apiRoutes["categories"], routes["categoryRouter"]);
+    this.app.use(this.apiRoutes["favorites"], routes["favoriteRouter"]);
+    this.app.use(this.apiRoutes["orders"], routes["orderRouter"]);
+    this.app.use(this.apiRoutes["products"], routes["productRouter"]);
+    this.app.use(this.apiRoutes["promotions"], routes["promotionRouter"]);
+    this.app.use(this.apiRoutes["users"], routes["userRouter"]);
+    this.app.use(this.apiRoutes["users"], routes["userAddressRouter"]);
   }
 
   listen() {
