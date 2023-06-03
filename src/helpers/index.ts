@@ -12,4 +12,5 @@ export {
   mapPromotions,
 } from "./mappers.helper";
 
+export { fileFilter, fileNamer } from "./multer.helper";
 export { generateOpt } from "./otp.helper";
