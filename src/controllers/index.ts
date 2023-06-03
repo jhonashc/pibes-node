@@ -1,6 +1,7 @@
 export { AuthController } from "./auth.controller";
 export { CategoryController } from "./category.controller";
 export { FavoriteController } from "./favorite.controller";
+export { FileController } from "./file.controller";
 export { OrderController } from "./order.controller";
 export { ProductController } from "./product.controller";
 export { PromotionController } from "./promotion.controller";
