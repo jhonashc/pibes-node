@@ -15,6 +15,7 @@ class Server {
     auth: "/api/auth",
     categories: "/api/categories",
     favorites: "/api/favorites",
+    files: "/api/files",
     orders: "/api/orders",
     products: "/api/products",
     promotions: "/api/promotions",
@@ -32,7 +33,7 @@ class Server {
 
   private middlewares() {
     this.app.use(cors());
-    this.app.use(morgan("dev"));
+    this.app.use(morgan("tiny"));
     this.app.use(express.json());
   }
 
@@ -44,6 +45,7 @@ class Server {
     this.app.use(this.apiRoutes["auth"], routes["authRouter"]);
     this.app.use(this.apiRoutes["categories"], routes["categoryRouter"]);
     this.app.use(this.apiRoutes["favorites"], routes["favoriteRouter"]);
+    this.app.use(this.apiRoutes["files"], routes["fileRouter"]);
     this.app.use(this.apiRoutes["orders"], routes["orderRouter"]);
     this.app.use(this.apiRoutes["products"], routes["productRouter"]);
     this.app.use(this.apiRoutes["promotions"], routes["promotionRouter"]);
