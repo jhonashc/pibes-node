@@ -60,9 +60,6 @@ devDependencies:
   '@types/fs-extra':
     specifier: ^11.0.1
     version: 11.0.1
-  '@types/i18n':
-    specifier: ^0.13.6
-    version: 0.13.6
   '@types/jsonwebtoken':
     specifier: ^9.0.1
     version: 9.0.1
@@ -193,10 +190,6 @@ packages:
     dependencies:
       '@types/jsonfile': 6.1.1
       '@types/node': 18.15.11
-    dev: true
-
-  /@types/i18n@0.13.6:
-    resolution: {integrity: sha512-LLbimAA0oQilgP4PJBFH7sRdBUjWLo6R1rf46SUgVzsUZeXH3PT1piXj4LNX5ECDi0bLg9RmQMmY1K2qawqJqA==}
     dev: true
 
   /@types/jsonfile@6.1.1:
