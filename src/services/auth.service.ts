@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
 
-import { AppDataSource } from "../config";
+import { AppDataSource } from "../database";
 import { CreateRegisterDto } from "../dtos";
 import { Person, Roles, User, UserOtp } from "../entities";
 

@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
 
-import { AppDataSource } from "../config";
+import { AppDataSource } from "../database";
 import { Address } from "../entities";
 
 class AddressService {

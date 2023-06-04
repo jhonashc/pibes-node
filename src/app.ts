@@ -4,7 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 import express, { Application } from "express";
 
-import { AppDataSource } from "./config";
+import { AppDataSource } from "./database";
 import { exceptionHandler } from "./middlewares";
 import * as routes from "./routes";
 

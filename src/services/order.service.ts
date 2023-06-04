@@ -1,6 +1,6 @@
 import { FindOptionsWhere, Like, Repository } from "typeorm";
 
-import { AppDataSource } from "../config";
+import { AppDataSource } from "../database";
 
 import {
   CreateOrderDto,

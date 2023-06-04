@@ -1,6 +1,6 @@
 import { FindOptionsWhere, Repository } from "typeorm";
 
-import { AppDataSource } from "../config";
+import { AppDataSource } from "../database";
 import { CreatePromotionDto, GetPromotionsQueryDto } from "../dtos";
 import { Days, ProductPromotion, Promotion } from "../entities";
 import { getCurrentDay } from "../helpers";
