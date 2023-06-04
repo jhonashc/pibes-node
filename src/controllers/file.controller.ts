@@ -15,11 +15,9 @@ export class FileController {
         );
       }
 
-      const imageUrl: string = `${process.env.BASE_URL}/files/${file.filename}`;
-
-      res.json({
+      res.status(201).json({
         status: true,
-        data: imageUrl,
+        data: file.filename,
       });
     } catch (error) {
       next(error);
