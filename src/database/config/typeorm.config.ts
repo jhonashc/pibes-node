@@ -2,7 +2,7 @@ import { join } from "path";
 import { DataSource, DataSourceOptions } from "typeorm";
 import { SeederOptions } from "typeorm-extension";
 
-import { MainSeeder } from "../seeds";
+import { InitSeeder } from "../seeds";
 
 const options: DataSourceOptions & SeederOptions = {
   type: "postgres",
@@ -13,7 +13,7 @@ const options: DataSourceOptions & SeederOptions = {
   database: process.env.DB_NAME || "lospibesdb",
   entities: [join(__dirname, "../../entities/*.entity{.ts,.js}")],
   migrations: [join(__dirname, "../migrations/*{.ts,.js}")],
-  seeds: [MainSeeder],
+  seeds: [InitSeeder],
 };
 
 export const AppDataSource = new DataSource(options);

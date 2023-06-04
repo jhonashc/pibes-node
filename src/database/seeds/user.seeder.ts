@@ -29,7 +29,7 @@ export class UserSeeder implements Seeder {
 
     const userFactory: SeederFactory<User> = factoryManager.get(User);
 
-    // save 10 factory generated entities, to the database
+    // Save 10 factory generated entities, to the database
     await userFactory.saveMany(10);
   }
 }
