@@ -15,6 +15,7 @@ export class UserSeeder implements Seeder {
       email: "admin@gmail.com",
       password: "password",
       roles: [Roles.USER, Roles.ADMIN],
+      isActive: true,
     });
 
     const userFound: User | null = await repository.findOneBy({
@@ -28,7 +29,7 @@ export class UserSeeder implements Seeder {
 
     const userFactory: SeederFactory<User> = factoryManager.get(User);
 
-    // save 5 factory generated entities, to the database
+    // save 10 factory generated entities, to the database
     await userFactory.saveMany(10);
   }
 }

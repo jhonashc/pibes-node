@@ -18,6 +18,7 @@ export default setSeederFactory(User, (faker) => {
   user.password = "password";
   user.avatarUrl = faker.internet.avatar();
   user.roles = [Roles.USER];
+  user.isActive = faker.datatype.boolean();
 
   return user;
 });
