@@ -1,10 +1,10 @@
 import { NextFunction, Response } from "express";
 
-import { Roles, User } from "../entities";
+import { User, UserRole } from "../entities";
 import { RequestWithUser } from "../interfaces";
 import { ForbiddenException, UnauthorizedException } from "../exceptions";
 
-export const hasPermission = (validRoles: Roles[] = []) => {
+export const hasPermission = (validRoles: UserRole[] = []) => {
   return async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const userFound: User | undefined = req.user;

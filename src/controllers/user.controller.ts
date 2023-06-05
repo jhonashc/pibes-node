@@ -7,7 +7,7 @@ import {
   UpdateUserDto,
 } from "../dtos";
 
-import { Roles, User } from "../entities";
+import {  User, UserRole } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
 import { UserService } from "../services";
 
@@ -40,12 +40,12 @@ export class UserController {
       }
 
       const areTheRolesValid: boolean | undefined = roles?.every(
-        (role) => Roles[role]
+        (role) => UserRole[role]
       );
 
       if (!areTheRolesValid && areTheRolesValid !== undefined) {
         throw new ConflictException(
-          `Debe ingresar roles válidos [${Object.values(Roles)}]`
+          `Debe ingresar roles válidos [${Object.values(UserRole)}]`
         );
       }
 
@@ -152,12 +152,12 @@ export class UserController {
       }
 
       const areTheRolesValid: boolean | undefined = roles?.every(
-        (role) => Roles[role]
+        (role) => UserRole[role]
       );
 
       if (!areTheRolesValid && areTheRolesValid !== undefined) {
         throw new ConflictException(
-          `Debe ingresar roles válidos [${Object.values(Roles)}]`
+          `Debe ingresar roles válidos [${Object.values(UserRole)}]`
         );
       }
 

@@ -13,7 +13,7 @@ export class PromotionController {
         description,
         imageUrl,
         discountPercentage,
-        availableDay,
+        availableDays,
         productIds,
       } = req.body as CreatePromotionDto;
 
@@ -43,7 +43,7 @@ export class PromotionController {
         description,
         imageUrl,
         discountPercentage,
-        availableDay,
+        availableDays,
         productIds,
       };
 
