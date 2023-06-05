@@ -3,7 +3,7 @@ import { Column, Entity, OneToMany } from "typeorm";
 import { Base } from "./base.entity";
 import { ProductPromotion } from "./product-promotion.entity";
 
-export enum Days {
+export enum DayOfWeek {
   MONDAY = "MONDAY",
   TUESDAY = "TUESDAY",
   WEDNESDAY = "WEDNESDAY",
@@ -43,10 +43,11 @@ export class Promotion extends Base {
 
   @Column({
     type: "enum",
-    enum: Days,
-    name: "available_day",
+    array: true,
+    enum: DayOfWeek,
+    name: "available_days",
   })
-  availableDay: Days;
+  availableDays: DayOfWeek[];
 
   /* Relations */
   @OneToMany(
