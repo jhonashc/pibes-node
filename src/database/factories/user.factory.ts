@@ -1,6 +1,6 @@
 import { setSeederFactory } from "typeorm-extension";
 
-import { Person, Roles, User } from "../../entities";
+import { Person, User, UserRole } from "../../entities";
 
 export default setSeederFactory(User, (faker) => {
   const person = new Person();
@@ -23,8 +23,8 @@ export default setSeederFactory(User, (faker) => {
 
   user.password = "password";
   user.avatarUrl = faker.internet.avatar();
-  user.roles = [Roles.USER];
-  user.isActive = faker.datatype.boolean();
+  user.roles = [UserRole.USER];
+  user.isActive = true;
 
   return user;
 });

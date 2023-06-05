@@ -1,7 +1,7 @@
 import { DataSource, Repository } from "typeorm";
 import { Seeder, SeederFactory, SeederFactoryManager } from "typeorm-extension";
 
-import { Roles, User } from "../../entities";
+import {  User, UserRole } from "../../entities";
 
 export class UserSeeder implements Seeder {
   async run(
@@ -14,7 +14,7 @@ export class UserSeeder implements Seeder {
       username: "admin",
       email: "admin@gmail.com",
       password: "password",
-      roles: [Roles.USER, Roles.ADMIN],
+      roles: [UserRole.USER, UserRole.ADMIN],
       isActive: true,
     });
 
