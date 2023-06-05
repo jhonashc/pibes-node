@@ -9,7 +9,7 @@ import {
   UpdateUserDto,
 } from "../dtos";
 
-import { Person, Roles, User, UserOtp } from "../entities";
+import { Person, User, UserOtp, UserRole } from "../entities";
 
 class UserService {
   private readonly personRepository: Repository<Person>;
@@ -32,7 +32,7 @@ class UserService {
       password,
       avatarUrl,
       isActive: true,
-      roles: roles?.length ? roles : [Roles.USER],
+      roles: roles?.length ? roles : [UserRole.USER],
       person:
         person &&
         this.personRepository.create({

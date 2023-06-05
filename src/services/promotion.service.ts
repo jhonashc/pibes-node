@@ -1,9 +1,9 @@
-import { FindOptionsWhere, Repository } from "typeorm";
+import { ArrayOverlap, FindOptionsWhere, Repository } from "typeorm";
 
 import { AppDataSource } from "../database";
 import { CreatePromotionDto, GetPromotionsQueryDto } from "../dtos";
-import { Days, ProductPromotion, Promotion } from "../entities";
-import { getCurrentDay } from "../helpers";
+import { ProductPromotion, Promotion } from "../entities";
+import { getPromotionDay } from "../helpers";
 
 class PromotionService {
   private readonly promotionRepository: Repository<Promotion>;
@@ -21,7 +21,7 @@ class PromotionService {
       description,
       imageUrl,
       discountPercentage,
-      availableDay,
+      availableDays,
       productIds,
     } = createPromotionDto;
 
@@ -30,7 +30,7 @@ class PromotionService {
       description,
       imageUrl,
       discountPercentage,
-      availableDay,
+      availableDays,
       products: productIds?.map((productId) =>
         this.productPromotionRepository.create({
           product: {
@@ -51,10 +51,9 @@ class PromotionService {
     const findOptionsWhere: FindOptionsWhere<Promotion> = {};
 
     if (day) {
-      findOptionsWhere.availableDay = day;
+      findOptionsWhere.availableDays = ArrayOverlap([day]);
     } else {
-      const currentDay: Days = getCurrentDay();
-      findOptionsWhere.availableDay = Days[currentDay];
+      findOptionsWhere.availableDays = ArrayOverlap([getPromotionDay()]);
     }
 
     return this.promotionRepository.find({

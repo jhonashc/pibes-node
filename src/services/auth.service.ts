@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 
 import { AppDataSource } from "../database";
 import { CreateRegisterDto } from "../dtos";
-import { Person, Roles, User, UserOtp } from "../entities";
+import { Person, User, UserOtp, UserRole } from "../entities";
 
 class AuthService {
   private readonly personRepository: Repository<Person>;
@@ -24,7 +24,7 @@ class AuthService {
       email: email.trim().toLowerCase(),
       password,
       avatarUrl,
-      roles: [Roles.USER],
+      roles: [UserRole.USER],
       person:
         person &&
         this.personRepository.create({
