@@ -10,7 +10,7 @@ import {
   ValidateNested,
 } from "class-validator-multi-lang";
 
-import { Roles } from "../../entities";
+import { UserRole } from "../../entities";
 
 import { CreateUserOtpDto } from "../auth";
 
@@ -44,8 +44,6 @@ export class UpdateUserDto {
   @IsArray()
   @IsOptional()
   @ArrayNotEmpty()
-  @IsEnum(Roles, {
-    each: true,
-  })
-  roles?: Roles[];
+  @IsEnum(UserRole, { each: true })
+  roles?: UserRole[];
 }

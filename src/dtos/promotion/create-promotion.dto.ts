@@ -11,7 +11,7 @@ import {
   Min,
 } from "class-validator-multi-lang";
 
-import { Days } from "../../entities";
+import { DayOfWeek } from "../../entities";
 
 export class CreatePromotionDto {
   @IsString()
@@ -32,14 +32,14 @@ export class CreatePromotionDto {
   @IsOptional()
   discountPercentage?: number;
 
-  @IsEnum(Days)
-  availableDay: Days;
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsEnum(DayOfWeek, { each: true })
+  availableDays: DayOfWeek[];
 
-  @IsUUID("4", {
-    each: true,
-  })
   @IsArray()
   @IsOptional()
   @ArrayNotEmpty()
+  @IsUUID("4", { each: true })
   productIds?: string[];
 }

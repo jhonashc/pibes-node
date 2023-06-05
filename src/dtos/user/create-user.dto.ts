@@ -11,7 +11,7 @@ import {
   ValidateNested,
 } from "class-validator-multi-lang";
 
-import { Roles } from "../../entities";
+import { UserRole } from "../../entities";
 
 import { CreatePersonDto } from "./create-person.dto";
 
@@ -41,11 +41,9 @@ export class CreateUserDto {
   avatarUrl?: string;
 
   /* Roles */
+  @IsEnum(UserRole, { each: true })
   @IsArray()
   @IsOptional()
   @ArrayNotEmpty()
-  @IsEnum(Roles, {
-    each: true,
-  })
-  roles?: Roles[];
+  roles?: UserRole[];
 }
