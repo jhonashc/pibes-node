@@ -16,10 +16,8 @@ import { Order } from "./order.entity";
 import { Person } from "./person.entity";
 import { UserOtp } from "./user-otp.entity";
 
-export enum Roles {
+export enum UserRole {
   USER = "USER",
-  ADVANCED = "ADVANCED",
-  USERADMIN = "USERADMIN",
   ADMIN = "ADMIN",
 }
 
@@ -51,11 +49,11 @@ export class User extends Base {
 
   @Column({
     type: "enum",
-    enum: Roles,
     array: true,
-    default: [Roles.USER],
+    enum: UserRole,
+    default: [UserRole.USER],
   })
-  roles: Roles[];
+  roles: UserRole[];
 
   @Column({
     type: "boolean",
