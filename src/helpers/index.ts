@@ -1,5 +1,4 @@
 export { comparePasswords, encryptPassword } from "./bcrypt.helper";
-export { getCurrentDay } from "./date.helper";
 export { newUserEmailTemplate } from "./email.helper";
 export { generateTokens, verifyToken } from "./jwt.helper";
 
@@ -14,3 +13,4 @@ export {
 
 export { fileFilter, fileNamer } from "./multer.helper";
 export { generateOpt } from "./otp.helper";
+export { getPromotionDay } from "./promotion.helper";
