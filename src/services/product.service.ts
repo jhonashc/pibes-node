@@ -18,28 +18,33 @@ import {
   UpdateProductDto,
 } from "../dtos";
 
-import { Product, ProductCategory } from "../entities";
+import { Product, ProductCategory, ProductImage } from "../entities";
 
 class ProductService {
   private readonly productRepository: Repository<Product>;
   private readonly productCategoryRepository: Repository<ProductCategory>;
+  private readonly productImageRepository: Repository<ProductImage>;
 
   constructor() {
     this.productRepository = AppDataSource.getRepository(Product);
-    this.productCategoryRepository =
-      AppDataSource.getRepository(ProductCategory);
+    this.productCategoryRepository = AppDataSource.getRepository(ProductCategory);
+    this.productImageRepository = AppDataSource.getRepository(ProductImage);
   }
 
   createProduct(createProductDto: CreateProductDto): Promise<Product> {
-    const { name, description, imageUrl, price, stock, categoryIds } =
+    const { name, description, price, stock, images, categoryIds } =
       createProductDto;
 
     const newProduct: Product = this.productRepository.create({
       name: name.trim().toLowerCase(),
       description,
-      imageUrl,
       price,
       stock,
+      images: images?.map((url) =>
+        this.productImageRepository.create({
+          url,
+        })
+      ),
       categories: categoryIds.map((categoryId) =>
         this.productCategoryRepository.create({
           category: {
@@ -167,7 +172,7 @@ class ProductService {
         id: product.id,
         name: name?.trim().toLowerCase(),
         description,
-        imageUrl,
+        // imageUrl,
         price,
         stock,
       });
