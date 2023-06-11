@@ -2,7 +2,13 @@ import { Router } from "express";
 
 import { PromotionController } from "../controllers";
 
-import { CreatePromotionDto, GetPromotionsQueryDto, IdParamDto } from "../dtos";
+import {
+  CreatePromotionDto,
+  GetPromotionsQueryDto,
+  IdParamDto,
+  UpdatePromotionDto,
+} from "../dtos";
+
 import { ValidationType } from "../interfaces";
 import { uploader, validateRequest } from "../middlewares";
 
@@ -27,6 +33,14 @@ router.get(
   "/:id",
   validateRequest(IdParamDto, ValidationType.PARAMS),
   promotionController.getPromotionById
+);
+
+router.patch(
+  "/:id",
+  uploader.single("file"),
+  validateRequest(IdParamDto, ValidationType.PARAMS),
+  validateRequest(UpdatePromotionDto),
+  promotionController.updatePromotionById
 );
 
 router.delete(
