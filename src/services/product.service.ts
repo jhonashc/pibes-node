@@ -27,7 +27,8 @@ class ProductService {
 
   constructor() {
     this.productRepository = AppDataSource.getRepository(Product);
-    this.productCategoryRepository = AppDataSource.getRepository(ProductCategory);
+    this.productCategoryRepository =
+      AppDataSource.getRepository(ProductCategory);
     this.productImageRepository = AppDataSource.getRepository(ProductImage);
   }
 
@@ -160,7 +161,7 @@ class ProductService {
     product: Product,
     updateProductDto: UpdateProductDto
   ): Promise<Product | undefined> {
-    const { name, description, imageUrl, price, stock, categoryIds } =
+    const { name, description, price, stock, images, categoryIds } =
       updateProductDto;
 
     const queryRunner = AppDataSource.createQueryRunner();
@@ -172,10 +173,23 @@ class ProductService {
         id: product.id,
         name: name?.trim().toLowerCase(),
         description,
-        // imageUrl,
         price,
         stock,
       });
+
+      if (images) {
+        await this.productImageRepository.delete({
+          product: {
+            id: product.id,
+          },
+        });
+
+        newProduct.images = images.map((url) =>
+          this.productImageRepository.create({
+            url,
+          })
+        );
+      }
 
       if (categoryIds) {
         await this.productCategoryRepository.delete({
