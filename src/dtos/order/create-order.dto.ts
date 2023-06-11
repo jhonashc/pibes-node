@@ -36,9 +36,7 @@ export class CreateOrderDto {
   /* Details */
   @IsArray()
   @ArrayNotEmpty()
-  @ValidateNested({
-    each: true,
-  })
+  @ValidateNested({ each: true })
   @Type(() => CreateOrderDetailDto)
   details: CreateOrderDetailDto[];
 }

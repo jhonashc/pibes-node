@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import {
   ArrayNotEmpty,
   IsArray,
@@ -18,25 +19,27 @@ export class UpdateProductDto {
   @IsOptional()
   description?: string;
 
-  @IsString()
-  @IsOptional()
-  imageUrl?: string;
-
   @IsNumber()
   @IsPositive()
   @IsOptional()
+  @Type(() => Number)
   price?: number;
 
   @IsInt()
   @IsPositive()
   @IsOptional()
+  @Type(() => Number)
   stock?: number;
 
-  @IsUUID("4", {
-    each: true,
-  })
   @IsArray()
-  @ArrayNotEmpty()
   @IsOptional()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  images?: string[];
+
+  @IsArray()
+  @IsOptional()
+  @ArrayNotEmpty()
+  @IsUUID("4", { each: true })
   categoryIds?: string[];
 }

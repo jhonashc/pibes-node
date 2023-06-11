@@ -41,9 +41,9 @@ export class CreateUserDto {
   avatarUrl?: string;
 
   /* Roles */
-  @IsEnum(UserRole, { each: true })
   @IsArray()
   @IsOptional()
   @ArrayNotEmpty()
+  @IsEnum(UserRole, { each: true })
   roles?: UserRole[];
 }
