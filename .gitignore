@@ -4,8 +4,9 @@ node_modules
 # Ignore built ts files
 dist
 
-# Public files
-public
+# Static images
+static/images/*
+!static/images/.gitkeep
 
 # Environments
 .env
