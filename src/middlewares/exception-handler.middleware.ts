@@ -1,10 +1,10 @@
-import { unlinkSync } from "fs";
 import { JsonWebTokenError } from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 
 import { BaseError } from "../exceptions";
+import { FileService } from "../services";
 
-export const exceptionHandler = (
+export const exceptionHandler = async (
   error: Error,
   req: Request,
   res: Response,
@@ -13,11 +13,14 @@ export const exceptionHandler = (
   const file = req.file as Express.Multer.File;
   const files = req.files as Express.Multer.File[];
 
-  console.log({ file, files });
+  if (file) {
+    await FileService.deleteImageByName(file.filename);
+  }
 
-  if (file) unlinkSync(file.path);
-
-  if (files) files.forEach(({ path }) => unlinkSync(path));
+  if (files) {
+    const fileNames: string[] = files.map(({ filename }) => filename);
+    await FileService.deleteImagesByName(fileNames);
+  }
 
   if (error instanceof BaseError) {
     const { message, statusCode } = error;
