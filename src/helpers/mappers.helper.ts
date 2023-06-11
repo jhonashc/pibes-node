@@ -18,6 +18,7 @@ export const mapOrders = (orders: Order[]): OrderMapped[] => {
 export const mapProduct = (product: Product): ProductMapped => {
   return {
     ...product,
+    images: product.images?.map(({ url }) => url) || [],
     categories: product.categories.map(({ category }) => category),
   };
 };
