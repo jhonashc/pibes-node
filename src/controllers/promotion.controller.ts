@@ -1,9 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 
-import { CreatePromotionDto, GetPromotionsQueryDto } from "../dtos";
+import {
+  CreatePromotionDto,
+  GetPromotionsQueryDto,
+  UpdatePromotionDto,
+} from "../dtos";
+
 import { Product, Promotion } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
-import { ProductService, PromotionService } from "../services";
+import { FileService, ProductService, PromotionService } from "../services";
 
 export class PromotionController {
   async createPromotion(req: Request, res: Response, next: NextFunction) {
@@ -96,6 +101,53 @@ export class PromotionController {
       res.json({
         status: true,
         data: promotionFound,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updatePromotionById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+
+      const file = req.file as Express.Multer.File;
+
+      const { name, description, discountPercentage, availableDays } =
+        req.body as UpdatePromotionDto;
+
+      const promotionFound: Promotion | null =
+        await PromotionService.getPromotionById(id);
+
+      if (!promotionFound) {
+        throw new NotFoundException(
+          `La promoción con id ${id} no ha sido encontrada`
+        );
+      }
+
+      const currentPromotionImage: string = promotionFound.imageUrl || "";
+
+      if (file && currentPromotionImage.length > 0) {
+        await FileService.deleteImageByName(currentPromotionImage);
+      }
+
+      const updatePromotionDto: UpdatePromotionDto = {
+        name,
+        description,
+        imageUrl: file?.filename,
+        discountPercentage,
+        availableDays,
+      };
+
+      const updatedPromotion: Promotion =
+        await PromotionService.updatePromotionById(
+          promotionFound,
+          updatePromotionDto
+        );
+
+      res.json({
+        status: true,
+        data: updatedPromotion,
       });
     } catch (error) {
       next(error);

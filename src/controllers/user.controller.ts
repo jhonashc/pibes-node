@@ -167,7 +167,6 @@ export class UserController {
       const currentUserAvatar: string = userFound.avatarUrl || "";
 
       if (file && currentUserAvatar.length > 0) {
-        console.log({ file });
         await FileService.deleteImageByName(currentUserAvatar);
       }
 
