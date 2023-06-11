@@ -3,6 +3,7 @@ export { default as AuthService } from "./auth.service";
 export { default as CategoryService } from "./category.service";
 export { default as EmailService } from "./email.service";
 export { default as FavoriteService } from "./favorite.service";
+export { default as FileService } from "./file.service";
 export { default as OrderService } from "./order.service";
 export { default as ProductService } from "./product.service";
 export { default as PromotionService } from "./promotion.service";

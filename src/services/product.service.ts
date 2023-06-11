@@ -160,9 +160,15 @@ class ProductService {
   async updateProductById(
     product: Product,
     updateProductDto: UpdateProductDto
-  ): Promise<Product | undefined> {
-    const { name, description, price, stock, images, categoryIds } =
-      updateProductDto;
+  ): Promise<Product> {
+    const {
+      name,
+      description,
+      price,
+      stock,
+      images = [],
+      categoryIds = [],
+    } = updateProductDto;
 
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
@@ -171,13 +177,13 @@ class ProductService {
     try {
       const newProduct: Product = this.productRepository.create({
         id: product.id,
-        name: name?.trim().toLowerCase(),
-        description,
-        price,
-        stock,
+        name: name ? name?.trim().toLowerCase() : product.name,
+        description: description ? description : product.description,
+        price: price ? price : product.price,
+        stock: stock ? stock : product.stock,
       });
 
-      if (images) {
+      if (images.length > 0) {
         await this.productImageRepository.delete({
           product: {
             id: product.id,
@@ -191,7 +197,7 @@ class ProductService {
         );
       }
 
-      if (categoryIds) {
+      if (categoryIds.length > 0) {
         await this.productCategoryRepository.delete({
           product: {
             id: product.id,
@@ -220,6 +226,8 @@ class ProductService {
     } finally {
       await queryRunner.release();
     }
+
+    return product;
   }
 
   deleteProductById(product: Product): Promise<Product> {

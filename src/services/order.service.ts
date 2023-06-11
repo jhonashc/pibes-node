@@ -91,7 +91,7 @@ class OrderService {
   async updateOrderById(
     order: Order,
     updateOrderDto: UpdateOrderDto
-  ): Promise<Order | undefined> {
+  ): Promise<Order> {
     const {
       deliveryStatus,
       deliveryType,
@@ -143,6 +143,8 @@ class OrderService {
     } finally {
       await queryRunner.release();
     }
+
+    return order;
   }
 
   deleteOrderById(order: Order): Promise<Order> {
