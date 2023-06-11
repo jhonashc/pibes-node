@@ -4,7 +4,7 @@ import { PromotionController } from "../controllers";
 
 import { CreatePromotionDto, GetPromotionsQueryDto } from "../dtos";
 import { ValidationType } from "../interfaces";
-import { validateRequest } from "../middlewares";
+import { uploader, validateRequest } from "../middlewares";
 
 const router = Router();
 
@@ -12,6 +12,7 @@ const promotionController = new PromotionController();
 
 router.post(
   "/",
+  uploader.single("file"),
   validateRequest(CreatePromotionDto),
   promotionController.createPromotion
 );
