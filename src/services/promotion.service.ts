@@ -1,7 +1,11 @@
 import { ArrayOverlap, FindOptionsWhere, Repository } from "typeorm";
 
 import { AppDataSource } from "../database";
-import { CreatePromotionDto, GetPromotionsQueryDto } from "../dtos";
+import {
+  CreatePromotionDto,
+  GetPromotionsQueryDto,
+  UpdatePromotionDto,
+} from "../dtos";
 import { ProductPromotion, Promotion } from "../entities";
 import { getPromotionDay } from "../helpers";
 
@@ -77,6 +81,33 @@ class PromotionService {
         name: name.trim().toLowerCase(),
       },
     });
+  }
+
+  updatePromotionById(
+    promotion: Promotion,
+    updatePromotionDto: UpdatePromotionDto
+  ): Promise<Promotion> {
+    const {
+      name,
+      description,
+      imageUrl,
+      discountPercentage,
+      availableDays = [],
+    } = updatePromotionDto;
+
+    const newPromotion: Promotion = this.promotionRepository.create({
+      id: promotion.id,
+      name: name ? name.trim().toLowerCase() : promotion.name,
+      description: description ? description : promotion.description,
+      imageUrl: imageUrl ? imageUrl : promotion.imageUrl,
+      discountPercentage: discountPercentage
+        ? discountPercentage
+        : promotion.discountPercentage,
+      availableDays:
+        availableDays.length > 0 ? availableDays : promotion.availableDays,
+    });
+
+    return this.promotionRepository.save(newPromotion);
   }
 
   deletePromotionById(promotion: Promotion): Promise<Promotion> {
