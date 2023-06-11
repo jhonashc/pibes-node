@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import {
   ArrayNotEmpty,
   IsArray,
@@ -19,22 +20,24 @@ export class CreateProductDto {
   @IsOptional()
   description?: string;
 
-  @IsString()
-  @IsOptional()
-  imageUrl?: string;
-
   @IsNumber()
   @IsPositive()
+  @Type(() => Number)
   price: number;
 
   @IsInt()
   @IsPositive()
+  @Type(() => Number)
   stock: number;
 
-  @IsUUID("4", {
-    each: true,
-  })
+  @IsArray()
+  @IsOptional()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  images?: string[];
+
   @IsArray()
   @ArrayNotEmpty()
+  @IsUUID("4", { each: true })
   categoryIds: string[];
 }
