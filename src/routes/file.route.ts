@@ -8,4 +8,6 @@ const fileController = new FileController();
 
 router.get("/:imageName", fileController.getImageByName);
 
+router.delete("/:imageName", fileController.deleteImageByName);
+
 export default router;
