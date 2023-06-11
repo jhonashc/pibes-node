@@ -172,7 +172,10 @@ export class ProductController {
   async updateProductById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { name, description, imageUrl, price, stock, categoryIds } =
+
+      const files = req.files as Express.Multer.File[];
+
+      const { name, description, price, stock, categoryIds } =
         req.body as UpdateProductDto;
 
       const productFound: Product | null = await ProductService.getProductById(
@@ -197,7 +200,7 @@ export class ProductController {
       const updateProductDto: UpdateProductDto = {
         name,
         description,
-        imageUrl,
+        images: files?.map(({ filename }) => filename),
         price,
         stock,
         categoryIds,
