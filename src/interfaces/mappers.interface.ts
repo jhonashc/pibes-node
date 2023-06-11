@@ -10,6 +10,7 @@ export interface OrderDetailMapped {
 }
 
 export interface ProductMapped {
+  images: string[];
   categories: Category[];
 }
 
