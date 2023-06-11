@@ -12,6 +12,7 @@ import {
 } from "class-validator-multi-lang";
 
 import { DayOfWeek } from "../../entities";
+import { Type } from "class-transformer";
 
 export class CreatePromotionDto {
   @IsString()
@@ -30,6 +31,7 @@ export class CreatePromotionDto {
   @Min(0)
   @Max(100)
   @IsOptional()
+  @Type(() => Number)
   discountPercentage?: number;
 
   @IsArray()
