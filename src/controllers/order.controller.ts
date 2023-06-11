@@ -169,8 +169,10 @@ export class OrderController {
         details,
       };
 
-      const updatedOrder: Order | undefined =
-        await OrderService.updateOrderById(orderFound, updateOrderDto);
+      const updatedOrder: Order = await OrderService.updateOrderById(
+        orderFound,
+        updateOrderDto
+      );
 
       res.json({
         status: true,

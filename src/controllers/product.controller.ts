@@ -11,7 +11,7 @@ import { Category, Product } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
 import { mapProduct, mapProducts } from "../helpers";
 import { ProductMapped } from "../interfaces";
-import { CategoryService, ProductService } from "../services";
+import { CategoryService, FileService, ProductService } from "../services";
 
 export class ProductController {
   async createProduct(req: Request, res: Response, next: NextFunction) {
@@ -197,6 +197,13 @@ export class ProductController {
         }
       }
 
+      const productImages: string[] =
+        productFound.images?.map(({ url }) => url) || [];
+
+      if (files.length > 0 && productImages.length > 0) {
+        await FileService.deleteImagesByName(productImages);
+      }
+
       const updateProductDto: UpdateProductDto = {
         name,
         description,
@@ -206,8 +213,10 @@ export class ProductController {
         categoryIds,
       };
 
-      const updatedProduct: Product | undefined =
-        await ProductService.updateProductById(productFound, updateProductDto);
+      const updatedProduct: Product = await ProductService.updateProductById(
+        productFound,
+        updateProductDto
+      );
 
       res.status(201).json({
         status: true,
@@ -215,6 +224,7 @@ export class ProductController {
         data: updatedProduct,
       });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }

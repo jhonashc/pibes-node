@@ -8,7 +8,7 @@ import { ProductService, PromotionService } from "../services";
 export class PromotionController {
   async createPromotion(req: Request, res: Response, next: NextFunction) {
     try {
-      const file = req.file;
+      const file = req.file as Express.Multer.File;
 
       const {
         name,
