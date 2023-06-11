@@ -8,10 +8,11 @@ import { ProductService, PromotionService } from "../services";
 export class PromotionController {
   async createPromotion(req: Request, res: Response, next: NextFunction) {
     try {
+      const file = req.file;
+
       const {
         name,
         description,
-        imageUrl,
         discountPercentage,
         availableDays,
         productIds,
@@ -41,7 +42,7 @@ export class PromotionController {
       const createPromotionDto: CreatePromotionDto = {
         name,
         description,
-        imageUrl,
+        imageUrl: file?.filename,
         discountPercentage,
         availableDays,
         productIds,

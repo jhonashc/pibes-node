@@ -7,7 +7,7 @@ import {
   UpdateUserDto,
 } from "../dtos";
 
-import {  User, UserRole } from "../entities";
+import { User, UserRole } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
 import { UserService } from "../services";
 
