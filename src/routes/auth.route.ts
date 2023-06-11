@@ -10,7 +10,7 @@ import {
   CreateVerifyAccountDto,
 } from "../dtos";
 
-import { validateRequest } from "../middlewares";
+import { uploader, validateRequest } from "../middlewares";
 
 const router = Router();
 
@@ -20,6 +20,7 @@ router.post("/login", validateRequest(CreateLoginDto), authController.login);
 
 router.post(
   "/register",
+  uploader.single("file"),
   validateRequest(CreateRegisterDto),
   authController.register
 );
