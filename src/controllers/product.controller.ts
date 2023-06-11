@@ -16,7 +16,9 @@ import { CategoryService, ProductService } from "../services";
 export class ProductController {
   async createProduct(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, description, imageUrl, price, stock, categoryIds } =
+      const files = req.files as Express.Multer.File[];
+
+      const { name, description, price, stock, categoryIds } =
         req.body as CreateProductDto;
 
       const filteredName: string = name.trim().toLowerCase();
@@ -40,7 +42,7 @@ export class ProductController {
       const createProductDto: CreateProductDto = {
         name: filteredName,
         description,
-        imageUrl,
+        images: files?.map(({ filename }) => filename),
         price,
         stock,
         categoryIds,
