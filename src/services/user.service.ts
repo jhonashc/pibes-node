@@ -101,7 +101,7 @@ class UserService {
     const newUser: User = this.userRepository.create({
       id: user.id,
       username: username?.trim().toLowerCase(),
-      avatarUrl,
+      avatarUrl: avatarUrl ? avatarUrl : user.avatarUrl,
       isActive: user.isActive ? user.isActive : isActive,
       roles: roles?.length ? roles : user.roles,
       person: person
