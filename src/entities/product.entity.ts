@@ -4,6 +4,7 @@ import { Base } from "./base.entity";
 import { FavoriteProduct } from "./favorite-product.entity";
 import { OrderDetail } from "./order-detail.entity";
 import { ProductCategory } from "./product-category.entity";
+import { ProductImage } from "./product-image.entity";
 import { ProductPromotion } from "./product-promotion.entity";
 
 @Entity("product")
@@ -21,13 +22,6 @@ export class Product extends Base {
   description?: string;
 
   @Column({
-    type: "text",
-    nullable: true,
-    name: "image_url",
-  })
-  imageUrl?: string;
-
-  @Column({
     type: "float",
     default: 0,
   })
@@ -40,6 +34,12 @@ export class Product extends Base {
   stock: number;
 
   /* Relations */
+  @OneToMany(() => ProductImage, (productImage) => productImage.product, {
+    cascade: true,
+    eager: true,
+  })
+  images?: ProductImage[];
+
   @OneToMany(
     () => ProductCategory,
     (productCategory) => productCategory.product,

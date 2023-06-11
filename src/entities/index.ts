@@ -15,6 +15,7 @@ export {
 
 export { Gender, Person } from "./person.entity";
 export { ProductCategory } from "./product-category.entity";
+export { ProductImage } from "./product-image.entity";
 export { ProductPromotion } from "./product-promotion.entity";
 export { Product } from "./product.entity";
 export { DayOfWeek, Promotion } from "./promotion.entity";
