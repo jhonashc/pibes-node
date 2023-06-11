@@ -78,6 +78,10 @@ class PromotionService {
       },
     });
   }
+
+  deletePromotionById(promotion: Promotion): Promise<Promotion> {
+    return this.promotionRepository.remove(promotion);
+  }
 }
 
 export default new PromotionService();
