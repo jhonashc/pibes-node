@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { CreatePromotionDto, GetPromotionsQueryDto } from "../dtos";
 import { Product, Promotion } from "../entities";
-import { ConflictException } from "../exceptions";
+import { ConflictException, NotFoundException } from "../exceptions";
 import { ProductService, PromotionService } from "../services";
 
 export class PromotionController {
@@ -74,6 +74,54 @@ export class PromotionController {
       res.json({
         status: true,
         data: promotions,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getPromotionById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+
+      const promotionFound: Promotion | null =
+        await PromotionService.getPromotionById(id);
+
+      if (!promotionFound) {
+        throw new NotFoundException(
+          `La promoción con id ${id} no ha sido encontrada`
+        );
+      }
+
+      res.json({
+        status: true,
+        data: promotionFound,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deletePromotionById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+
+      const promotionFound: Promotion | null =
+        await PromotionService.getPromotionById(id);
+
+      if (!promotionFound) {
+        throw new NotFoundException(
+          `La promoción con id ${id} no ha sido encontrada`
+        );
+      }
+
+      const deletedPromotion: Promotion =
+        await PromotionService.deletePromotionById(promotionFound);
+
+      res.json({
+        status: true,
+        message: "La promoción ha sido eliminada con éxito",
+        data: deletedPromotion,
       });
     } catch (error) {
       next(error);
