@@ -11,7 +11,7 @@ import {
 } from "../dtos";
 
 import { ValidationType } from "../interfaces";
-import { validateRequest } from "../middlewares";
+import { uploader, validateRequest } from "../middlewares";
 
 const router = Router();
 
@@ -19,6 +19,7 @@ const productController = new ProductController();
 
 router.post(
   "/",
+  uploader.array('files'),
   validateRequest(CreateProductDto),
   productController.createProduct
 );
