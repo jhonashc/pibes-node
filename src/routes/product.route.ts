@@ -19,7 +19,7 @@ const productController = new ProductController();
 
 router.post(
   "/",
-  uploader.array('files'),
+  uploader.array("files"),
   validateRequest(CreateProductDto),
   productController.createProduct
 );
@@ -51,6 +51,7 @@ router.get(
 
 router.patch(
   "/:id",
+  uploader.array("files"),
   validateRequest(IdParamDto, ValidationType.PARAMS),
   validateRequest(UpdateProductDto),
   productController.updateProductById
