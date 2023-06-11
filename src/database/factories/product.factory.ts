@@ -12,7 +12,6 @@ export default setSeederFactory(Product, (faker) => {
   const product = new Product();
   product.name = faker.commerce.productName().toLowerCase();
   product.description = faker.commerce.productDescription();
-  product.imageUrl = faker.image.url();
 
   product.price = parseFloat(
     faker.commerce.price({ min: minPrice, max: maxPrice })
