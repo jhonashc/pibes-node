@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { PromotionController } from "../controllers";
 
-import { CreatePromotionDto, GetPromotionsQueryDto } from "../dtos";
+import { CreatePromotionDto, GetPromotionsQueryDto, IdParamDto } from "../dtos";
 import { ValidationType } from "../interfaces";
 import { uploader, validateRequest } from "../middlewares";
 
@@ -21,6 +21,18 @@ router.get(
   "/",
   validateRequest(GetPromotionsQueryDto, ValidationType.QUERY),
   promotionController.getPromotions
+);
+
+router.get(
+  "/:id",
+  validateRequest(IdParamDto, ValidationType.PARAMS),
+  promotionController.getPromotionById
+);
+
+router.delete(
+  "/:id",
+  validateRequest(IdParamDto, ValidationType.PARAMS),
+  promotionController.deletePromotionById
 );
 
 export default router;
