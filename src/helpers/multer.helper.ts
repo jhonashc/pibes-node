@@ -1,9 +1,10 @@
+import { Request } from "express";
 import { v4 as uuidv4 } from "uuid";
 
 import { BadRequestException } from "../exceptions";
 
 export const fileFilter = (
-  req: Express.Request,
+  req: Request,
   file: Express.Multer.File,
   callback: Function
 ) => {
@@ -25,7 +26,7 @@ export const fileFilter = (
 };
 
 export const fileNamer = (
-  req: Express.Request,
+  req: Request,
   file: Express.Multer.File,
   callback: Function
 ) => {

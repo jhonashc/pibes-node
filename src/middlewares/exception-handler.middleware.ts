@@ -10,9 +10,14 @@ export const exceptionHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  const file = req.file;
+  const file = req.file as Express.Multer.File;
+  const files = req.files as Express.Multer.File[];
+
+  console.log({ file, files });
 
   if (file) unlinkSync(file.path);
+
+  if (files) files.forEach(({ path }) => unlinkSync(path));
 
   if (error instanceof BaseError) {
     const { message, statusCode } = error;
