@@ -1,7 +1,8 @@
+import { unlinkSync } from "fs";
+import { JsonWebTokenError } from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 
 import { BaseError } from "../exceptions";
-import { JsonWebTokenError } from "jsonwebtoken";
 
 export const exceptionHandler = (
   error: Error,
@@ -9,6 +10,10 @@ export const exceptionHandler = (
   res: Response,
   next: NextFunction
 ) => {
+  const file = req.file;
+
+  if (file) unlinkSync(file.path);
+
   if (error instanceof BaseError) {
     const { message, statusCode } = error;
 
