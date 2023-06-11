@@ -9,12 +9,14 @@ import {
 
 import { User, UserRole } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
-import { UserService } from "../services";
+import { FileService, UserService } from "../services";
 
 export class UserController {
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const { person, username, email, password, avatarUrl, roles } =
+      const file = req.file as Express.Multer.File;
+
+      const { person, username, email, password, roles } =
         req.body as CreateUserDto;
 
       const filteredUsername: string = username.trim().toLowerCase();
@@ -39,11 +41,10 @@ export class UserController {
         );
       }
 
-      const areTheRolesValid: boolean | undefined = roles?.every(
-        (role) => UserRole[role]
-      );
+      const areTheRolesValid: boolean =
+        roles?.every((role) => UserRole[role]) || true;
 
-      if (!areTheRolesValid && areTheRolesValid !== undefined) {
+      if (!areTheRolesValid) {
         throw new ConflictException(
           `Debe ingresar roles válidos [${Object.values(UserRole)}]`
         );
@@ -54,7 +55,7 @@ export class UserController {
         username: filteredUsername,
         email: filteredEmail,
         password,
-        avatarUrl,
+        avatarUrl: file?.filename,
         roles,
       };
 
@@ -131,7 +132,10 @@ export class UserController {
   async updateUserById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { person, username, avatarUrl, roles } = req.body as UpdateUserDto;
+
+      const file = req.file as Express.Multer.File;
+
+      const { person, username, roles } = req.body as UpdateUserDto;
 
       const filteredUsername: string | undefined = username
         ?.trim()
@@ -151,20 +155,26 @@ export class UserController {
         );
       }
 
-      const areTheRolesValid: boolean | undefined = roles?.every(
-        (role) => UserRole[role]
-      );
+      const areTheRolesValid: boolean =
+        roles?.every((role) => UserRole[role]) || true;
 
-      if (!areTheRolesValid && areTheRolesValid !== undefined) {
+      if (!areTheRolesValid) {
         throw new ConflictException(
           `Debe ingresar roles válidos [${Object.values(UserRole)}]`
         );
       }
 
+      const currentUserAvatar: string = userFound.avatarUrl || "";
+
+      if (file && currentUserAvatar.length > 0) {
+        console.log({ file });
+        await FileService.deleteImageByName(currentUserAvatar);
+      }
+
       const updateUserDto: UpdateUserDto = {
         person,
         username: filteredUsername,
-        avatarUrl,
+        avatarUrl: file?.filename,
         roles,
       };
 

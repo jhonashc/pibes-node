@@ -79,7 +79,9 @@ export class AuthController {
 
   async register(req: Request, res: Response, next: NextFunction) {
     try {
-      const { person, username, email, password, avatarUrl, otp } =
+      const file = req.file as Express.Multer.File;
+
+      const { person, username, email, password } =
         req.body as CreateRegisterDto;
 
       const filteredUsername: string = username.trim().toLowerCase();
@@ -114,20 +116,21 @@ export class AuthController {
         username: filteredUsername,
         email: filteredEmail,
         password,
-        avatarUrl,
+        avatarUrl: file?.filename,
         otp: {
           code: optCode,
           expirationDate,
         },
       };
 
-      const registeredUser: User = await AuthService.register(
-        createRegisterDto
-      );
+      const registerUser: Promise<User> =
+        AuthService.register(createRegisterDto);
 
-      await EmailService.sendEmail(
+      const sendEmail: Promise<void> = EmailService.sendEmail(
         newUserEmailTemplate(filteredEmail, filteredUsername, optCode)
       );
+
+      const [registeredUser] = await Promise.all([registerUser, sendEmail]);
 
       res.status(201).json({
         status: true,
