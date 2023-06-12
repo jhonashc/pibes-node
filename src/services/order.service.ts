@@ -108,11 +108,11 @@ class OrderService {
     try {
       const newOrder: Order = this.orderRepository.create({
         id: order.id,
-        deliveryStatus,
-        deliveryType,
-        paymentMethod,
-        status,
-        total,
+        deliveryStatus: deliveryStatus ? deliveryStatus : order.deliveryStatus,
+        deliveryType: deliveryType ? deliveryType : order.deliveryType,
+        paymentMethod: paymentMethod ? paymentMethod : order.paymentMethod,
+        status: status ? status : order.status,
+        total: total ? total : order.total,
       });
 
       if (details) {
