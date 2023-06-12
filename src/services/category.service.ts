@@ -89,7 +89,7 @@ class CategoryService {
 
     const newCategory: Category = this.categoryRepository.create({
       id: category.id,
-      name: name?.trim().toLowerCase(),
+      name: name ? name.trim().toLowerCase() : category.name,
     });
 
     return this.categoryRepository.save(newCategory);
