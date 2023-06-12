@@ -3,6 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { Base } from "./base.entity";
 import { OrderDetail } from "./order-detail.entity";
 import { User } from "./user.entity";
+import { Address } from "./address.entity";
 
 export enum DeliveryStatus {
   ON_TRACK = "ON TRACK",
@@ -73,6 +74,14 @@ export class Order extends Base {
     name: "user_id",
   })
   user: User;
+
+  @ManyToOne(() => Address, (address) => address.orders, {
+    eager: true,
+  })
+  @JoinColumn({
+    name: "address_id",
+  })
+  address: Address;
 
   @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.order, {
     eager: true,

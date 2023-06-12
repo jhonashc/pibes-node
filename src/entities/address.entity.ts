@@ -1,6 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 import { Base } from "./base.entity";
+import { Order } from "./order.entity";
 import { User } from "./user.entity";
 
 @Entity("address")
@@ -30,4 +31,7 @@ export class Address extends Base {
     name: "user_id",
   })
   user: User;
+
+  @OneToMany(() => Order, (order) => order.address)
+  orders: Order[];
 }
