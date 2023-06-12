@@ -9,15 +9,17 @@ import {
   UpdateOrderDto,
 } from "../dtos";
 
-import { Order, OrderDetail, Product, User } from "../entities";
+import { Address, Order, OrderDetail, Product, User } from "../entities";
 
 class OrderService {
+  private readonly addressRepository: Repository<Address>;
   private readonly orderRepository: Repository<Order>;
   private readonly orderDetailRepository: Repository<OrderDetail>;
   private readonly productRepository: Repository<Product>;
   private readonly userRepository: Repository<User>;
 
   constructor() {
+    this.addressRepository = AppDataSource.getRepository(Address);
     this.orderRepository = AppDataSource.getRepository(Order);
     this.orderDetailRepository = AppDataSource.getRepository(OrderDetail);
     this.productRepository = AppDataSource.getRepository(Product);
@@ -25,8 +27,15 @@ class OrderService {
   }
 
   createOrder(CreateOrderDto: CreateOrderDto): Promise<Order> {
-    const { deliveryType, paymentMethod, status, userId, total, details } =
-      CreateOrderDto;
+    const {
+      deliveryType,
+      paymentMethod,
+      status,
+      userId,
+      addressId,
+      total,
+      details,
+    } = CreateOrderDto;
 
     const newOrder: Order = this.orderRepository.create({
       deliveryType,
@@ -35,6 +44,9 @@ class OrderService {
       total,
       user: this.userRepository.create({
         id: userId,
+      }),
+      address: this.addressRepository.create({
+        id: addressId,
       }),
       details: details.map(({ productId, quantity }) =>
         this.orderDetailRepository.create({
