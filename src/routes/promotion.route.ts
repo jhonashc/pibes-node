@@ -6,6 +6,7 @@ import {
   CreatePromotionDto,
   GetPromotionsQueryDto,
   IdParamDto,
+  SearchPromotionsQueryDto,
   UpdatePromotionDto,
 } from "../dtos";
 
@@ -27,6 +28,12 @@ router.get(
   "/",
   validateRequest(GetPromotionsQueryDto, ValidationType.QUERY),
   promotionController.getPromotions
+);
+
+router.get(
+  "/search",
+  validateRequest(SearchPromotionsQueryDto, ValidationType.QUERY),
+  promotionController.searchPromotions
 );
 
 router.get(
