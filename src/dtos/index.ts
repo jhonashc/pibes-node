@@ -40,6 +40,7 @@ export {
 export {
   CreatePromotionDto,
   GetPromotionsQueryDto,
+  SearchPromotionsQueryDto,
   UpdatePromotionDto,
 } from "./promotion";
 
