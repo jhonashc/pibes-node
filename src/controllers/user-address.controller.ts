@@ -131,6 +131,15 @@ export class UserAddressController {
         );
       }
 
+      const userAddressFound: Address | null =
+        await UserAddressService.getUserAddress(addressId, userId);
+
+      if (!userAddressFound) {
+        throw new NotFoundException(
+          `La dirección de usuario con id ${addressId} no ha sido encontrada`
+        );
+      }
+
       const updateUserAddressDto: UpdateUserAddressDto = {
         name,
         sideStreet,
