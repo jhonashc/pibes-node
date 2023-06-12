@@ -1,11 +1,14 @@
 import { ArrayOverlap, FindOptionsWhere, Repository } from "typeorm";
 
 import { AppDataSource } from "../database";
+
 import {
   CreatePromotionDto,
   GetPromotionsQueryDto,
+  SearchPromotionsQueryDto,
   UpdatePromotionDto,
 } from "../dtos";
+
 import { ProductPromotion, Promotion } from "../entities";
 import { getPromotionDay } from "../helpers";
 
@@ -15,8 +18,7 @@ class PromotionService {
 
   constructor() {
     this.promotionRepository = AppDataSource.getRepository(Promotion);
-    this.productPromotionRepository =
-      AppDataSource.getRepository(ProductPromotion);
+    this.productPromotionRepository = AppDataSource.getRepository(ProductPromotion);
   }
 
   createPromotion(createPromotionDto: CreatePromotionDto): Promise<Promotion> {
@@ -50,7 +52,18 @@ class PromotionService {
   getPromotions(
     getPromotionsQueryDto: GetPromotionsQueryDto
   ): Promise<Promotion[]> {
-    const { day, limit = 10, offset = 0 } = getPromotionsQueryDto;
+    const { limit = 10, offset = 0 } = getPromotionsQueryDto;
+
+    return this.promotionRepository.find({
+      take: limit,
+      skip: offset,
+    });
+  }
+
+  searchPromotions(
+    searchPromotionsQueryDto: SearchPromotionsQueryDto
+  ): Promise<Promotion[]> {
+    const { day, limit = 10, offset = 0 } = searchPromotionsQueryDto;
 
     const findOptionsWhere: FindOptionsWhere<Promotion> = {};
 

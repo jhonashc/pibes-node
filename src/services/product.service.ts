@@ -27,8 +27,7 @@ class ProductService {
 
   constructor() {
     this.productRepository = AppDataSource.getRepository(Product);
-    this.productCategoryRepository =
-      AppDataSource.getRepository(ProductCategory);
+    this.productCategoryRepository = AppDataSource.getRepository(ProductCategory);
     this.productImageRepository = AppDataSource.getRepository(ProductImage);
   }
 
