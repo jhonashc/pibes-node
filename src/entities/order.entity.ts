@@ -81,7 +81,7 @@ export class Order extends Base {
   @JoinColumn({
     name: "address_id",
   })
-  address: Address;
+  address?: Address;
 
   @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.order, {
     eager: true,
