@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import {
   CreatePromotionDto,
   GetPromotionsQueryDto,
+  SearchPromotionsQueryDto,
   UpdatePromotionDto,
 } from "../dtos";
 
@@ -68,9 +69,27 @@ export class PromotionController {
 
   async getPromotions(req: Request, res: Response, next: NextFunction) {
     try {
-      const { day, limit, offset } = req.query as GetPromotionsQueryDto;
+      const { limit, offset } = req.query as GetPromotionsQueryDto;
 
       const promotions: Promotion[] = await PromotionService.getPromotions({
+        limit,
+        offset,
+      });
+
+      res.json({
+        status: true,
+        data: promotions,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async searchPromotions(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { day, limit, offset } = req.query as SearchPromotionsQueryDto;
+
+      const promotions: Promotion[] = await PromotionService.searchPromotions({
         day,
         limit,
         offset,
