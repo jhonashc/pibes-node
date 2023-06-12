@@ -7,17 +7,31 @@ import {
   UpdateOrderDto,
 } from "../dtos";
 
-import { Order, Product, User } from "../entities";
+import { Address, Order, Product, User } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
 import { mapOrder, mapOrders } from "../helpers";
 import { OrderMapped } from "../interfaces";
-import { OrderService, ProductService, UserService } from "../services";
+
+import {
+  AddressService,
+  OrderService,
+  ProductService,
+  UserAddressService,
+  UserService,
+} from "../services";
 
 export class OrderController {
   async createOrder(req: Request, res: Response, next: NextFunction) {
     try {
-      const { deliveryType, paymentMethod, status, userId, total, details } =
-        req.body as CreateOrderDto;
+      const {
+        deliveryType,
+        paymentMethod,
+        status,
+        userId,
+        addressId,
+        total,
+        details,
+      } = req.body as CreateOrderDto;
 
       const userFound: User | null = await UserService.getUserById(userId);
 
@@ -25,6 +39,26 @@ export class OrderController {
         throw new NotFoundException(
           `El usuario con id ${userId} no ha sido encontrado`
         );
+      }
+
+      if (addressId) {
+        const addressFound: Address | null =
+          await AddressService.getAddressById(addressId);
+
+        if (!addressFound) {
+          throw new NotFoundException(
+            `La dirección con id ${addressId} no ha sido encontrada`
+          );
+        }
+
+        const userAddressFound: Address | null =
+          await UserAddressService.getUserAddress(addressId, userId);
+
+        if (!userAddressFound) {
+          throw new NotFoundException(
+            `La dirección de usuario con id ${addressId} no ha sido encontrada`
+          );
+        }
       }
 
       const productIds: string[] = details.map(({ productId }) => productId);
@@ -44,6 +78,7 @@ export class OrderController {
         paymentMethod,
         status,
         userId,
+        addressId,
         total,
         details,
       };
