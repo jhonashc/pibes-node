@@ -139,8 +139,8 @@ export class UserAddressController {
 
       const updatedUserAddress: Address =
         await UserAddressService.updateUserAddress(
-          userId,
-          addressId,
+          userFound,
+          addressFound,
           updateUserAddressDto
         );
 
