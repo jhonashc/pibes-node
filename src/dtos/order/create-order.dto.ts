@@ -5,6 +5,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsUUID,
   ValidateNested,
@@ -32,6 +33,11 @@ export class CreateOrderDto {
   @IsUUID()
   @IsNotEmpty()
   userId: string;
+
+  /* Address */
+  @IsUUID()
+  @IsOptional()
+  addressId?: string;
 
   /* Details */
   @IsArray()
