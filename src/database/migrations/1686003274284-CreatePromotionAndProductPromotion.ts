@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class CreateProductAndProductPromotion1686003274284 implements MigrationInterface {
-    name = 'CreateProductAndProductPromotion1686003274284'
+export class CreatePromotionAndProductPromotion1686003274284 implements MigrationInterface {
+    name = 'CreatePromotionAndProductPromotion1686003274284'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TYPE "public"."promotion_available_days_enum" AS ENUM('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY')`);
