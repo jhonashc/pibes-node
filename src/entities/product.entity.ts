@@ -2,7 +2,7 @@ import { Column, Entity, OneToMany } from "typeorm";
 
 import { Base } from "./base.entity";
 import { FavoriteProduct } from "./favorite-product.entity";
-import { OrderDetail } from "./order-detail.entity";
+import { OrderItem } from "./order-item.entity";
 import { ProductCategory } from "./product-category.entity";
 import { ProductImage } from "./product-image.entity";
 import { ProductPromotion } from "./product-promotion.entity";
@@ -50,8 +50,8 @@ export class Product extends Base {
   )
   categories: ProductCategory[];
 
-  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.product)
-  orderDetails?: OrderDetail[];
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
+  orderItems?: OrderItem[];
 
   @OneToMany(
     () => ProductPromotion,

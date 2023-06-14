@@ -1,8 +1,8 @@
 import { Column, Entity, OneToMany } from "typeorm";
 
 import { Base } from "./base.entity";
+import { OrderItemPromotion } from "./order-item-promotion.entity";
 import { ProductPromotion } from "./product-promotion.entity";
-import { OrderDetail } from "./order-detail.entity";
 
 export enum DayOfWeek {
   MONDAY = "MONDAY",
@@ -60,6 +60,9 @@ export class Promotion extends Base {
   )
   products: ProductPromotion[];
 
-  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.promotion)
-  orderDetails: OrderDetail[];
+  @OneToMany(
+    () => OrderItemPromotion,
+    (orderItemPromotion) => orderItemPromotion.promotion
+  )
+  orderItems: OrderItemPromotion[];
 }

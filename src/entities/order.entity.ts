@@ -1,9 +1,9 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
-import { Base } from "./base.entity";
-import { OrderDetail } from "./order-detail.entity";
-import { User } from "./user.entity";
 import { Address } from "./address.entity";
+import { Base } from "./base.entity";
+import { OrderItem } from "./order-item.entity";
+import { User } from "./user.entity";
 
 export enum DeliveryStatus {
   ON_TRACK = "ON TRACK",
@@ -83,9 +83,9 @@ export class Order extends Base {
   })
   address?: Address;
 
-  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.order, {
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.order, {
     eager: true,
     cascade: true,
   })
-  details: OrderDetail[];
+  items: OrderItem[];
 }

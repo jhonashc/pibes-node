@@ -3,7 +3,8 @@ export { Base } from "./base.entity";
 export { Category } from "./category.entity";
 export { FavoriteProduct } from "./favorite-product.entity";
 export { Date } from "./date.entity";
-export { OrderDetail } from "./order-detail.entity";
+export { OrderItemPromotion } from "./order-item-promotion.entity";
+export { OrderItem } from "./order-item.entity";
 
 export {
   DeliveryStatus,
