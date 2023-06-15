@@ -1,10 +1,13 @@
+import { Type } from "class-transformer";
 import {
   ArrayNotEmpty,
   IsArray,
   IsEnum,
   IsInt,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
+  IsPositive,
   IsString,
   IsUUID,
   Max,
@@ -12,7 +15,6 @@ import {
 } from "class-validator-multi-lang";
 
 import { DayOfWeek } from "../../entities";
-import { Type } from "class-transformer";
 
 export class CreatePromotionDto {
   @IsString()
@@ -22,6 +24,11 @@ export class CreatePromotionDto {
   @IsString()
   @IsOptional()
   description?: string;
+
+  @IsNumber()
+  @IsPositive()
+  @Type(() => Number)
+  price: number;
 
   @IsString()
   @IsOptional()
