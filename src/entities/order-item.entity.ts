@@ -35,7 +35,11 @@ export class OrderItem extends Base {
   /* Relations */
   @OneToMany(
     () => OrderItemPromotion,
-    (orderItemPromotion) => orderItemPromotion.orderItem
+    (orderItemPromotion) => orderItemPromotion.orderItem,
+    {
+      eager: true,
+      cascade: true,
+    }
   )
   promotions: OrderItemPromotion[];
 }

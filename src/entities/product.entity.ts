@@ -55,7 +55,10 @@ export class Product extends Base {
 
   @OneToMany(
     () => ProductPromotion,
-    (productPromotion) => productPromotion.product
+    (productPromotion) => productPromotion.product,
+    {
+      eager: true,
+    }
   )
   promotions?: ProductPromotion[];
 
