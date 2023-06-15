@@ -1,12 +1,10 @@
 export { Payload, Token } from "./jwt.interface";
 
 export {
-  OrderDetailMapped,
+  OrderItemMapped,
   OrderMapped,
   ProductMapped,
-  PromotionMapped,
 } from "./mappers.interface";
 
 export { RequestWithUser } from "./request.interface";
-
 export { ValidationType } from "./validation.interface";

@@ -1,19 +1,17 @@
-import { Category, Product } from "../entities";
+import { Category, Promotion } from "../entities";
 
 export interface OrderMapped {
-  details: OrderDetailMapped[];
+  items: OrderItemMapped[];
 }
 
-export interface OrderDetailMapped {
-  product: ProductMapped;
+export interface OrderItemMapped {
+  item: ProductMapped;
   quantity: number;
+  promotions?: Promotion[];
 }
 
 export interface ProductMapped {
-  images: string[];
+  images?: string[];
   categories: Category[];
-}
-
-export interface PromotionMapped {
-  products: ProductMapped[];
+  promotions?: Promotion[];
 }
