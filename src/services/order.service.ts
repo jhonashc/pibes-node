@@ -9,20 +9,32 @@ import {
   UpdateOrderDto,
 } from "../dtos";
 
-import { Address, Order, OrderDetail, Product, User } from "../entities";
+import {
+  Address,
+  Order,
+  OrderItem,
+  OrderItemPromotion,
+  Product,
+  Promotion,
+  User,
+} from "../entities";
 
 class OrderService {
   private readonly addressRepository: Repository<Address>;
   private readonly orderRepository: Repository<Order>;
-  private readonly orderDetailRepository: Repository<OrderDetail>;
+  private readonly orderItemRepository: Repository<OrderItem>;
+  private readonly orderItemPromotionRepository: Repository<OrderItemPromotion>;
   private readonly productRepository: Repository<Product>;
+  private readonly promotionRepository: Repository<Promotion>;
   private readonly userRepository: Repository<User>;
 
   constructor() {
     this.addressRepository = AppDataSource.getRepository(Address);
     this.orderRepository = AppDataSource.getRepository(Order);
-    this.orderDetailRepository = AppDataSource.getRepository(OrderDetail);
+    this.orderItemRepository = AppDataSource.getRepository(OrderItem);
+    this.orderItemPromotionRepository = AppDataSource.getRepository(OrderItemPromotion);
     this.productRepository = AppDataSource.getRepository(Product);
+    this.promotionRepository = AppDataSource.getRepository(Promotion);
     this.userRepository = AppDataSource.getRepository(User);
   }
 
@@ -34,7 +46,7 @@ class OrderService {
       userId,
       addressId,
       total,
-      details,
+      items,
     } = CreateOrderDto;
 
     const newOrder: Order = this.orderRepository.create({
@@ -48,12 +60,19 @@ class OrderService {
       address: this.addressRepository.create({
         id: addressId,
       }),
-      details: details.map(({ productId, quantity }) =>
-        this.orderDetailRepository.create({
+      items: items.map(({ productId, quantity, promotionIds }) =>
+        this.orderItemRepository.create({
           product: this.productRepository.create({
             id: productId,
           }),
           quantity,
+          promotions: promotionIds?.map((promotionId) =>
+            this.orderItemPromotionRepository.create({
+              promotion: this.promotionRepository.create({
+                id: promotionId,
+              }),
+            })
+          ),
         })
       ),
     });
@@ -110,7 +129,7 @@ class OrderService {
       paymentMethod,
       status,
       total,
-      details,
+      items,
     } = updateOrderDto;
 
     const queryRunner = AppDataSource.createQueryRunner();
@@ -127,15 +146,15 @@ class OrderService {
         total: total ? total : order.total,
       });
 
-      if (details) {
-        await this.orderDetailRepository.delete({
+      if (items) {
+        await this.orderItemRepository.delete({
           order: {
             id: order.id,
           },
         });
 
-        newOrder.details = details.map(({ productId, quantity }) =>
-          this.orderDetailRepository.create({
+        newOrder.items = items.map(({ productId, quantity }) =>
+          this.orderItemRepository.create({
             product: this.productRepository.create({
               id: productId,
             }),
