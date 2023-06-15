@@ -30,7 +30,7 @@ export class OrderController {
         userId,
         addressId,
         total,
-        details,
+        items,
       } = req.body as CreateOrderDto;
 
       const userFound: User | null = await UserService.getUserById(userId);
@@ -61,7 +61,7 @@ export class OrderController {
         }
       }
 
-      const productIds: string[] = details.map(({ productId }) => productId);
+      const productIds: string[] = items.map(({ productId }) => productId);
 
       if (productIds.length) {
         const productsFound: Product[] = await ProductService.getProductsByIds(
@@ -80,7 +80,7 @@ export class OrderController {
         userId,
         addressId,
         total,
-        details,
+        items,
       };
 
       const createdOrder: Order = await OrderService.createOrder(
@@ -106,11 +106,11 @@ export class OrderController {
         offset,
       });
 
-      const mappedOrders: OrderMapped[] = mapOrders(orders);
+      // const mappedOrders: OrderMapped[] = mapOrders(orders);
 
       res.json({
         status: true,
-        data: mappedOrders,
+        data: orders,
       });
     } catch (error) {
       next(error);
@@ -171,7 +171,7 @@ export class OrderController {
         paymentMethod,
         status,
         total,
-        details,
+        items,
       } = req.body as UpdateOrderDto;
 
       const orderFound: Order | null = await OrderService.getOrderById(id);
@@ -182,8 +182,8 @@ export class OrderController {
         );
       }
 
-      if (details) {
-        const productIds: string[] = details.map(({ productId }) => productId);
+      if (items) {
+        const productIds: string[] = items.map(({ productId }) => productId);
 
         if (productIds.length) {
           const productsFound: Product[] =
@@ -201,7 +201,7 @@ export class OrderController {
         paymentMethod,
         status,
         total,
-        details,
+        items,
       };
 
       const updatedOrder: Order = await OrderService.updateOrderById(
