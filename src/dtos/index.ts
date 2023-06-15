@@ -21,7 +21,7 @@ export {
 } from "./favorite";
 
 export {
-  CreateOrderDetailDto,
+  CreateOrderItemDto,
   CreateOrderDto,
   GetOrdersQueryDto,
   SearchOrdersQueryDto,

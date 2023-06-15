@@ -13,7 +13,7 @@ import {
 
 import { DeliveryType, OrderStatus, PaymentMethods } from "../../entities";
 
-import { CreateOrderDetailDto } from "./create-order-detail.dto";
+import { CreateOrderItemDto } from "./create-order-item.dto";
 
 export class CreateOrderDto {
   @IsEnum(DeliveryType)
@@ -39,10 +39,10 @@ export class CreateOrderDto {
   @IsOptional()
   addressId?: string;
 
-  /* Details */
+  /* Items */
   @IsArray()
   @ArrayNotEmpty()
   @ValidateNested({ each: true })
-  @Type(() => CreateOrderDetailDto)
-  details: CreateOrderDetailDto[];
+  @Type(() => CreateOrderItemDto)
+  items: CreateOrderItemDto[];
 }
