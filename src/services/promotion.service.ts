@@ -25,6 +25,7 @@ class PromotionService {
     const {
       name,
       description,
+      price,
       imageUrl,
       discountPercentage,
       availableDays,
@@ -34,6 +35,7 @@ class PromotionService {
     const newPromotion: Promotion = this.promotionRepository.create({
       name: name.trim().toLowerCase(),
       description,
+      price,
       imageUrl,
       discountPercentage,
       availableDays,
@@ -103,6 +105,7 @@ class PromotionService {
     const {
       name,
       description,
+      price,
       imageUrl,
       discountPercentage,
       availableDays = [],
@@ -112,6 +115,7 @@ class PromotionService {
       id: promotion.id,
       name: name ? name.trim().toLowerCase() : promotion.name,
       description: description ? description : promotion.description,
+      price: price ? price : promotion.price,
       imageUrl: imageUrl ? imageUrl : promotion.imageUrl,
       discountPercentage: discountPercentage
         ? discountPercentage
