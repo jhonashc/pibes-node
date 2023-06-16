@@ -32,8 +32,7 @@ class OrderService {
     this.addressRepository = AppDataSource.getRepository(Address);
     this.orderRepository = AppDataSource.getRepository(Order);
     this.orderItemRepository = AppDataSource.getRepository(OrderItem);
-    this.orderItemPromotionRepository =
-      AppDataSource.getRepository(OrderItemPromotion);
+    this.orderItemPromotionRepository = AppDataSource.getRepository(OrderItemPromotion);
     this.productRepository = AppDataSource.getRepository(Product);
     this.promotionRepository = AppDataSource.getRepository(Promotion);
     this.userRepository = AppDataSource.getRepository(User);
@@ -82,7 +81,9 @@ class OrderService {
   }
 
   getOrders(getOrdersQueryDto: GetOrdersQueryDto): Promise<Order[]> {
-    const { limit = 10, offset = 0 } = getOrdersQueryDto;
+    const { page = 1, limit = 10 } = getOrdersQueryDto;
+
+    const offset: number = (page - 1) * limit;
 
     return this.orderRepository.find({
       take: limit,
@@ -91,7 +92,9 @@ class OrderService {
   }
 
   searchOrders(searchOrdersQueryDto: SearchOrdersQueryDto): Promise<Order[]> {
-    const { user, status, limit = 10, offset = 0 } = searchOrdersQueryDto;
+    const { user, status, page = 1, limit = 10 } = searchOrdersQueryDto;
+
+    const offset: number = (page - 1) * limit;
 
     const findOptionsWhere: FindOptionsWhere<Order> = {};
 

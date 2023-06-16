@@ -64,11 +64,11 @@ export class ProductController {
 
   async getProducts(req: Request, res: Response, next: NextFunction) {
     try {
-      const { limit, offset } = req.query as GetProductsQueryDto;
+      const { page, limit } = req.query as GetProductsQueryDto;
 
       const products: Product[] = await ProductService.getProducts({
+        page,
         limit,
-        offset,
       });
 
       const mappedProducts: ProductMapped[] = mapProducts(products);
@@ -84,7 +84,7 @@ export class ProductController {
 
   async searchProducts(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, category, min, max, limit, offset } =
+      const { name, category, min, max, page, limit } =
         req.query as SearchProductsQueryDto;
 
       const products: Product[] = await ProductService.searchProducts({
@@ -92,8 +92,8 @@ export class ProductController {
         category,
         min,
         max,
+        page,
         limit,
-        offset,
       });
 
       const mappedProducts: ProductMapped[] = mapProducts(products);
@@ -110,7 +110,7 @@ export class ProductController {
   async getSimilarProducts(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { limit, offset } = req.query as GetProductsQueryDto;
+      const { page, limit } = req.query as GetProductsQueryDto;
 
       const productFound: Product | null = await ProductService.getProductById(
         id
@@ -128,8 +128,8 @@ export class ProductController {
 
       const similarProducts: Product[] =
         await ProductService.getSimilarProducts(id, categoryIds, {
+          page,
           limit,
-          offset,
         });
 
       const mappedSimilarProducts: ProductMapped[] =

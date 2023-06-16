@@ -54,7 +54,9 @@ class PromotionService {
   getPromotions(
     getPromotionsQueryDto: GetPromotionsQueryDto
   ): Promise<Promotion[]> {
-    const { limit = 10, offset = 0 } = getPromotionsQueryDto;
+    const { page = 1, limit = 10 } = getPromotionsQueryDto;
+
+    const offset: number = (page - 1) * limit;
 
     return this.promotionRepository.find({
       take: limit,
@@ -65,7 +67,9 @@ class PromotionService {
   searchPromotions(
     searchPromotionsQueryDto: SearchPromotionsQueryDto
   ): Promise<Promotion[]> {
-    const { day, limit = 10, offset = 0 } = searchPromotionsQueryDto;
+    const { day, page = 1, limit = 10 } = searchPromotionsQueryDto;
+
+    const offset: number = (page - 1) * limit;
 
     const findOptionsWhere: FindOptionsWhere<Promotion> = {};
 

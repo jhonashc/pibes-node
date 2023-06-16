@@ -71,11 +71,11 @@ export class PromotionController {
 
   async getPromotions(req: Request, res: Response, next: NextFunction) {
     try {
-      const { limit, offset } = req.query as GetPromotionsQueryDto;
+      const { page, limit } = req.query as GetPromotionsQueryDto;
 
       const promotions: Promotion[] = await PromotionService.getPromotions({
+        page,
         limit,
-        offset,
       });
 
       res.json({
@@ -89,12 +89,12 @@ export class PromotionController {
 
   async searchPromotions(req: Request, res: Response, next: NextFunction) {
     try {
-      const { day, limit, offset } = req.query as SearchPromotionsQueryDto;
+      const { day, page, limit } = req.query as SearchPromotionsQueryDto;
 
       const promotions: Promotion[] = await PromotionService.searchPromotions({
         day,
+        page,
         limit,
-        offset,
       });
 
       res.json({

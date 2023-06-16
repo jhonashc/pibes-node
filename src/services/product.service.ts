@@ -58,7 +58,9 @@ class ProductService {
   }
 
   getProducts(getProductsQueryDto: GetProductsQueryDto): Promise<Product[]> {
-    const { limit = 10, offset = 0 } = getProductsQueryDto;
+    const { page = 1, limit = 10 } = getProductsQueryDto;
+
+    const offset: number = (page - 1) * limit;
 
     return this.productRepository.find({
       take: limit,
@@ -74,9 +76,11 @@ class ProductService {
       category,
       min,
       max,
+      page = 1,
       limit = 10,
-      offset = 0,
     } = searchProductsQueryDto;
+
+    const offset: number = (page - 1) * limit;
 
     const findOptionsWhere: FindOptionsWhere<Product> = {};
 
@@ -116,7 +120,9 @@ class ProductService {
     categoryIds: string[],
     getProductsQueryDto: GetProductsQueryDto
   ): Promise<Product[]> {
-    const { limit = 10, offset = 0 } = getProductsQueryDto;
+    const { page = 1, limit = 10 } = getProductsQueryDto;
+
+    const offset: number = (page - 1) * limit;
 
     return this.productRepository.find({
       where: {

@@ -41,7 +41,9 @@ class UserAddressService {
     userId: string,
     getUserAddressesQueryDto: GetUserAddressesQueryDto
   ): Promise<Address[]> {
-    const { limit = 10, offset = 0 } = getUserAddressesQueryDto;
+    const { page = 1, limit = 10 } = getUserAddressesQueryDto;
+
+    const offset: number = (page - 1) * limit;
 
     return this.addressService.find({
       where: {

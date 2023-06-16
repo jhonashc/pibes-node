@@ -31,7 +31,9 @@ class CategoryService {
   getCategories(
     getCategoriesQueryDto: GetCategoriesQueryDto
   ): Promise<Category[]> {
-    const { limit = 10, offset = 0 } = getCategoriesQueryDto;
+    const { page = 1, limit = 10 } = getCategoriesQueryDto;
+
+    const offset: number = (page - 1) * limit;
 
     return this.categoryRepository.find({
       take: limit,
@@ -42,7 +44,9 @@ class CategoryService {
   searchCategories(
     searchCategoriesQueryDto: SearchCategoriesQueryDto
   ): Promise<Category[]> {
-    const { name, limit = 10, offset = 0 } = searchCategoriesQueryDto;
+    const { name, page = 1, limit = 10 } = searchCategoriesQueryDto;
+
+    const offset: number = (page - 1) * limit;
 
     const findOptionsWhere: FindOptionsWhere<Category> = {};
 

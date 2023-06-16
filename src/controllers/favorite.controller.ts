@@ -3,9 +3,9 @@ import { NextFunction, Request, Response } from "express";
 import { CreateFavoriteProductDto, GetFavoriteProductsQueryDto } from "../dtos";
 import { FavoriteProduct, Product, User } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
-import { FavoriteService, ProductService, UserService } from "../services";
 import { mapProduct, mapProducts } from "../helpers";
 import { ProductMapped } from "../interfaces";
+import { FavoriteService, ProductService, UserService } from "../services";
 
 export class FavoriteController {
   async createFavoriteProduct(req: Request, res: Response, next: NextFunction) {
@@ -61,7 +61,7 @@ export class FavoriteController {
   async getFavoriteProducts(req: Request, res: Response, next: NextFunction) {
     try {
       const { userId } = req.params;
-      const { limit, offset } = req.query as GetFavoriteProductsQueryDto;
+      const { page, limit } = req.query as GetFavoriteProductsQueryDto;
 
       const userFound: User | null = await UserService.getUserById(userId);
 
@@ -73,8 +73,8 @@ export class FavoriteController {
 
       const favoriteProducts: FavoriteProduct[] =
         await FavoriteService.getFavoriteProducts(userId, {
+          page,
           limit,
-          offset,
         });
 
       const products: Product[] = favoriteProducts.map(

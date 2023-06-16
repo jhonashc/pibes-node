@@ -47,7 +47,9 @@ class UserService {
   }
 
   getUsers(getUsersQueryDto: GetUsersQueryDto): Promise<User[]> {
-    const { limit = 10, offset = 0 } = getUsersQueryDto;
+    const { page = 1, limit = 10 } = getUsersQueryDto;
+
+    const offset: number = (page - 1) * limit;
 
     return this.userRepository.find({
       take: limit,
@@ -56,7 +58,9 @@ class UserService {
   }
 
   searchUsers(searchUsersQueryDto: SearchUsersQueryDto): Promise<User[]> {
-    const { username, limit = 10, offset = 0 } = searchUsersQueryDto;
+    const { username, page = 1, limit = 10 } = searchUsersQueryDto;
+
+    const offset: number = (page - 1) * limit;
 
     const findOptionsWhere: FindOptionsWhere<User> = {};
 

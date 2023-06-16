@@ -50,12 +50,12 @@ export class UserAddressController {
   async getUserAddresses(req: Request, res: Response, next: NextFunction) {
     try {
       const { userId } = req.params;
-      const { limit, offset } = req.query as GetUserAddressesQueryDto;
+      const { page, limit } = req.query as GetUserAddressesQueryDto;
 
       const userAddresses: Address[] =
         await UserAddressService.getUserAddresses(userId, {
+          page,
           limit,
-          offset,
         });
 
       res.json({

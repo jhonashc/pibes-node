@@ -47,11 +47,11 @@ export class CategoryController {
 
   async getCategories(req: Request, res: Response, next: NextFunction) {
     try {
-      const { limit, offset } = req.query as GetCategoriesQueryDto;
+      const { page, limit } = req.query as GetCategoriesQueryDto;
 
       const categories: Category[] = await CategoryService.getCategories({
+        page,
         limit,
-        offset,
       });
 
       res.json({
@@ -65,12 +65,12 @@ export class CategoryController {
 
   async searchCategories(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, limit, offset } = req.query as SearchCategoriesQueryDto;
+      const { name, page, limit } = req.query as SearchCategoriesQueryDto;
 
       const categories: Category[] = await CategoryService.searchCategories({
         name,
+        page,
         limit,
-        offset,
       });
 
       res.json({

@@ -8,8 +8,7 @@ class FavoriteService {
   private readonly favoriteProductRepository: Repository<FavoriteProduct>;
 
   constructor() {
-    this.favoriteProductRepository =
-      AppDataSource.getRepository(FavoriteProduct);
+    this.favoriteProductRepository = AppDataSource.getRepository(FavoriteProduct);
   }
 
   createFavoriteProduct(
@@ -34,7 +33,9 @@ class FavoriteService {
     userId: string,
     getFavoriteProductsQueryDto: GetFavoriteProductsQueryDto
   ): Promise<FavoriteProduct[]> {
-    const { limit = 10, offset = 0 } = getFavoriteProductsQueryDto;
+    const { page = 1, limit = 10 } = getFavoriteProductsQueryDto;
+
+    const offset: number = (page - 1) * limit;
 
     return this.favoriteProductRepository.find({
       where: {

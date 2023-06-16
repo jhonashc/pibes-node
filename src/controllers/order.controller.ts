@@ -99,11 +99,11 @@ export class OrderController {
 
   async getOrders(req: Request, res: Response, next: NextFunction) {
     try {
-      const { limit, offset } = req.query as GetOrdersQueryDto;
+      const { page, limit } = req.query as GetOrdersQueryDto;
 
       const orders: Order[] = await OrderService.getOrders({
+        page,
         limit,
-        offset,
       });
 
       // const mappedOrders: OrderMapped[] = mapOrders(orders);
@@ -119,13 +119,13 @@ export class OrderController {
 
   async searchOrders(req: Request, res: Response, next: NextFunction) {
     try {
-      const { user, status, limit, offset } = req.query as SearchOrdersQueryDto;
+      const { user, status, page, limit } = req.query as SearchOrdersQueryDto;
 
       const orders: Order[] = await OrderService.searchOrders({
         user,
         status,
+        page,
         limit,
-        offset,
       });
 
       const mappedOrders: OrderMapped[] = mapOrders(orders);
