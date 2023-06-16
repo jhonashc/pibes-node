@@ -25,6 +25,7 @@ export {
   CreateOrderDto,
   GetOrdersQueryDto,
   SearchOrdersQueryDto,
+  UpdateOrderItemDto,
   UpdateOrderDto,
 } from "./order";
 

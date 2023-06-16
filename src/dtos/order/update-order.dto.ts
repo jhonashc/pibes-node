@@ -16,7 +16,7 @@ import {
   PaymentMethods,
 } from "../../entities";
 
-import { CreateOrderItemDto } from "./create-order-item.dto";
+import { UpdateOrderItemDto } from "./update-order-item.dto";
 
 export class UpdateOrderDto {
   @IsOptional()
@@ -45,6 +45,6 @@ export class UpdateOrderDto {
   @IsOptional()
   @ArrayNotEmpty()
   @ValidateNested({ each: true })
-  @Type(() => CreateOrderItemDto)
-  items?: CreateOrderItemDto[];
+  @Type(() => UpdateOrderItemDto)
+  items?: UpdateOrderItemDto[];
 }
