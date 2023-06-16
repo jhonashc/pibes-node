@@ -32,7 +32,8 @@ class OrderService {
     this.addressRepository = AppDataSource.getRepository(Address);
     this.orderRepository = AppDataSource.getRepository(Order);
     this.orderItemRepository = AppDataSource.getRepository(OrderItem);
-    this.orderItemPromotionRepository = AppDataSource.getRepository(OrderItemPromotion);
+    this.orderItemPromotionRepository =
+      AppDataSource.getRepository(OrderItemPromotion);
     this.productRepository = AppDataSource.getRepository(Product);
     this.promotionRepository = AppDataSource.getRepository(Promotion);
     this.userRepository = AppDataSource.getRepository(User);
@@ -153,12 +154,19 @@ class OrderService {
           },
         });
 
-        newOrder.items = items.map(({ productId, quantity }) =>
+        newOrder.items = items.map(({ productId, quantity, promotionIds }) =>
           this.orderItemRepository.create({
             product: this.productRepository.create({
               id: productId,
             }),
             quantity,
+            promotions: promotionIds?.map((promotionId) =>
+              this.orderItemPromotionRepository.create({
+                promotion: this.promotionRepository.create({
+                  id: promotionId,
+                }),
+              })
+            ),
           })
         );
       }
