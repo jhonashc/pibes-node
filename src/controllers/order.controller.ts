@@ -183,7 +183,9 @@ export class OrderController {
       }
 
       if (items) {
-        const productIds: string[] = items.map(({ productId }) => productId);
+        const productIds: string[] = items
+          .map(({ productId }) => productId || "")
+          .filter((productId) => productId);
 
         if (productIds.length) {
           const productsFound: Product[] =
