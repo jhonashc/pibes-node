@@ -19,7 +19,6 @@ export class PromotionController {
       const {
         name,
         description,
-        price,
         discountPercentage,
         availableDays,
         productIds,
@@ -49,7 +48,6 @@ export class PromotionController {
       const createPromotionDto: CreatePromotionDto = {
         name,
         description,
-        price,
         imageUrl: file?.filename,
         discountPercentage,
         availableDays,
@@ -134,7 +132,7 @@ export class PromotionController {
 
       const file = req.file as Express.Multer.File;
 
-      const { name, description, price, discountPercentage, availableDays } =
+      const { name, description, discountPercentage, availableDays } =
         req.body as UpdatePromotionDto;
 
       const promotionFound: Promotion | null =
@@ -155,7 +153,6 @@ export class PromotionController {
       const updatePromotionDto: UpdatePromotionDto = {
         name,
         description,
-        price,
         imageUrl: file?.filename,
         discountPercentage,
         availableDays,

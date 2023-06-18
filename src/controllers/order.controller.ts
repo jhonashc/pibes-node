@@ -106,11 +106,11 @@ export class OrderController {
         limit,
       });
 
-      // const mappedOrders: OrderMapped[] = mapOrders(orders);
+      const mappedOrders: OrderMapped[] = mapOrders(orders);
 
       res.json({
         status: true,
-        data: orders,
+        data: mappedOrders,
       });
     } catch (error) {
       next(error);
