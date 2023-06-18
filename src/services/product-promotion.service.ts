@@ -1,7 +1,7 @@
 import { Repository } from "typeorm";
 
 import { AppDataSource } from "../database";
-import { CreateProductPromotionDto } from "../dtos";
+import { CreateProductPromotionDto, UpdateProductPromotionDto } from "../dtos";
 import { Product, ProductPromotion, Promotion } from "../entities";
 
 class ProductPromotionService {
@@ -16,15 +16,16 @@ class ProductPromotionService {
   }
 
   createProductPromotions(
+    product: Product,
     createProductPromotion: CreateProductPromotionDto
   ): Promise<ProductPromotion[]> {
-    const { productId, promotionIds } = createProductPromotion;
+    const { promotionIds } = createProductPromotion;
 
     const productPromotions: ProductPromotion[] = promotionIds.map(
       (promotionId) =>
         this.productpromotionRepository.create({
           product: this.productRepository.create({
-            id: productId,
+            id: product.id,
           }),
           promotion: this.promotionRepository.create({
             id: promotionId,
@@ -33,6 +34,53 @@ class ProductPromotionService {
     );
 
     return this.productpromotionRepository.save(productPromotions);
+  }
+
+  async updateProductPromotions(
+    product: Product,
+    updateProductPromotionDto: UpdateProductPromotionDto
+  ): Promise<Product | ProductPromotion[]> {
+    const { promotionIds } = updateProductPromotionDto;
+
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const newProductPromotions: ProductPromotion[] = promotionIds.map(
+        (promotionId) =>
+          this.productpromotionRepository.create({
+            product: this.productRepository.create({
+              id: product.id,
+            }),
+            promotion: this.promotionRepository.create({
+              id: promotionId,
+            }),
+          })
+      );
+
+      if (promotionIds.length > 0) {
+        await this.productpromotionRepository.delete({
+          product: {
+            id: product.id,
+          },
+        });
+      }
+
+      const updatedProductPromotions: ProductPromotion[] =
+        await this.productpromotionRepository.save(newProductPromotions);
+
+      await queryRunner.commitTransaction();
+      await queryRunner.release();
+
+      return updatedProductPromotions;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
+
+    return product;
   }
 }
 
