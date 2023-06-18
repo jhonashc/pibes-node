@@ -1,4 +1,4 @@
-import { ArrayOverlap, FindOptionsWhere, Repository } from "typeorm";
+import { ArrayOverlap, FindOptionsWhere, In, Repository } from "typeorm";
 
 import { AppDataSource } from "../database";
 
@@ -9,27 +9,19 @@ import {
   UpdatePromotionDto,
 } from "../dtos";
 
-import { DayOfWeek, ProductPromotion, Promotion } from "../entities";
+import { DayOfWeek, Promotion } from "../entities";
 import { getPromotionDay } from "../helpers";
 
 class PromotionService {
   private readonly promotionRepository: Repository<Promotion>;
-  private readonly productPromotionRepository: Repository<ProductPromotion>;
 
   constructor() {
     this.promotionRepository = AppDataSource.getRepository(Promotion);
-    this.productPromotionRepository = AppDataSource.getRepository(ProductPromotion);
   }
 
   createPromotion(createPromotionDto: CreatePromotionDto): Promise<Promotion> {
-    const {
-      name,
-      description,
-      imageUrl,
-      discountPercentage,
-      availableDays,
-      productIds,
-    } = createPromotionDto;
+    const { name, description, imageUrl, discountPercentage, availableDays } =
+      createPromotionDto;
 
     const newPromotion: Promotion = this.promotionRepository.create({
       name: name.trim().toLowerCase(),
@@ -37,13 +29,6 @@ class PromotionService {
       imageUrl,
       discountPercentage,
       availableDays,
-      products: productIds?.map((productId) =>
-        this.productPromotionRepository.create({
-          product: {
-            id: productId,
-          },
-        })
-      ),
     });
 
     return this.promotionRepository.save(newPromotion);
@@ -97,6 +82,14 @@ class PromotionService {
     return this.promotionRepository.findOne({
       where: {
         name: name.trim().toLowerCase(),
+      },
+    });
+  }
+
+  getPromotionsByIds(promotionIds: string[]): Promise<Promotion[]> {
+    return this.promotionRepository.find({
+      where: {
+        id: In(promotionIds),
       },
     });
   }
