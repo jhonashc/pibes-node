@@ -33,7 +33,7 @@ export const mapProduct = (product: Product): ProductMapped => {
     categories: product.categories.map(({ category }) => category),
     promotions: product.promotions
       .filter(({ promotion }) => promotion.availableDays.includes(currentDay))
-      .map(({ promotion }) => promotion),
+      .map(({ promotion }) => promotion.discountPercentage),
   };
 };
 
