@@ -1,8 +1,8 @@
 import { NextFunction, Response } from "express";
 
 import { User, UserRole } from "../entities";
-import { RequestWithUser } from "../interfaces";
 import { ForbiddenException, UnauthorizedException } from "../exceptions";
+import { RequestWithUser } from "../interfaces";
 
 export const hasPermission = (validRoles: UserRole[] = []) => {
   return async (req: RequestWithUser, res: Response, next: NextFunction) => {

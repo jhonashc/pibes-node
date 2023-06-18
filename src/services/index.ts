@@ -5,6 +5,7 @@ export { default as EmailService } from "./email.service";
 export { default as FavoriteService } from "./favorite.service";
 export { default as FileService } from "./file.service";
 export { default as OrderService } from "./order.service";
+export { default as ProductPromotionService } from "./product-promotion.service";
 export { default as ProductService } from "./product.service";
 export { default as PromotionService } from "./promotion.service";
 export { default as UserAddressService } from "./user-address.service";
