@@ -9,6 +9,7 @@ import {
   IdParamDto,
   SearchProductsQueryDto,
   UpdateProductDto,
+  UpdateProductPromotionDto,
 } from "../dtos";
 
 import { ValidationType } from "../interfaces";
@@ -24,13 +25,6 @@ router.post(
   uploader.array("files"),
   validateRequest(CreateProductDto),
   productController.createProduct
-);
-
-/* Promotions */
-router.post(
-  "/:id/promotions",
-  validateRequest(CreateProductPromotionDto),
-  productPromotionController.createProductPromotions
 );
 
 router.get(
@@ -70,6 +64,21 @@ router.delete(
   "/:id",
   validateRequest(IdParamDto, ValidationType.PARAMS),
   productController.deleteProductById
+);
+
+/* Promotions */
+router.post(
+  "/:id/promotions",
+  validateRequest(IdParamDto, ValidationType.PARAMS),
+  validateRequest(CreateProductPromotionDto),
+  productPromotionController.createProductPromotions
+);
+
+router.patch(
+  "/:id/promotions",
+  validateRequest(IdParamDto, ValidationType.PARAMS),
+  validateRequest(UpdateProductPromotionDto),
+  productPromotionController.updateProductPromotions
 );
 
 export default router;
