@@ -29,12 +29,6 @@ export class Promotion extends Base {
   description?: string;
 
   @Column({
-    type: "float",
-    default: 0,
-  })
-  price: number;
-
-  @Column({
     type: "text",
     nullable: true,
     name: "image_url",
@@ -61,11 +55,11 @@ export class Promotion extends Base {
     () => ProductPromotion,
     (productPromotion) => productPromotion.promotion
   )
-  products: ProductPromotion[];
+  products?: ProductPromotion[];
 
   @OneToMany(
     () => OrderItemPromotion,
     (orderItemPromotion) => orderItemPromotion.promotion
   )
-  orderItems: OrderItemPromotion[];
+  orderItems?: OrderItemPromotion[];
 }

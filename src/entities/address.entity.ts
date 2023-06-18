@@ -33,5 +33,5 @@ export class Address extends Base {
   user: User;
 
   @OneToMany(() => Order, (order) => order.address)
-  orders: Order[];
+  orders?: Order[];
 }

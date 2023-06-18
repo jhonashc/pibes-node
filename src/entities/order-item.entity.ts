@@ -37,7 +37,6 @@ export class OrderItem extends Base {
     () => OrderItemPromotion,
     (orderItemPromotion) => orderItemPromotion.orderItem,
     {
-      eager: true,
       cascade: true,
     }
   )

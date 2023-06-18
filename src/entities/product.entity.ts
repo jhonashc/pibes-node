@@ -38,7 +38,7 @@ export class Product extends Base {
     cascade: true,
     eager: true,
   })
-  images?: ProductImage[];
+  images: ProductImage[];
 
   @OneToMany(
     () => ProductCategory,
@@ -60,7 +60,7 @@ export class Product extends Base {
       eager: true,
     }
   )
-  promotions?: ProductPromotion[];
+  promotions: ProductPromotion[];
 
   @OneToMany(
     () => FavoriteProduct,

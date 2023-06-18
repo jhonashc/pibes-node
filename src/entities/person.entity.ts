@@ -39,5 +39,5 @@ export class Person extends Base {
   gender: Gender;
 
   @OneToOne(() => User, (user) => user.person)
-  user: User;
+  user?: User;
 }
