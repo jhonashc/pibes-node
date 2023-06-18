@@ -1,6 +1,6 @@
 import { ArrayNotEmpty, IsArray, IsUUID } from "class-validator-multi-lang";
 
-export class CreateProductPromotionDto {
+export class UpdateProductPromotionDto {
   @IsArray()
   @ArrayNotEmpty()
   @IsUUID("4", { each: true })

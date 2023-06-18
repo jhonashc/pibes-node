@@ -38,7 +38,10 @@ export {
   UpdateProductDto,
 } from "./product";
 
-export { CreateProductPromotionDto } from "./product-promotion";
+export {
+  CreateProductPromotionDto,
+  UpdateProductPromotionDto,
+} from "./product-promotion";
 
 export {
   CreatePromotionDto,
