@@ -5,9 +5,7 @@ import {
   IsEnum,
   IsInt,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
-  IsPositive,
   IsString,
   IsUUID,
   Max,
@@ -24,11 +22,6 @@ export class CreatePromotionDto {
   @IsString()
   @IsOptional()
   description?: string;
-
-  @IsNumber()
-  @IsPositive()
-  @Type(() => Number)
-  price: number;
 
   @IsString()
   @IsOptional()

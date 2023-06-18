@@ -4,11 +4,8 @@ import {
   IsArray,
   IsEnum,
   IsInt,
-  IsNumber,
   IsOptional,
-  IsPositive,
   IsString,
-  IsUUID,
   Max,
   Min,
 } from "class-validator-multi-lang";
@@ -23,12 +20,6 @@ export class UpdatePromotionDto {
   @IsString()
   @IsOptional()
   description?: string;
-
-  @IsNumber()
-  @IsPositive()
-  @IsOptional()
-  @Type(() => Number)
-  price?: number;
 
   @IsString()
   @IsOptional()
