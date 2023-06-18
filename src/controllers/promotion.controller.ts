@@ -16,13 +16,8 @@ export class PromotionController {
     try {
       const file = req.file as Express.Multer.File;
 
-      const {
-        name,
-        description,
-        discountPercentage,
-        availableDays,
-        productIds,
-      } = req.body as CreatePromotionDto;
+      const { name, description, discountPercentage, availableDays } =
+        req.body as CreatePromotionDto;
 
       const filteredName: string = name.trim().toLowerCase();
 
@@ -35,23 +30,12 @@ export class PromotionController {
         );
       }
 
-      if (productIds) {
-        const productsFound: Product[] = await ProductService.getProductsByIds(
-          productIds
-        );
-
-        if (productsFound.length !== productIds.length) {
-          throw new ConflictException("El id de algún producto no es válido");
-        }
-      }
-
       const createPromotionDto: CreatePromotionDto = {
         name,
         description,
         imageUrl: file?.filename,
         discountPercentage,
         availableDays,
-        productIds,
       };
 
       const createdPromotion: Promotion =
