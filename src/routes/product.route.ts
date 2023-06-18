@@ -1,9 +1,10 @@
 import { Router } from "express";
 
-import { ProductController } from "../controllers";
+import { ProductController, ProductPromotionController } from "../controllers";
 
 import {
   CreateProductDto,
+  CreateProductPromotionDto,
   GetProductsQueryDto,
   IdParamDto,
   SearchProductsQueryDto,
@@ -16,12 +17,20 @@ import { uploader, validateRequest } from "../middlewares";
 const router = Router();
 
 const productController = new ProductController();
+const productPromotionController = new ProductPromotionController();
 
 router.post(
   "/",
   uploader.array("files"),
   validateRequest(CreateProductDto),
   productController.createProduct
+);
+
+/* Promotions */
+router.post(
+  "/:id/promotions",
+  validateRequest(CreateProductPromotionDto),
+  productPromotionController.createProductPromotions
 );
 
 router.get(
