@@ -38,10 +38,4 @@ export class CreatePromotionDto {
   @ArrayNotEmpty()
   @IsEnum(DayOfWeek, { each: true })
   availableDays: DayOfWeek[];
-
-  @IsArray()
-  @IsOptional()
-  @ArrayNotEmpty()
-  @IsUUID("4", { each: true })
-  productIds?: string[];
 }
