@@ -9,7 +9,7 @@ import {
   UpdatePromotionDto,
 } from "../dtos";
 
-import { ProductPromotion, Promotion } from "../entities";
+import { DayOfWeek, ProductPromotion, Promotion } from "../entities";
 import { getPromotionDay } from "../helpers";
 
 class PromotionService {
@@ -25,7 +25,6 @@ class PromotionService {
     const {
       name,
       description,
-      price,
       imageUrl,
       discountPercentage,
       availableDays,
@@ -35,7 +34,6 @@ class PromotionService {
     const newPromotion: Promotion = this.promotionRepository.create({
       name: name.trim().toLowerCase(),
       description,
-      price,
       imageUrl,
       discountPercentage,
       availableDays,
@@ -76,7 +74,8 @@ class PromotionService {
     if (day) {
       findOptionsWhere.availableDays = ArrayOverlap([day]);
     } else {
-      findOptionsWhere.availableDays = ArrayOverlap([getPromotionDay()]);
+      const currentDay: DayOfWeek = getPromotionDay();
+      findOptionsWhere.availableDays = ArrayOverlap([currentDay]);
     }
 
     return this.promotionRepository.find({
@@ -109,7 +108,6 @@ class PromotionService {
     const {
       name,
       description,
-      price,
       imageUrl,
       discountPercentage,
       availableDays = [],
@@ -119,7 +117,6 @@ class PromotionService {
       id: promotion.id,
       name: name ? name.trim().toLowerCase() : promotion.name,
       description: description ? description : promotion.description,
-      price: price ? price : promotion.price,
       imageUrl: imageUrl ? imageUrl : promotion.imageUrl,
       discountPercentage: discountPercentage
         ? discountPercentage
