@@ -36,6 +36,16 @@ class ProductPromotionService {
     return this.productpromotionRepository.save(productPromotions);
   }
 
+  getProductPromotions(productId: string): Promise<ProductPromotion[]> {
+    return this.productpromotionRepository.find({
+      where: {
+        product: {
+          id: productId,
+        },
+      },
+    });
+  }
+
   async updateProductPromotions(
     product: Product,
     updateProductPromotionDto: UpdateProductPromotionDto
@@ -81,6 +91,12 @@ class ProductPromotionService {
     }
 
     return product;
+  }
+
+  deleteProductPromotions(
+    productPromotions: ProductPromotion[]
+  ): Promise<ProductPromotion[]> {
+    return this.productpromotionRepository.remove(productPromotions);
   }
 }
 
