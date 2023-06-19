@@ -9,8 +9,7 @@ import {
   UpdatePromotionDto,
 } from "../dtos";
 
-import { DayOfWeek, Promotion } from "../entities";
-import { getPromotionDay } from "../helpers";
+import { Promotion } from "../entities";
 
 class PromotionService {
   private readonly promotionRepository: Repository<Promotion>;
@@ -58,9 +57,6 @@ class PromotionService {
 
     if (day) {
       findOptionsWhere.availableDays = ArrayOverlap([day]);
-    } else {
-      const currentDay: DayOfWeek = getPromotionDay();
-      findOptionsWhere.availableDays = ArrayOverlap([currentDay]);
     }
 
     return this.promotionRepository.find({
