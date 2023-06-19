@@ -108,4 +108,40 @@ export class ProductPromotionController {
       next(error);
     }
   }
+
+  async deleteProductPromotions(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { id } = req.params;
+
+      const productFound: Product | null = await ProductService.getProductById(
+        id
+      );
+
+      if (!productFound) {
+        throw new NotFoundException(
+          `El producto con id ${id} no ha sido encontrado`
+        );
+      }
+
+      const productPromotions: ProductPromotion[] =
+        await ProductPromotionService.getProductPromotions(id);
+
+      const deletedProductPromotions: ProductPromotion[] =
+        await ProductPromotionService.deleteProductPromotions(
+          productPromotions
+        );
+
+      res.status(201).json({
+        status: true,
+        message: "Las promociones del producto se han eliminado con éxito",
+        data: deletedProductPromotions,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
