@@ -81,4 +81,10 @@ router.patch(
   productPromotionController.updateProductPromotions
 );
 
+router.delete(
+  "/:id/promotions",
+  validateRequest(IdParamDto, ValidationType.PARAMS),
+  productPromotionController.deleteProductPromotions
+);
+
 export default router;
