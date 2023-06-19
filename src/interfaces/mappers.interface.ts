@@ -13,7 +13,13 @@ export interface OrderItemMapped {
 export interface ProductMapped {
   images: string[];
   categories: Category[];
-  promotions: number[]; /* It only includes the discount percentages of the promotion */
+  promotions: ProductPromotionMapped[];
+}
+
+export interface ProductPromotionMapped {
+  id: string;
+  name: string;
+  discountPercentage: number;
 }
 
 export interface UserMapped {

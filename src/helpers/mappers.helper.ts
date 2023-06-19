@@ -1,5 +1,9 @@
-import { DayOfWeek, Order, Product } from "../entities";
-import { OrderMapped, ProductMapped } from "../interfaces";
+import { DayOfWeek, Order, Product, Promotion } from "../entities";
+import {
+  OrderMapped,
+  ProductMapped,
+  ProductPromotionMapped,
+} from "../interfaces";
 
 import { getPromotionDay } from "./promotion.helper";
 
@@ -33,7 +37,19 @@ export const mapProduct = (product: Product): ProductMapped => {
     categories: product.categories.map(({ category }) => category),
     promotions: product.promotions
       .filter(({ promotion }) => promotion.availableDays.includes(currentDay))
-      .map(({ promotion }) => promotion.discountPercentage),
+      .map(({ promotion }) => mapProductPromotion(promotion)),
+  };
+};
+
+export const mapProductPromotion = (
+  promotion: Promotion
+): ProductPromotionMapped => {
+  const { id, name, discountPercentage } = promotion;
+
+  return {
+    id,
+    name,
+    discountPercentage,
   };
 };
 

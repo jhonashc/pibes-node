@@ -4,6 +4,7 @@ export {
   OrderItemMapped,
   OrderMapped,
   ProductMapped,
+  ProductPromotionMapped,
   UserMapped,
 } from "./mappers.interface";
 
