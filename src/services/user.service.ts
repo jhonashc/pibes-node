@@ -46,17 +46,6 @@ class UserService {
     return this.userRepository.save(newUser);
   }
 
-  getUsers(getUsersQueryDto: GetUsersQueryDto): Promise<User[]> {
-    const { page = 1, limit = 10 } = getUsersQueryDto;
-
-    const offset: number = (page - 1) * limit;
-
-    return this.userRepository.find({
-      take: limit,
-      skip: offset,
-    });
-  }
-
   searchUsers(searchUsersQueryDto: SearchUsersQueryDto): Promise<User[]> {
     const { username, page = 1, limit = 10 } = searchUsersQueryDto;
 
@@ -70,6 +59,17 @@ class UserService {
 
     return this.userRepository.find({
       where: findOptionsWhere,
+      take: limit,
+      skip: offset,
+    });
+  }
+
+  getUsers(getUsersQueryDto: GetUsersQueryDto): Promise<User[]> {
+    const { page = 1, limit = 10 } = getUsersQueryDto;
+
+    const offset: number = (page - 1) * limit;
+
+    return this.userRepository.find({
       take: limit,
       skip: offset,
     });

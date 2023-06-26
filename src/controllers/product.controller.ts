@@ -62,11 +62,16 @@ export class ProductController {
     }
   }
 
-  async getProducts(req: Request, res: Response, next: NextFunction) {
+  async searchProducts(req: Request, res: Response, next: NextFunction) {
     try {
-      const { page, limit } = req.query as GetProductsQueryDto;
+      const { name, category, min, max, page, limit } =
+        req.query as SearchProductsQueryDto;
 
-      const products: Product[] = await ProductService.getProducts({
+      const products: Product[] = await ProductService.searchProducts({
+        name,
+        category,
+        min,
+        max,
         page,
         limit,
       });
@@ -82,16 +87,11 @@ export class ProductController {
     }
   }
 
-  async searchProducts(req: Request, res: Response, next: NextFunction) {
+  async getProducts(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, category, min, max, page, limit } =
-        req.query as SearchProductsQueryDto;
+      const { page, limit } = req.query as GetProductsQueryDto;
 
-      const products: Product[] = await ProductService.searchProducts({
-        name,
-        category,
-        min,
-        max,
+      const products: Product[] = await ProductService.getProducts({
         page,
         limit,
       });

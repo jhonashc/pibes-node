@@ -80,17 +80,6 @@ class OrderService {
     return this.orderRepository.save(newOrder);
   }
 
-  getOrders(getOrdersQueryDto: GetOrdersQueryDto): Promise<Order[]> {
-    const { page = 1, limit = 10 } = getOrdersQueryDto;
-
-    const offset: number = (page - 1) * limit;
-
-    return this.orderRepository.find({
-      take: limit,
-      skip: offset,
-    });
-  }
-
   searchOrders(searchOrdersQueryDto: SearchOrdersQueryDto): Promise<Order[]> {
     const { user, status, page = 1, limit = 10 } = searchOrdersQueryDto;
 
@@ -110,6 +99,17 @@ class OrderService {
 
     return this.orderRepository.find({
       where: findOptionsWhere,
+      take: limit,
+      skip: offset,
+    });
+  }
+
+  getOrders(getOrdersQueryDto: GetOrdersQueryDto): Promise<Order[]> {
+    const { page = 1, limit = 10 } = getOrdersQueryDto;
+
+    const offset: number = (page - 1) * limit;
+
+    return this.orderRepository.find({
       take: limit,
       skip: offset,
     });

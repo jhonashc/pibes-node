@@ -57,17 +57,6 @@ class ProductService {
     return this.productRepository.save(newProduct);
   }
 
-  getProducts(getProductsQueryDto: GetProductsQueryDto): Promise<Product[]> {
-    const { page = 1, limit = 10 } = getProductsQueryDto;
-
-    const offset: number = (page - 1) * limit;
-
-    return this.productRepository.find({
-      take: limit,
-      skip: offset,
-    });
-  }
-
   searchProducts(
     searchProductsQueryDto: SearchProductsQueryDto
   ): Promise<Product[]> {
@@ -115,6 +104,25 @@ class ProductService {
     });
   }
 
+  getProducts(getProductsQueryDto: GetProductsQueryDto): Promise<Product[]> {
+    const { page = 1, limit = 10 } = getProductsQueryDto;
+
+    const offset: number = (page - 1) * limit;
+
+    return this.productRepository.find({
+      take: limit,
+      skip: offset,
+    });
+  }
+
+  getProductsByIds(productIds: string[]): Promise<Product[]> {
+    return this.productRepository.find({
+      where: {
+        id: In(productIds),
+      },
+    });
+  }
+
   getSimilarProducts(
     id: string,
     categoryIds: string[],
@@ -150,14 +158,6 @@ class ProductService {
     return this.productRepository.findOne({
       where: {
         name: name.trim().toLowerCase(),
-      },
-    });
-  }
-
-  getProductsByIds(productIds: string[]): Promise<Product[]> {
-    return this.productRepository.find({
-      where: {
-        id: In(productIds),
       },
     });
   }

@@ -67,6 +67,7 @@ export class AuthController {
 
       res.status(200).json({
         status: true,
+        message: "Has iniciado sesión correctamente",
         userId: userFound.id,
         roles: userFound.roles,
         accessToken,

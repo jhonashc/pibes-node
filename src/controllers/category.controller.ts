@@ -45,11 +45,12 @@ export class CategoryController {
     }
   }
 
-  async getCategories(req: Request, res: Response, next: NextFunction) {
+  async searchCategories(req: Request, res: Response, next: NextFunction) {
     try {
-      const { page, limit } = req.query as GetCategoriesQueryDto;
+      const { name, page, limit } = req.query as SearchCategoriesQueryDto;
 
-      const categories: Category[] = await CategoryService.getCategories({
+      const categories: Category[] = await CategoryService.searchCategories({
+        name,
         page,
         limit,
       });
@@ -63,12 +64,11 @@ export class CategoryController {
     }
   }
 
-  async searchCategories(req: Request, res: Response, next: NextFunction) {
+  async getCategories(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, page, limit } = req.query as SearchCategoriesQueryDto;
+      const { page, limit } = req.query as GetCategoriesQueryDto;
 
-      const categories: Category[] = await CategoryService.searchCategories({
-        name,
+      const categories: Category[] = await CategoryService.getCategories({
         page,
         limit,
       });

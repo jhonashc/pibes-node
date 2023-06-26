@@ -13,6 +13,9 @@
     "typeorm:revert": "npm run typeorm migration:revert -- -d ./src/database/config/typeorm.config.ts",
     "typeorm:seed": "ts-node ./node_modules/typeorm-extension/dist/cli/index.js seed -d ./src/database/config/typeorm.config.ts"
   },
+  "engines": {
+    "node": "17.x"
+  },
   "keywords": [
     "node",
     "express",

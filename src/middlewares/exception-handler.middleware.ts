@@ -14,7 +14,8 @@ export const exceptionHandler = async (
   const files = req.files as Express.Multer.File[];
 
   if (file) {
-    await FileService.deleteImageByName(file.filename);
+    const fileName: string = file.filename;
+    await FileService.deleteImageByName(fileName);
   }
 
   if (files) {

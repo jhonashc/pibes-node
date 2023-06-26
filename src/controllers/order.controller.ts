@@ -97,11 +97,13 @@ export class OrderController {
     }
   }
 
-  async getOrders(req: Request, res: Response, next: NextFunction) {
+  async searchOrders(req: Request, res: Response, next: NextFunction) {
     try {
-      const { page, limit } = req.query as GetOrdersQueryDto;
+      const { user, status, page, limit } = req.query as SearchOrdersQueryDto;
 
-      const orders: Order[] = await OrderService.getOrders({
+      const orders: Order[] = await OrderService.searchOrders({
+        user,
+        status,
         page,
         limit,
       });
@@ -117,13 +119,11 @@ export class OrderController {
     }
   }
 
-  async searchOrders(req: Request, res: Response, next: NextFunction) {
+  async getOrders(req: Request, res: Response, next: NextFunction) {
     try {
-      const { user, status, page, limit } = req.query as SearchOrdersQueryDto;
+      const { page, limit } = req.query as GetOrdersQueryDto;
 
-      const orders: Order[] = await OrderService.searchOrders({
-        user,
-        status,
+      const orders: Order[] = await OrderService.getOrders({
         page,
         limit,
       });

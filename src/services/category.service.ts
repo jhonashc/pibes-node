@@ -28,19 +28,6 @@ class CategoryService {
     return this.categoryRepository.save(newCategory);
   }
 
-  getCategories(
-    getCategoriesQueryDto: GetCategoriesQueryDto
-  ): Promise<Category[]> {
-    const { page = 1, limit = 10 } = getCategoriesQueryDto;
-
-    const offset: number = (page - 1) * limit;
-
-    return this.categoryRepository.find({
-      take: limit,
-      skip: offset,
-    });
-  }
-
   searchCategories(
     searchCategoriesQueryDto: SearchCategoriesQueryDto
   ): Promise<Category[]> {
@@ -61,6 +48,27 @@ class CategoryService {
     });
   }
 
+  getCategories(
+    getCategoriesQueryDto: GetCategoriesQueryDto
+  ): Promise<Category[]> {
+    const { page = 1, limit = 10 } = getCategoriesQueryDto;
+
+    const offset: number = (page - 1) * limit;
+
+    return this.categoryRepository.find({
+      take: limit,
+      skip: offset,
+    });
+  }
+
+  getCategoriesByIds(categoryIds: string[]): Promise<Category[]> {
+    return this.categoryRepository.find({
+      where: {
+        id: In(categoryIds),
+      },
+    });
+  }
+
   getCategoryById(id: string): Promise<Category | null> {
     return this.categoryRepository.findOne({
       where: {
@@ -73,14 +81,6 @@ class CategoryService {
     return this.categoryRepository.findOne({
       where: {
         name: Like(name.trim().toLowerCase()),
-      },
-    });
-  }
-
-  getCategoriesByIds(categoryIds: string[]): Promise<Category[]> {
-    return this.categoryRepository.find({
-      where: {
-        id: In(categoryIds),
       },
     });
   }

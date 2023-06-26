@@ -71,11 +71,12 @@ export class UserController {
     }
   }
 
-  async getUsers(req: Request, res: Response, next: NextFunction) {
+  async searchUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const { page, limit } = req.query as GetUsersQueryDto;
+      const { username, page, limit } = req.query as SearchUsersQueryDto;
 
-      const users: User[] = await UserService.getUsers({
+      const users: User[] = await UserService.searchUsers({
+        username,
         page,
         limit,
       });
@@ -89,12 +90,11 @@ export class UserController {
     }
   }
 
-  async searchUsers(req: Request, res: Response, next: NextFunction) {
+  async getUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const { username, page, limit } = req.query as SearchUsersQueryDto;
+      const { page, limit } = req.query as GetUsersQueryDto;
 
-      const users: User[] = await UserService.searchUsers({
-        username,
+      const users: User[] = await UserService.getUsers({
         page,
         limit,
       });

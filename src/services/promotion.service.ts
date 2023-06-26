@@ -33,19 +33,6 @@ class PromotionService {
     return this.promotionRepository.save(newPromotion);
   }
 
-  getPromotions(
-    getPromotionsQueryDto: GetPromotionsQueryDto
-  ): Promise<Promotion[]> {
-    const { page = 1, limit = 10 } = getPromotionsQueryDto;
-
-    const offset: number = (page - 1) * limit;
-
-    return this.promotionRepository.find({
-      take: limit,
-      skip: offset,
-    });
-  }
-
   searchPromotions(
     searchPromotionsQueryDto: SearchPromotionsQueryDto
   ): Promise<Promotion[]> {
@@ -66,6 +53,27 @@ class PromotionService {
     });
   }
 
+  getPromotions(
+    getPromotionsQueryDto: GetPromotionsQueryDto
+  ): Promise<Promotion[]> {
+    const { page = 1, limit = 10 } = getPromotionsQueryDto;
+
+    const offset: number = (page - 1) * limit;
+
+    return this.promotionRepository.find({
+      take: limit,
+      skip: offset,
+    });
+  }
+
+  getPromotionsByIds(promotionIds: string[]): Promise<Promotion[]> {
+    return this.promotionRepository.find({
+      where: {
+        id: In(promotionIds),
+      },
+    });
+  }
+
   getPromotionById(id: string): Promise<Promotion | null> {
     return this.promotionRepository.findOne({
       where: {
@@ -78,14 +86,6 @@ class PromotionService {
     return this.promotionRepository.findOne({
       where: {
         name: name.trim().toLowerCase(),
-      },
-    });
-  }
-
-  getPromotionsByIds(promotionIds: string[]): Promise<Promotion[]> {
-    return this.promotionRepository.find({
-      where: {
-        id: In(promotionIds),
       },
     });
   }

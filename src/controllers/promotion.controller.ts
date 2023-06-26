@@ -7,9 +7,9 @@ import {
   UpdatePromotionDto,
 } from "../dtos";
 
-import { Product, Promotion } from "../entities";
+import { Promotion } from "../entities";
 import { ConflictException, NotFoundException } from "../exceptions";
-import { FileService, ProductService, PromotionService } from "../services";
+import { FileService, PromotionService } from "../services";
 
 export class PromotionController {
   async createPromotion(req: Request, res: Response, next: NextFunction) {
@@ -51,11 +51,12 @@ export class PromotionController {
     }
   }
 
-  async getPromotions(req: Request, res: Response, next: NextFunction) {
+  async searchPromotions(req: Request, res: Response, next: NextFunction) {
     try {
-      const { page, limit } = req.query as GetPromotionsQueryDto;
+      const { day, page, limit } = req.query as SearchPromotionsQueryDto;
 
-      const promotions: Promotion[] = await PromotionService.getPromotions({
+      const promotions: Promotion[] = await PromotionService.searchPromotions({
+        day,
         page,
         limit,
       });
@@ -69,12 +70,11 @@ export class PromotionController {
     }
   }
 
-  async searchPromotions(req: Request, res: Response, next: NextFunction) {
+  async getPromotions(req: Request, res: Response, next: NextFunction) {
     try {
-      const { day, page, limit } = req.query as SearchPromotionsQueryDto;
+      const { page, limit } = req.query as GetPromotionsQueryDto;
 
-      const promotions: Promotion[] = await PromotionService.searchPromotions({
-        day,
+      const promotions: Promotion[] = await PromotionService.getPromotions({
         page,
         limit,
       });
